@@ -35,53 +35,28 @@ public class Reply extends Model{
 
 	public int status;
 
-	private static final int rSize = 20;
+	private static final int rSize = 30;
 
 	public static Finder<Long,Reply> find = new Finder<Long,Reply>(Long.class, Reply.class); 
 
-	public Reply(User user, Content content, String contents) {
+	public Reply(User user, Long content_id, String contents) {
 		// TODO Auto-generated constructor stub
 		this.user = user;
-		this.content_id = content.id;
+		this.content_id = content_id;
 		this.contents = contents;
 		this.create_at = new Date();
 		this.status = 1;
 	}	
 
+	public static Reply getReply(Long reply_id) {
+		return find.where().eq("status", 1).eq("id", reply_id).findUnique(); 
+	}
 
-	public static List<Reply> getContentReplies (String content_idx, String reply_idx) {
-		if("0".equals(reply_idx))
-			return find.where().eq("content_id", Long.parseLong(content_idx)).eq("status", 1).orderBy("id asc").findPagingList(rSize).getPage(0).getList();
+	public static List<Reply> getContentReplies (Long content_id, Long reply_id) {
+		if(reply_id > 0)
+			return find.where().eq("content_id", content_id).eq("status", 1).orderBy("id asc").findPagingList(rSize).getPage(0).getList();
 		else
-			return find.where().eq("content_id", Long.parseLong(content_idx)).gt("id", reply_idx).eq("status", "Y").orderBy("id asc").findPagingList(rSize).getPage(0).getList();
+			return find.where().eq("content_id", content_id).gt("id", reply_id).eq("status", 1).orderBy("id asc").findPagingList(rSize).getPage(0).getList();
 	}
- 
-	public static Reply upload (String user_idx, String content_idx, String content) {
-		User user = User.getUserInfo(user_idx);
-		if(user == null) return null;
-
-		Content contents = Content.getContentDetail(content_idx);
-		int replyCount = contents.replyCount;
-		contents.replyCount = replyCount + 1;
-		contents.update();
-
-		Reply reply = new Reply(user, contents, content);
-		reply.save();
-		return reply;
-	}
-
-	public static Reply deleteReply(String user_idx, String reply_idx) {
-		Reply reply = find.where().eq("user_id", user_idx).eq("id", reply_idx).findUnique();
-		reply.status = 'N';
-		reply.save();
-
-		Content contents = Content.getContentDetail(String.valueOf(reply.content_id));
-		int replyCount = contents.replyCount;
-		if(replyCount > 0) {
-			contents.replyCount = replyCount - 1;
-			contents.update();
-		}
-
-		return reply;
-	}
+  
 }

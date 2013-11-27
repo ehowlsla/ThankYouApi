@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import Contants.OpenLevel;
+
 import play.data.format.Formats;
 import play.db.ebean.Model;
 
@@ -21,9 +23,7 @@ public class Content extends Model{
 
 	@Id
 	public long id;
-
-	@Column(columnDefinition = "nvarchar(255)")
-	public String title;
+ 
 
 	@Column(columnDefinition = "text")
 	public String contents;
@@ -52,6 +52,8 @@ public class Content extends Model{
 	public int status;
 	
 	public int openLevel;
+	
+    public int banCount;
 	 
 	
 	public static Finder<Long,Content> find = new Finder<Long,Content>(Long.class, Content.class); 
@@ -59,46 +61,57 @@ public class Content extends Model{
 	@ManyToOne
 	public User user;
 	
-	private static int pSize = 20;
+	private static int pSize = 30;
 
-	public Content(User user, String title, String content, String imageURL1, String imageURL2, String imageURL3, String imageURL4, int openLevel) {
+	public Content(User user, String content, String imageURL1, String imageURL2, String imageURL3, String imageURL4, int openLevel) {
 		// TODO Auto-generated constructor stub
-		this.title = title;
 		this.contents = content;
 		this.createDate = new Date();
 		this.likeCount = 0; 
 		this.status = 1;
 		this.user = user;
 		this.imageURL1 = imageURL1;
-		this.imageURL1 = imageURL2;
-		this.imageURL1 = imageURL3;
-		this.imageURL1 = imageURL4;
+		this.imageURL2 = imageURL2;
+		this.imageURL3 = imageURL3;
+		this.imageURL4 = imageURL4;
 		this.replyCount = 0;
+		this.banCount = 0;
 		this.openLevel = openLevel; 
 	}
 	
-	public static List<Content> getContentList (String content_idx, String openLevel) {
-		if(content_idx.equals("0"))
-			return find.where().eq("status", 1).le("openLevel", Integer.valueOf(openLevel)).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
-		else
-			return find.where().eq("status", 1).lt("id", Integer.valueOf(content_idx)).le("openLevel", Integer.valueOf(openLevel)).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
+	public static Content getContentDetail (Long content_id) {
+		return find.where().eq("status", 1).eq("id", content_id).findUnique(); 
 	}
-	 
 	
-	public static Content deleteContent(String user_idx, String content_idx) {
-		Content content = find.where().eq("user_id", user_idx).eq("id", content_idx).findUnique();
-		if(content != null) {
-			content.status = 0;
-			content.update();
+	public static List<Content> getContentList (Long user_id, Long last_id, int openLevel) {
+		if(openLevel == OpenLevel.LEVEL_ME) {
+			if(last_id > 0)
+				return find.where().eq("status", 1).eq("user_id", user_id).le("openLevel", openLevel).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
+			else
+				return find.where().eq("status", 1).eq("user_id", user_id).lt("id", last_id).le("openLevel", openLevel).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
+		} else {
+			if(last_id > 0)
+				return find.where().eq("status", 1).le("openLevel", openLevel).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
+			else
+				return find.where().eq("status", 1).lt("id", last_id).le("openLevel", openLevel).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
 		}
-		return content;
 	}
 	 
 	
-	public static Content upload (String user_idx, String title, String content, String imageURL1, String imageURL2, String imageURL3, String imageURL4, int openLevel) {
-		User user = User.getUserInfo(user_idx);
-		Content contents = new Content(user, title, content, imageURL1, imageURL2, imageURL3, imageURL4, openLevel);
-		contents.save();
-		return contents;
-	}
+//	public static Content deleteContent(String user_id, String content_id) {
+//		Content content = find.where().eq("user_id", user_id).eq("id", content_id).findUnique();
+//		if(content != null) {
+//			content.status = 0;
+//			content.update();
+//		}
+//		return content;
+//	}
+//	 
+//	
+//	public static Content upload (String user_id, String content, String imageURL1, String imageURL2, String imageURL3, String imageURL4, int openLevel) {
+//		User user = User.getUserInfo(Long.parseLong(user_id));
+//		Content contents = new Content(user, content, imageURL1, imageURL2, imageURL3, imageURL4, openLevel);
+//		contents.save();
+//		return contents;
+//	}
 }

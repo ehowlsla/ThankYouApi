@@ -19,6 +19,15 @@ public class User extends Model{
 
 	@Id
 	public long id;
+	
+//	@Column(columnDefinition = "nvarchar(100)")
+//	public String email;
+//	
+//	@Column(columnDefinition = "nvarchar(100)")
+//	public String password;
+	
+	
+	//email, password
 
 	@Column(columnDefinition = "nvarchar(255)")
 	public String nickname;
@@ -40,6 +49,9 @@ public class User extends Model{
 
 	@Formats.DateTime(pattern="yyyy-MM-dd HH:mm:ss")
 	public Date created_at;
+	
+	@Column(columnDefinition = "nvarchar(100)")
+	public String job;
 
  
 	
@@ -83,6 +95,7 @@ public class User extends Model{
 		this.image_url2 = "";
 		this.image_url3 = "";
 		this.image_url4 = "";
+		this.job = "";
 		this.birth = "";
 		this.app_version = app_version;
 		this.os_version = os_version;
@@ -97,34 +110,31 @@ public class User extends Model{
 	
 	 
 	
-	public static User getUserInfo(long user_idx) {
-		return find.where().eq("id", Long.valueOf(user_idx)).findUnique(); 
+	public static User getUserInfo(long user_id) {
+		return find.where().eq("id", Long.valueOf(user_id)).findUnique(); 
 	}
-	
-	public static User getUserInfo(String udid) {
-		return find.where().eq("udid", udid).findUnique(); 
-	}
-	
-	public static User update (User user) { 
-		User userInfo = getUserInfo(user.id);
-		if(userInfo != null) {
-			userInfo.nickname = user.nickname;
-			userInfo.memo = user.memo;
-			userInfo.status = user.status;
-			userInfo.udid = user.udid;
-			userInfo.status = user.status;
-			userInfo.gender = user.gender;
-			userInfo.created_at = user.created_at;
-			userInfo.image_url1 = user.image_url1;
-			userInfo.image_url2 = user.image_url2;
-			userInfo.image_url3 = user.image_url3;
-			userInfo.image_url4 = user.image_url4;
-			userInfo.birth = user.birth;
-			userInfo.app_version = user.app_version;
-			userInfo.os_version = user.os_version; 
-			userInfo.update();
-		}  
-		return userInfo;
-	}
+	 
+//	public static User update (User user) { 
+//		User userInfo = getUserInfo(user.id);
+//		if(userInfo != null) {
+//			userInfo.nickname = user.nickname;
+//			userInfo.memo = user.memo;
+//			userInfo.status = user.status;
+//			userInfo.udid = user.udid;
+//			userInfo.status = user.status;
+//			userInfo.gender = user.gender;
+//			userInfo.created_at = user.created_at;
+//			userInfo.image_url1 = user.image_url1;
+//			userInfo.image_url2 = user.image_url2;
+//			userInfo.image_url3 = user.image_url3;
+//			userInfo.image_url4 = user.image_url4;
+//			userInfo.job = user.job;
+//			userInfo.birth = user.birth;
+//			userInfo.app_version = user.app_version;
+//			userInfo.os_version = user.os_version; 
+//			userInfo.update();
+//		}  
+//		return userInfo;
+//	}
 
 }
