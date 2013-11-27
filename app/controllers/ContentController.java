@@ -12,32 +12,30 @@ import java.util.Map;
 import models.Content;
 import models.User;
 
-import org.eclipse.jetty.http.HttpStatus;
 import org.h2.util.IOUtils;
 
 import play.mvc.Controller;
-import play.mvc.Result;
 import play.mvc.Http.MultipartFormData.FilePart;
+import play.mvc.Result;
 import resModles.ResContent;
-import resModles.ResUser;
 import resResults.ContentResult;
-import utils.ThumbnailGenerator;
+import Contants.HttpContants;
 
 import com.google.gson.Gson;
 
 public class ContentController extends Controller{
 	
-	public static Result list() {
+	public static Result list(String user_id, String last_id, String openLevel) {
 		ContentResult result = new ContentResult();
 		
-		Map<String, String[]> params = request().body().asFormUrlEncoded();
-		Long user_id = Long.parseLong(params.get("user_id")[0]);
-		Long last_id = Long.parseLong(params.get("last_id")[0]);
-    	int openLevel = Integer.parseInt(params.get("openLevel")[0]);
+//		Map<String, String[]> params = request().body().asFormUrlEncoded();
+//		Long user_id = Long.parseLong(params.get("user_id")[0]);
+//		Long last_id = Long.parseLong(params.get("last_id")[0]);
+//    	int openLevel = Integer.parseInt(params.get("openLevel")[0]);
     	
-    	List<Content> contents = Content.getContentList(user_id, last_id, openLevel);
+    	List<Content> contents = Content.getContentList(Long.parseLong(user_id), Long.parseLong(last_id), Integer.parseInt(openLevel));
     	if(contents != null) {
-    		result.code = HttpStatus.OK_200;
+    		result.code = HttpContants.OK_200;
     		result.msg = "타임라인 정보를 가져왔습니다.";
     		
     		List<ResContent> list = new ArrayList<ResContent>();
@@ -47,7 +45,7 @@ public class ContentController extends Controller{
     		}
     		result.body = list;
     	} else {
-    		result.code = HttpStatus.FORBIDDEN_403;
+    		result.code = HttpContants.FORBIDDEN_403;
 			result.msg = "타임라인 정보가 더이상 존재하지 않습니다."; 
     	}
     	
@@ -108,15 +106,15 @@ public class ContentController extends Controller{
                 Content content = new Content(user, contents, imageURL1, imageURL2, imageURL3, imageURL4, openLevel);
                 content.save();
                 
-                result.code = HttpStatus.OK_200;
+                result.code = HttpContants.OK_200;
                 result.msg = "성공적으로 업로드 되었습니다.";
                 result.body.add(new ResContent(content));
             } else {
-            	result.code = HttpStatus.FORBIDDEN_403;
+            	result.code = HttpContants.FORBIDDEN_403;
                 result.msg = "해당 유저가 없습니다.";
             }
     	} else {
-    		result.code = HttpStatus.FORBIDDEN_403;
+    		result.code = HttpContants.FORBIDDEN_403;
             result.msg = "멀티파트 형식이 아닙니다.";
     	}                        
     	
@@ -132,15 +130,15 @@ public class ContentController extends Controller{
     	Content content = Content.getContentDetail(content_id);
     	if(content != null) {
     		if(content.status == 0) {
-    			result.code = HttpStatus.FORBIDDEN_403;
+    			result.code = HttpContants.FORBIDDEN_403;
                 result.msg = "이미 삭제된 컨텐츠입니다.";
     		} else {
     			content.status = 0;
-    			result.code = HttpStatus.OK_200;
+    			result.code = HttpContants.OK_200;
                 result.msg = "성공적으로 삭제되었습니다.";
     		} 
     	} else {
-        	result.code = HttpStatus.FORBIDDEN_403;
+        	result.code = HttpContants.FORBIDDEN_403;
             result.msg = "해당 유저가 없습니다.";
     	}
     		 
@@ -164,11 +162,11 @@ public class ContentController extends Controller{
     		
     		content.update();
     		
-    		result.code = HttpStatus.OK_200;
+    		result.code = HttpContants.OK_200;
     		result.msg = "성공적으로 신고되었습니다.";
     		result.body.add(new ResContent(content));
     	} else {
-    		result.code = HttpStatus.FORBIDDEN_403;
+    		result.code = HttpContants.FORBIDDEN_403;
     		result.msg = "잘못된 게시글이거나 이미 삭제되었습니다.";
     	}
     	

@@ -10,16 +10,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.jetty.http.HttpStatus;
+import models.User;
+ 
 import org.h2.util.IOUtils;
 
-import models.User;
 import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import resModles.ResUser;
 import resResults.UserResult;
 import utils.ThumbnailGenerator;
+import Contants.HttpContants;
 
 import com.google.gson.Gson;
 
@@ -61,11 +62,11 @@ public class UserController extends Controller{
     			user.save();
     		}
     		
-    		result.code = HttpStatus.OK_200;
+    		result.code = HttpContants.OK_200;
             result.msg = "성공적으로 로그인 되었습니다.";
             result.body.add(new ResUser(user));
     	} else {
-    		result.code = HttpStatus.FORBIDDEN_403;
+    		result.code = HttpContants.FORBIDDEN_403;
 			result.msg = "해당 유저가 존재하지 않습니다."; 
     	}    		
     	return ok(new Gson().toJson(result));
@@ -88,11 +89,11 @@ public class UserController extends Controller{
     		user.birth = birth;
     		user.update(); 
     		
-    		result.code = HttpStatus.OK_200;
+    		result.code = HttpContants.OK_200;
             result.msg = "성공적으로 변경되었습니다.";
             result.body.add(new ResUser(user));
     	} else {
-        	result.code = HttpStatus.FORBIDDEN_403;
+        	result.code = HttpContants.FORBIDDEN_403;
             result.msg = "해당 유저가 없습니다.";
     	}
     		 
@@ -146,7 +147,7 @@ public class UserController extends Controller{
                                         
                                         user.update();
                                         
-                                        result.code = HttpStatus.OK_200;
+                                        result.code = HttpContants.OK_200;
                                         result.msg = imageNum + "번째 사진이 업로드 었습니다.";
                             			result.body.add(new ResUser(user));
                             			
@@ -159,28 +160,28 @@ public class UserController extends Controller{
                                         }
                                 } catch (FileNotFoundException e) {
                                         // TODO Auto-generated catch block
-                                	 result.code = HttpStatus.EXPECTATION_FAILED_417;
+                                	 result.code = HttpContants.EXPECTATION_FAILED_417;
                                      result.msg = "에러가 발생했습니다.\n" + e.getMessage();
                                      e.printStackTrace();
                                 } catch (IOException e) {
                                         // TODO Auto-generated catch block
-                                	result.code = HttpStatus.EXPECTATION_FAILED_417;
+                                	result.code = HttpContants.EXPECTATION_FAILED_417;
                                     result.msg = "에러가 발생했습니다.\n" + e.getMessage(); 
                                 	e.printStackTrace();
                                 } catch (Exception e) {
                                         // TODO Auto-generated catch block
-                                	result.code = HttpStatus.EXPECTATION_FAILED_417;
+                                	result.code = HttpContants.EXPECTATION_FAILED_417;
                                     result.msg = "에러가 발생했습니다.\n" + e.getMessage();                                     
                                     e.printStackTrace();
                                 } 
                         }
                 }                
             } else {
-            	result.code = HttpStatus.FORBIDDEN_403;
+            	result.code = HttpContants.FORBIDDEN_403;
                 result.msg = "해당 유저가 없습니다.";
             }            	
     	} else {
-    		result.code = HttpStatus.FORBIDDEN_403;
+    		result.code = HttpContants.FORBIDDEN_403;
             result.msg = "첨부된 파일이 없습니다.";
     	}
     	
@@ -220,21 +221,21 @@ public class UserController extends Controller{
     			user.update();
     			
         		if(file.delete()) {
-        			result.code = HttpStatus.OK_200;
+        			result.code = HttpContants.OK_200;
         			result.msg = imageNum + "번째 사진이 삭제되었습니다.";
         			result.body.add(new ResUser(user));
         		} else {
-        			result.code = HttpStatus.CONFLICT_409;
+        			result.code = HttpContants.CONFLICT_409;
         			result.msg = imageNum + "번째 사진은 이미 삭제되었습니다.";
         			result.body.add(new ResUser(user));
         		}
         	} else {
-        		result.code = HttpStatus.CONFLICT_409;
+        		result.code = HttpContants.CONFLICT_409;
     			result.msg = imageNum + "번째 사진은 존재하지 않습니다.";
     			result.body.add(new ResUser(user));
         	} 
     	} else {
-    		result.code = HttpStatus.FORBIDDEN_403;
+    		result.code = HttpContants.FORBIDDEN_403;
 			result.msg = "해당 유저가 존재하지 않습니다."; 
     	}	
     	return ok(new Gson().toJson(result));
