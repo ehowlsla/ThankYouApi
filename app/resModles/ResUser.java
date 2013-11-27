@@ -2,12 +2,7 @@ package resModles;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-
 import models.User;
-
-import play.data.format.Formats;
 
 public class ResUser {
  
@@ -16,9 +11,16 @@ public class ResUser {
 	public String nickname;
 	public String udid; 
 	public int status;
+	public String memo;
 	public int gender;
 	public Date create_at;
-	public String image_url;
+	public String image_url1;
+	public String image_url2;
+	public String image_url3;
+	public String image_url4;
+	public String birth;
+	public String job;
+	public String token_key;
 	public String app_version;
 	public String os_version;
 
@@ -28,10 +30,17 @@ public class ResUser {
 			this.id = obj.id;
 			this.nickname = obj.nickname;
 			this.udid = obj.udid;
-			this.image_url = obj.image_url;
+			this.image_url1 = obj.image_url1;
+			this.image_url2 = obj.image_url2;
+			this.image_url3 = obj.image_url3;
+			this.image_url4 = obj.image_url4;
+			this.birth = obj.birth;
+			this.memo = obj.memo;
+			this.job = obj.job;
 			this.status = obj.status;
 			this.gender = obj.gender;
 			this.create_at = obj.created_at;
+			this.token_key = obj.token_key;
 			this.app_version = obj.app_version;
 			this.os_version = obj.os_version;
 		}
