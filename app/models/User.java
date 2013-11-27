@@ -34,12 +34,26 @@ public class User extends Model{
 
 //	@Column(columnDefinition = "char(1)")
 	public int gender;
+	
+	@Column(columnDefinition = "nvarchar(20)")
+	public String birth;
 
 	@Formats.DateTime(pattern="yyyy-MM-dd HH:mm:ss")
 	public Date created_at;
 
+ 
+	
 	@Column(columnDefinition = "nvarchar(255)")
-	public String image_url;
+	public String image_url1;
+	
+	@Column(columnDefinition = "nvarchar(255)")
+	public String image_url2;
+	
+	@Column(columnDefinition = "nvarchar(255)")
+	public String image_url3;
+	
+	@Column(columnDefinition = "nvarchar(255)")
+	public String image_url4;
 	
 	@Column(columnDefinition = "nvarchar(20)")
 	public String app_version;
@@ -50,8 +64,7 @@ public class User extends Model{
 	@Column(columnDefinition = "nvarchar(20)")
 	public String token_key;
 	
-	@Column(columnDefinition = "nvarchar(20)")
-	public String cookie_session;
+	 
 	
 	
 
@@ -66,7 +79,11 @@ public class User extends Model{
 		this.status = 1;
 		this.gender = 0;
 		this.created_at = new Date();
-		this.image_url = "";
+		this.image_url1 = "";
+		this.image_url2 = "";
+		this.image_url3 = "";
+		this.image_url4 = "";
+		this.birth = "";
 		this.app_version = app_version;
 		this.os_version = os_version;
 		this.token_key = "";
@@ -78,9 +95,7 @@ public class User extends Model{
 		return user;
 	}
 	
-	public static User getUserInfoSession(String cookie_session) {
-		return find.where().eq("cookie_session", cookie_session).findUnique(); 
-	}
+	 
 	
 	public static User getUserInfo(long user_idx) {
 		return find.where().eq("id", Long.valueOf(user_idx)).findUnique(); 
@@ -90,9 +105,8 @@ public class User extends Model{
 		return find.where().eq("udid", udid).findUnique(); 
 	}
 	
-	public static User update (User user) {
-//		User userInfo = getUserInfo(user.id);
-		User userInfo = getUserInfoSession(user.cookie_session);
+	public static User update (User user) { 
+		User userInfo = getUserInfo(user.id);
 		if(userInfo != null) {
 			userInfo.nickname = user.nickname;
 			userInfo.memo = user.memo;
@@ -101,7 +115,11 @@ public class User extends Model{
 			userInfo.status = user.status;
 			userInfo.gender = user.gender;
 			userInfo.created_at = user.created_at;
-			userInfo.image_url = user.image_url;
+			userInfo.image_url1 = user.image_url1;
+			userInfo.image_url2 = user.image_url2;
+			userInfo.image_url3 = user.image_url3;
+			userInfo.image_url4 = user.image_url4;
+			userInfo.birth = user.birth;
 			userInfo.app_version = user.app_version;
 			userInfo.os_version = user.os_version; 
 			userInfo.update();

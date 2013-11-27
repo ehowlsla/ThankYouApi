@@ -31,20 +31,28 @@ public class Content extends Model{
 	@Formats.DateTime(pattern="yyyy-MM-dd HH:mm:ss")
 	public Date createDate;
 
-	public int viewCount;
+ 
 	
-	public int recCount;
+	public int likeCount;
 
 	public int replyCount;
 
 	@Column(columnDefinition = "nvarchar(100)")
-	public String imageURL;
+	public String imageURL1;
+	
+	@Column(columnDefinition = "nvarchar(100)")
+	public String imageURL2;
+	
+	@Column(columnDefinition = "nvarchar(100)")
+	public String imageURL3;
+	
+	@Column(columnDefinition = "nvarchar(100)")
+	public String imageURL4;
 
 	public int status;
 	
-	public int is_open_community;
-	
-	public int is_open_facebook;
+	public int openLevel;
+	 
 	
 	public static Finder<Long,Content> find = new Finder<Long,Content>(Long.class, Content.class); 
 
@@ -53,60 +61,43 @@ public class Content extends Model{
 	
 	private static int pSize = 20;
 
-	public Content(User user, String title, String content, String imageURL, int is_open_community, int is_open_facebook) {
+	public Content(User user, String title, String content, String imageURL1, String imageURL2, String imageURL3, String imageURL4, int openLevel) {
 		// TODO Auto-generated constructor stub
 		this.title = title;
 		this.contents = content;
 		this.createDate = new Date();
-		this.recCount = 0;
-		this.viewCount = 0;
+		this.likeCount = 0; 
 		this.status = 1;
 		this.user = user;
-		this.imageURL = imageURL;
+		this.imageURL1 = imageURL1;
+		this.imageURL1 = imageURL2;
+		this.imageURL1 = imageURL3;
+		this.imageURL1 = imageURL4;
 		this.replyCount = 0;
-		this.is_open_community = is_open_community;
-		this.is_open_facebook = is_open_facebook;
+		this.openLevel = openLevel; 
 	}
 	
-	public static List<Content> getContentListAll (String content_idx) {
+	public static List<Content> getContentList (String content_idx, String openLevel) {
 		if(content_idx.equals("0"))
-			return find.where().eq("status", 1).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
+			return find.where().eq("status", 1).le("openLevel", Integer.valueOf(openLevel)).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
 		else
-			return find.where().eq("status", 1).lt("id", Integer.valueOf(content_idx)).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
+			return find.where().eq("status", 1).lt("id", Integer.valueOf(content_idx)).le("openLevel", Integer.valueOf(openLevel)).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
 	}
-	
-	public static List<Content> getContentListFacebook (String content_idx) {
-		if(content_idx.equals("0"))
-			return find.where().eq("status", 1).eq("is_open_facebook", 1).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
-		else
-			return find.where().eq("status", 1).eq("is_open_facebook", 1).lt("id", Integer.valueOf(content_idx)).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
-	}
-	
-	public static List<Content> getContentListCommunity (String content_idx) {
-		if(content_idx.equals("0"))
-			return find.where().eq("status", 1).eq("is_open_community", 1).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
-		else
-			return find.where().eq("status", 1).eq("is_open_community", 1).lt("id", Integer.valueOf(content_idx)).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
-	}
+	 
 	
 	public static Content deleteContent(String user_idx, String content_idx) {
 		Content content = find.where().eq("user_id", user_idx).eq("id", content_idx).findUnique();
-		content.status = 0;
-		content.update();
+		if(content != null) {
+			content.status = 0;
+			content.update();
+		}
 		return content;
 	}
+	 
 	
-	public static Content getContentDetail (String content_idx) {
-		Content content = find.where().eq("status", 1).eq("id", Long.valueOf(content_idx)).findUnique();
-		int count = content.viewCount;
-		content.viewCount = count + 1;
-		content.update();
-		return content;	
-	}
-	
-	public static Content upload (String user_idx, String title, String content, String imageURL, int is_open_community, int is_open_facebook) {
+	public static Content upload (String user_idx, String title, String content, String imageURL1, String imageURL2, String imageURL3, String imageURL4, int openLevel) {
 		User user = User.getUserInfo(user_idx);
-		Content contents = new Content(user, title, content, imageURL, is_open_community, is_open_facebook);
+		Content contents = new Content(user, title, content, imageURL1, imageURL2, imageURL3, imageURL4, openLevel);
 		contents.save();
 		return contents;
 	}
