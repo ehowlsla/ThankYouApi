@@ -148,9 +148,9 @@ public class UserController extends Controller{
             }
             
             System.out.println("hihi");
-            String strUser_id = params.get("user_id")[0];
+            String strUser_id = ((String[]) params.get("user_id"))[0];
             System.out.println(strUser_id);
-            String strImageNum = params.get("imageNum")[0];
+            String strImageNum = ((String[]) params.get("imageNum"))[0];
             System.out.println(strImageNum);
             
             long user_id = Long.parseLong(strUser_id);
