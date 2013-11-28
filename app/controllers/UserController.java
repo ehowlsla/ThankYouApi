@@ -140,8 +140,11 @@ public class UserController extends Controller{
     	if (request().body().asMultipartFormData() != null) {
             Map<String, String[]> params = request().body().asMultipartFormData().asFormUrlEncoded();
 
+            System.out.println("hihi");
             Long user_id = Long.parseLong(params.get("user_id")[0]);
+            System.out.println(user_id);
             int imageNum = Integer.parseInt(params.get("imageNum")[0]);
+            System.out.println(imageNum);
             
             User user = User.getUserInfo(user_id);
             if(user != null) {
