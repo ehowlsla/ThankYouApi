@@ -148,13 +148,13 @@ public class UserController extends Controller{
             }
             
             System.out.println("hihi");
-            String strUser_id = ((String[]) params.get("user_id"))[0];
+            String[] strUser_id = ((String[]) params.get("user_id"));
             System.out.println(strUser_id);
-            String strImageNum = ((String[]) params.get("imageNum"))[0];
+            String[] strImageNum = ((String[]) params.get("imageNum"));
             System.out.println(strImageNum);
             
-            long user_id = Long.parseLong(strUser_id);
-            int imageNum = Integer.parseInt(strImageNum);
+            long user_id = Long.parseLong(strUser_id[0]);
+            int imageNum = Integer.parseInt(strImageNum[0]);
             
             User user = User.getUserInfo(user_id);
             if(user != null) {
