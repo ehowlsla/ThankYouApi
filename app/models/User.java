@@ -106,9 +106,13 @@ public class User extends Model{
 	}
 	
 	public static User join(String udid, String app_version, String os_version) {
-		User user = new User(udid, app_version, os_version);
-		user.save();
-		user = User.getUserUdid(udid);
+		User user = User.getUserUdid(udid);
+		if(user == null) {
+			user = new User(udid, app_version, os_version);
+			user.save();
+			user = User.getUserUdid(udid);
+		}  
+		
 		return user;
 	}
 	

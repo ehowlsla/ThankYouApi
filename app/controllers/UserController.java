@@ -36,7 +36,7 @@ public class UserController extends Controller{
 //    }
     
     public static Result join() {    	
-    	UserResult result = new UserResult();
+    	LoginResult result = new LoginResult();
     	
     	Map<String, String[]> params = request().body().asFormUrlEncoded();
     	String udid = params.get("udid")[0];
@@ -46,8 +46,14 @@ public class UserController extends Controller{
     	ResUser user = new ResUser(User.join(udid, app_version, os_version));
     	if(user != null) {
     		result.code = HttpContants.OK_200;
-    		result.msg = "성공적으로 가입되었습니다.";
+            result.msg = "성공적으로 프로필 정보를 가져왔습니다.";
     		result.body.add(user);
+    		
+    		List<Notice> notices = Notice.getNotices(user.id, (long) 0);
+    		for(Notice obj : notices) {
+    			ResNotice value = new ResNotice(obj);
+    			result.notices.add(value);
+    		}
     	}
     	
     	return ok(new Gson().toJson(result));	 
