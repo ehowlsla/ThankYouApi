@@ -19,6 +19,7 @@ import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import resModles.ResContent;
 import resResults.ContentResult;
+import utils.ThumbnailGenerator;
 import Contants.HttpContants;
 
 import com.google.gson.Gson;
@@ -72,7 +73,7 @@ public class ContentController extends Controller{
             User user = User.getUserInfo(user_id);
             if(user != null) {
             	List<FilePart> uploadFiles = request().body().asMultipartFormData().getFiles();
-                
+                 
                 for (FilePart part : uploadFiles) {
                         if (part != null) {
                         	 File file = part.getFile();
@@ -85,16 +86,19 @@ public class ContentController extends Controller{
                              FileInputStream is;
                              try {
                                      is = new FileInputStream(file);
-                                     IOUtils.copy(is, new FileOutputStream(saveFile));                                     
+                                     IOUtils.copy(is, new FileOutputStream(saveFile));   
+                                     
+                                     ThumbnailGenerator generator = new ThumbnailGenerator();
+                                     generator.transform(imageURL, s_imageURL, 480, 480);  
                                      
                                      if(num == 1) { 
-                                     	user.image_url1 = s_imageURL;
+                                    	imageURL1 = s_imageURL;
                                      } else if(num == 2) { 
-                                     	user.image_url2 = s_imageURL;
+                                    	imageURL2 = s_imageURL;
                                      } else if(num == 3) { 
-                                     	user.image_url3 = s_imageURL;
+                                    	imageURL3 = s_imageURL;
                                      } else if(num == 4) { 
-                                     	user.image_url4 = s_imageURL;
+                                    	imageURL4 = s_imageURL;
                                      }
                                      num++;
                              } catch (Exception e) {
