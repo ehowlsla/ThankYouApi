@@ -4,12 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import models.Content;
+import models.Reply;
 import models.User;
 
 import org.h2.util.IOUtils;
@@ -18,6 +18,7 @@ import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import resModles.ResContent;
+import resModles.ResReply;
 import resResults.ContentResult;
 import utils.ThumbnailGenerator;
 import Contants.HttpContants;
@@ -52,6 +53,30 @@ public class ContentController extends Controller{
     	
     	return ok(new Gson().toJson(result));
     }
+	
+	 public static Result getContentDetail(String content_id, String reply_id) {
+	    	ContentResult result = new ContentResult();
+	    	
+	    	Content content = Content.getContentDetail(Long.parseLong(content_id));
+	    	if(content != null) {
+	    		List<Reply> replies = Reply.getContentReplies(Long.parseLong(content_id), Long.parseLong(reply_id));
+	    		
+	    		result.code = HttpContants.OK_200;
+	            result.msg = "성공적으로 일기 정보를 가져왔습니다.";
+	            result.body.add(new ResContent(content));
+	            
+	            for(Reply obj : replies) {
+	            	ResReply value = new ResReply(obj);
+	            	result.replies.add(value);
+	            }
+	    	} else {
+	    		result.code = HttpContants.FORBIDDEN_403;
+				result.msg = "해당 일기가 존재하지 않습니다."; 
+	    	}
+	    	
+	    	 
+	    	return ok(new Gson().toJson(result));
+	    }
     
     public static Result upload() {    	
     	ContentResult result = new ContentResult();
