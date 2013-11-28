@@ -140,6 +140,12 @@ public class UserController extends Controller{
     	if (request().body().asMultipartFormData() != null) {
             Map<String, String[]> params = request().body().asMultipartFormData().asFormUrlEncoded();
 
+//            Map<String, String[]>  reversedMap= new TreeMap<String, String>(codes.size());
+            for (Map.Entry entry : params.entrySet()) {
+            	System.out.println(entry.getKey() + ", " + entry.getValue());
+//                reversedMap.put(entry.getValue(), entry.getKey());
+            }
+            
             System.out.println("hihi");
             String strUser_id = params.get("user_id")[0];
             System.out.println(strUser_id);
