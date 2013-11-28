@@ -13,7 +13,8 @@ public class ResUser {
 	public int status;
 	public String memo;
 	public int gender;
-	public Date create_at;
+	public String city;
+	public Date createDate;
 	public String image_url1;
 	public String image_url2;
 	public String image_url3;
@@ -35,11 +36,12 @@ public class ResUser {
 			this.image_url3 = obj.image_url3;
 			this.image_url4 = obj.image_url4;
 			this.birth = obj.birth;
+			this.city = obj.city;
 			this.memo = obj.memo;
 			this.job = obj.job;
 			this.status = obj.status;
 			this.gender = obj.gender;
-			this.create_at = obj.created_at;
+			this.createDate = obj.createDate;
 			this.token_key = obj.token_key;
 			this.app_version = obj.app_version;
 			this.os_version = obj.os_version;

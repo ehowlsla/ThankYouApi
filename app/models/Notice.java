@@ -27,7 +27,7 @@ public class Notice {
 	public int status;
 	
 	@Formats.DateTime(pattern="yyyy-MM-dd HH:mm:ss")
-	public Date create_at;
+	public Date createDate;
 	
 	private static final int nSize = 30;
 
@@ -39,7 +39,7 @@ public class Notice {
 		this.user_id = user_id;
 		this.message = message;
 		this.imageURL = imageURL;
-		this.create_at = new Date();
+		this.createDate = new Date();
 		this.status = 1; //no read
 	}	
 

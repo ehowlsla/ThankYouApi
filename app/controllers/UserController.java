@@ -30,10 +30,10 @@ import com.google.gson.Gson;
 public class UserController extends Controller{
 	 
     
-    public static Result join(String udid, String app_version, String os_version, String token_key) { 
-    	ResUser user = new ResUser(User.join(udid, app_version, os_version, token_key));
-    	return ok(new Gson().toJson(user));	 
-    }
+//    public static Result join(String udid, String app_version, String os_version, String token_key) { 
+//    	ResUser user = new ResUser(User.join(udid, app_version, os_version, token_key));
+//    	return ok(new Gson().toJson(user));	 
+//    }
     
     public static Result join() {    	
     	UserResult result = new UserResult();
@@ -48,6 +48,21 @@ public class UserController extends Controller{
     	
     	
     	return ok(new Gson().toJson(user));	 
+    }
+    
+    public static Result getProfile(String user_id) {
+    	UserResult result = new UserResult();
+    	
+    	User user = User.getUserInfo(Long.parseLong(user_id));
+    	if(user != null) {
+    		result.code = HttpContants.OK_200;
+            result.msg = "성공적으로 프로필 정보를 가져왔습니다.";
+            result.body.add(new ResUser(user));
+    	} else {
+    		result.code = HttpContants.FORBIDDEN_403;
+			result.msg = "해당 유저가 존재하지 않습니다."; 
+    	}
+    	return ok(new Gson().toJson(result));
     }
     
     public static Result login(String user_id, String app_version, String os_version) {    	

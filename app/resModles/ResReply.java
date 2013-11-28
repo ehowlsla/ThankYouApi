@@ -10,7 +10,7 @@ public class ResReply {
 	public ResUser user;
 	public long content_id;
 	public String contents;
-	public Date create_at;
+	public Date createDate;
 	public int status;
 	
 	public ResReply(Reply obj) {
@@ -20,7 +20,7 @@ public class ResReply {
 			this.user = new ResUser(obj.user);
 			this.content_id = obj.content_id;
 			this.contents = obj.contents;
-			this.create_at = obj.create_at;
+			this.createDate = obj.createDate;
 			this.status = obj.status;
 		}
 	}

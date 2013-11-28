@@ -48,7 +48,10 @@ public class User extends Model{
 	public String birth;
 
 	@Formats.DateTime(pattern="yyyy-MM-dd HH:mm:ss")
-	public Date created_at;
+	public Date createDate;
+	
+	@Column(columnDefinition = "nvarchar(100)")
+	public String city;
 	
 	@Column(columnDefinition = "nvarchar(100)")
 	public String job;
@@ -90,7 +93,7 @@ public class User extends Model{
 		this.udid = udid;
 		this.status = 1;
 		this.gender = 0;
-		this.created_at = new Date();
+		this.createDate = new Date();
 		this.image_url1 = "";
 		this.image_url2 = "";
 		this.image_url3 = "";

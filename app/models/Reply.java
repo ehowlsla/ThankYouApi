@@ -31,7 +31,7 @@ public class Reply extends Model{
 	public String contents;
 
 	@Formats.DateTime(pattern="yyyy-MM-dd HH:mm:ss")
-	public Date create_at;
+	public Date createDate;
 
 	public int status;
 
@@ -44,7 +44,7 @@ public class Reply extends Model{
 		this.user = user;
 		this.content_id = content_id;
 		this.contents = contents;
-		this.create_at = new Date();
+		this.createDate = new Date();
 		this.status = 1;
 	}	
 

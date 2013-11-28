@@ -12,7 +12,7 @@ public class ResNotice {
 	public long redirect_id;	
 	public long user_id;	
 	public int status;	
-	public Date create_at;
+	public Date createDate;
 
 	public ResNotice(Notice obj) {
 		// TODO Auto-generated constructor stub
@@ -23,7 +23,7 @@ public class ResNotice {
 			this.redirect_id = obj.redirect_id;
 			this.user_id = obj.user_id;
 			this.status = obj.status;
-			this.create_at = obj.create_at;
+			this.createDate = obj.createDate;
 		}
 	}
 }
