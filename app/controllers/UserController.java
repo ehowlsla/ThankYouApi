@@ -12,7 +12,7 @@ import java.util.Map;
 
 import models.Notice;
 import models.User;
- 
+
 import org.h2.util.IOUtils;
 
 import play.mvc.Controller;
@@ -47,6 +47,9 @@ public class UserController extends Controller{
     	if(user != null) {
     		result.code = HttpContants.OK_200;
             result.msg = "성공적으로 프로필 정보를 가져왔습니다.";
+            
+            
+    		
     		result.body.add(user);
     		
     		List<Notice> notices = Notice.getNotices(user.id, (long) 0);
@@ -66,6 +69,8 @@ public class UserController extends Controller{
     	if(user != null) {
     		result.code = HttpContants.OK_200;
             result.msg = "성공적으로 프로필 정보를 가져왔습니다.";
+            
+    		
             result.body.add(new ResUser(user));
     	} else {
     		result.code = HttpContants.FORBIDDEN_403;
@@ -139,19 +144,7 @@ public class UserController extends Controller{
     	
     	if (request().body().asMultipartFormData() != null) {
             Map<String, String[]> params = request().body().asMultipartFormData().asFormUrlEncoded();
-
-////            Map<String, String[]>  reversedMap= new TreeMap<String, String>(codes.size());
-//            for (Map.Entry entry : params.entrySet()) {
-//            	String[] value = (String[]) entry.getValue();
-//            	System.out.println(entry.getKey() + ", " + value[0]);
-////                reversedMap.put(entry.getValue(), entry.getKey());
-//            }
-            
-//            System.out.println("hihi");
-//            String[] strUser_id = ((String[]) params.get("user_id"));
-//            System.out.println(strUser_id);
-//            String[] strImageNum = ((String[]) params.get("imageNum"));
-//            System.out.println(strImageNum);
+ 
             
             long user_id = Long.parseLong(params.get("user_id")[0]);
             int imageNum = Integer.parseInt(params.get("imageNum")[0]);
