@@ -120,7 +120,8 @@ public class UserController extends Controller{
     	String job = params.get("job")[0];
     	String nickname = params.get("nickname")[0];
     	String gender = params.get("gender")[0];
-    	
+
+    	String city = params.get("city")[0];
     	String birth = params.get("birth")[0];  
     	
     	
@@ -130,6 +131,7 @@ public class UserController extends Controller{
     		user.job = job;
     		user.birth = birth;
     		user.nickname = nickname;
+    		user.city = city;
     		user.gender = Integer.parseInt(gender);
     		user.update(); 
     		
