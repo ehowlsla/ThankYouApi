@@ -3,6 +3,7 @@ package resResults;
 import java.util.ArrayList;
 import java.util.List;
 
+import resModles.ResNotice;
 import resModles.ResUser;
 
 public class UserResult {

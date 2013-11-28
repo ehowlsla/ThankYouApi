@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import models.Notice;
 import models.User;
  
 import org.h2.util.IOUtils;
@@ -17,7 +18,9 @@ import org.h2.util.IOUtils;
 import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
+import resModles.ResNotice;
 import resModles.ResUser;
+import resResults.LoginResult;
 import resResults.UserResult;
 import utils.ThumbnailGenerator;
 import Contants.HttpContants;
@@ -27,8 +30,8 @@ import com.google.gson.Gson;
 public class UserController extends Controller{
 	 
     
-    public static Result join(String udid, String app_version, String os_version) { 
-    	ResUser user = new ResUser(User.join(udid, app_version, os_version));
+    public static Result join(String udid, String app_version, String os_version, String token_key) { 
+    	ResUser user = new ResUser(User.join(udid, app_version, os_version, token_key));
     	return ok(new Gson().toJson(user));	 
     }
     
@@ -39,27 +42,34 @@ public class UserController extends Controller{
     	String udid = params.get("udid")[0];
     	String app_version = params.get("app_version")[0];
     	String os_version = params.get("os_version")[0];
+    	String token_key = params.get("token_key")[0];
     	  
-    	ResUser user = new ResUser(User.join(udid, app_version, os_version));
+    	ResUser user = new ResUser(User.join(udid, app_version, os_version, token_key));
     	
     	
     	return ok(new Gson().toJson(user));	 
     }
     
-    public static Result login() {    	
-    	UserResult result = new UserResult();
+    public static Result login(String user_id, String app_version, String os_version) {    	
+    	LoginResult result = new LoginResult();
     	
-    	Map<String, String[]> params = request().body().asFormUrlEncoded();
-    	Long user_id = Long.parseLong(params.get("user_id")[0]);
-    	String app_version = params.get("app_version")[0];
-    	String os_version = params.get("os_version")[0];
+//    	Map<String, String[]> params = request().body().asFormUrlEncoded();
+//    	Long user_id = Long.parseLong(params.get("user_id")[0]);
+//    	String app_version = params.get("app_version")[0];
+//    	String os_version = params.get("os_version")[0];
     	
-    	User user = User.getUserInfo(user_id);
+    	User user = User.getUserInfo(Long.parseLong(user_id));
     	if(user != null) {
     		if(user.app_version != app_version || user.os_version != os_version) {
     			user.app_version = app_version;
     			user.os_version = os_version;
     			user.save();
+    		}
+    		
+    		List<Notice> notices = Notice.getNotices(user.id, (long) 0);
+    		for(Notice obj : notices) {
+    			ResNotice value = new ResNotice(obj);
+    			result.notices.add(value);
     		}
     		
     		result.code = HttpContants.OK_200;

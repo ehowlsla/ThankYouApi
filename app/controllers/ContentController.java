@@ -38,12 +38,12 @@ public class ContentController extends Controller{
     		result.code = HttpContants.OK_200;
     		result.msg = "타임라인 정보를 가져왔습니다.";
     		
-    		List<ResContent> list = new ArrayList<ResContent>();
+//    		List<ResContent> list = new ArrayList<ResContent>();
     		for(Content obj : contents) {
     			ResContent content = new ResContent(obj);
-    			list.add(content);
+    			result.body.add(content);
     		}
-    		result.body = list;
+//    		result.body = list;
     	} else {
     		result.code = HttpContants.FORBIDDEN_403;
 			result.msg = "타임라인 정보가 더이상 존재하지 않습니다."; 
