@@ -142,7 +142,8 @@ public class UserController extends Controller{
 
 //            Map<String, String[]>  reversedMap= new TreeMap<String, String>(codes.size());
             for (Map.Entry entry : params.entrySet()) {
-            	System.out.println(entry.getKey() + ", " + entry.getValue());
+            	String[] value = (String[]) entry.getValue();
+            	System.out.println(entry.getKey() + ", " + value[0]);
 //                reversedMap.put(entry.getValue(), entry.getKey());
             }
             
