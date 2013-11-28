@@ -4,6 +4,9 @@
 
 # Home page 
 
+
+GET     /image/*path											controllers.ImageController.path(path)
+
 GET     /content/list/*user_id/*last_id/*openLevel				controllers.ContentController.list(user_id, last_id, openLevel)
 
 GET     /reply/list/*content_id/*last_id						controllers.ReplyController.list(content_id, last_id)
