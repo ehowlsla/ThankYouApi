@@ -41,10 +41,9 @@ public class UserController extends Controller{
     	Map<String, String[]> params = request().body().asFormUrlEncoded();
     	String udid = params.get("udid")[0];
     	String app_version = params.get("app_version")[0];
-    	String os_version = params.get("os_version")[0];
-    	String token_key = params.get("token_key")[0];
+    	String os_version = params.get("os_version")[0]; 
     	  
-    	ResUser user = new ResUser(User.join(udid, app_version, os_version, token_key));
+    	ResUser user = new ResUser(User.join(udid, app_version, os_version));
     	
     	
     	return ok(new Gson().toJson(user));	 

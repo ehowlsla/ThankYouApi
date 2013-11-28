@@ -85,7 +85,7 @@ public class User extends Model{
 
 	public static Finder<Long,User> find = new Finder<Long,User>(Long.class, User.class); 
 	
-	public User(String udid, String app_version, String os_version, String token_key) {
+	public User(String udid, String app_version, String os_version) {
 		// TODO Auto-generated constructor stub
 		this.nickname = "이름이 없습니다.";
 		this.memo = "한줄 소개가 없습니다.";
@@ -102,11 +102,11 @@ public class User extends Model{
 		this.birth = "";
 		this.app_version = app_version;
 		this.os_version = os_version;
-		this.token_key = token_key;
+		this.token_key = "";
 	}
 	
-	public static User join(String udid, String app_version, String os_version, String token_key) {
-		User user = new User(udid, app_version, os_version, token_key);
+	public static User join(String udid, String app_version, String os_version) {
+		User user = new User(udid, app_version, os_version);
 		user.save();
 		return user;
 	}
