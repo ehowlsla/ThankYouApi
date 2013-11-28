@@ -60,7 +60,7 @@ public class ContentController extends Controller{
     	String imageURL3 = "";	 
     	String imageURL4 = "";
     	
-    	int imageNum = 1;
+    	int num = 1;
     	
     	if (request().body().asMultipartFormData() != null) {
             Map<String, String[]> params = request().body().asMultipartFormData().asFormUrlEncoded();
@@ -78,8 +78,8 @@ public class ContentController extends Controller{
                         	 File file = part.getFile();
                              Date date = new Date();
                              SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss");
-                             String imageURL = "Images/Contents/" + user_id + "_" + format.format(date) + "_" + String.valueOf(imageNum) + ".JPG"; 
-                             String s_imageURL = "Images/Contents/thumbnail_" + user_id + "_" + format.format(date) + "_" + String.valueOf(imageNum) + ".JPG"; 
+                             String imageURL = "Images/Contents/" + user_id + "_" + format.format(date) + "_" + String.valueOf(num) + ".JPG"; 
+                             String s_imageURL = "Images/Contents/thumbnail_" + user_id + "_" + format.format(date) + "_" + String.valueOf(num) + ".JPG"; 
                              
                              File saveFile = new File(imageURL);
                              FileInputStream is;
@@ -87,16 +87,16 @@ public class ContentController extends Controller{
                                      is = new FileInputStream(file);
                                      IOUtils.copy(is, new FileOutputStream(saveFile));                                     
                                      
-                                     if(imageNum == 1) { 
+                                     if(num == 1) { 
                                      	user.image_url1 = s_imageURL;
-                                     } else if(imageNum == 2) { 
+                                     } else if(num == 2) { 
                                      	user.image_url2 = s_imageURL;
-                                     } else if(imageNum == 3) { 
+                                     } else if(num == 3) { 
                                      	user.image_url3 = s_imageURL;
-                                     } else if(imageNum == 4) { 
+                                     } else if(num == 4) { 
                                      	user.image_url4 = s_imageURL;
                                      }
-                                     imageNum++;
+                                     num++;
                              } catch (Exception e) {
 								// TODO: handle exception
 							}

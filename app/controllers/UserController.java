@@ -154,7 +154,7 @@ public class UserController extends Controller{
  
             
             long user_id = Long.parseLong(params.get("user_id")[0]);
-            int imageNum = Integer.parseInt(params.get("imageNum")[0]);
+            int num = Integer.parseInt(params.get("num")[0]);
             
             User user = User.getUserInfo(user_id);
             if(user != null) {
@@ -165,8 +165,8 @@ public class UserController extends Controller{
                                 File file = part.getFile();
                                 Date date = new Date();
                                 SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss");
-                                String imageURL = "Images/Users/" + user_id + "_" + format.format(date) + "_" + String.valueOf(imageNum) + ".JPG"; 
-                                String s_imageURL = "Images/Users/thumbnail_" + user_id + "_" + format.format(date) + "_" + String.valueOf(imageNum) + ".JPG"; 
+                                String imageURL = "Images/Users/" + user_id + "_" + format.format(date) + "_" + String.valueOf(num) + ".JPG"; 
+                                String s_imageURL = "Images/Users/thumbnail_" + user_id + "_" + format.format(date) + "_" + String.valueOf(num) + ".JPG"; 
                                 
                                 File saveFile = new File(imageURL);
                                 FileInputStream is;
@@ -178,16 +178,16 @@ public class UserController extends Controller{
                                         
                                         String preImageURL = "";
                                         
-                                        if(imageNum == 1) {
+                                        if(num == 1) {
                                         	preImageURL = user.image_url1;
                                         	user.image_url1 = s_imageURL;
-                                        } else if(imageNum == 2) {
+                                        } else if(num == 2) {
                                         	preImageURL = user.image_url2;
                                         	user.image_url2 = s_imageURL;
-                                        } else if(imageNum == 3) {
+                                        } else if(num == 3) {
                                         	preImageURL = user.image_url3;
                                         	user.image_url3 = s_imageURL;
-                                        } else if(imageNum == 4) {
+                                        } else if(num == 4) {
                                         	preImageURL = user.image_url4;
                                         	user.image_url4 = s_imageURL;
                                         }
@@ -195,14 +195,14 @@ public class UserController extends Controller{
                                         user.update();
                                         
                                         result.code = HttpContants.OK_200;
-                                        result.msg = imageNum + "번째 사진이 업로드 었습니다.";
+                                        result.msg = num + "번째 사진이 업로드 었습니다.";
                             			result.body.add(new ResUser(user));
                             			
                                         if(preImageURL.length() > 0) {
                                         	File preFile = new File(preImageURL);
                                         	if(preFile.isFile())
                                         		if(preFile.delete()) {
-                                        			result.msg = imageNum + "번째 사진이 수었습니다.";
+                                        			result.msg = num + "번째 사진이 수정되었습니다.";
                                         		}
                                         }
                                 } catch (FileNotFoundException e) {
@@ -242,7 +242,7 @@ public class UserController extends Controller{
 		
     	Map<String, String[]> params = request().body().asFormUrlEncoded();
     	Long user_id = Long.parseLong(params.get("user_id")[0]);
-    	int imageNum = Integer.parseInt(params.get("imageNum")[0]);
+    	int num = Integer.parseInt(params.get("num")[0]);
     	
     	User user = User.getUserInfo(user_id);
 
@@ -252,33 +252,33 @@ public class UserController extends Controller{
     		
     		String imageURL = "";
         	 
-        	if(imageNum == 1) imageURL = user.image_url1;
-        	else if(imageNum == 2) imageURL = user.image_url2;
-        	else if(imageNum == 3) imageURL = user.image_url3;
-        	else if(imageNum == 4) imageURL = user.image_url4;
+        	if(num == 1) imageURL = user.image_url1;
+        	else if(num == 2) imageURL = user.image_url2;
+        	else if(num == 3) imageURL = user.image_url3;
+        	else if(num == 4) imageURL = user.image_url4;
         	
         	File file = new File(imageURL);
         	if(file.isFile()) {
         		
-        		if(imageNum == 1) user.image_url1 = "";
-            	else if(imageNum == 2) user.image_url2 = "";
-            	else if(imageNum == 3) user.image_url3 = "";
-            	else if(imageNum == 4) user.image_url4 = "";
+        		if(num == 1) user.image_url1 = "";
+            	else if(num == 2) user.image_url2 = "";
+            	else if(num == 3) user.image_url3 = "";
+            	else if(num == 4) user.image_url4 = "";
     			 
     			user.update();
     			
         		if(file.delete()) {
         			result.code = HttpContants.OK_200;
-        			result.msg = imageNum + "번째 사진이 삭제되었습니다.";
+        			result.msg = num + "번째 사진이 삭제되었습니다.";
         			result.body.add(new ResUser(user));
         		} else {
         			result.code = HttpContants.CONFLICT_409;
-        			result.msg = imageNum + "번째 사진은 이미 삭제되었습니다.";
+        			result.msg = num + "번째 사진은 이미 삭제되었습니다.";
         			result.body.add(new ResUser(user));
         		}
         	} else {
         		result.code = HttpContants.CONFLICT_409;
-    			result.msg = imageNum + "번째 사진은 존재하지 않습니다.";
+    			result.msg = num + "번째 사진은 존재하지 않습니다.";
     			result.body.add(new ResUser(user));
         	} 
     	} else {
