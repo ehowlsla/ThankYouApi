@@ -5,7 +5,7 @@
 # Home page 
 
 
-GET     /image/*path											controllers.ImageController.path(path)
+GET     /image/*path											controllers.ImageController.getImage(path)
 
 GET     /content/list/*user_id/*last_id/*openLevel				controllers.ContentController.list(user_id, last_id, openLevel)
 
