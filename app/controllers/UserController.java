@@ -118,6 +118,9 @@ public class UserController extends Controller{
     	Long user_id = Long.parseLong(params.get("user_id")[0]);
     	String memo = params.get("memo")[0];
     	String job = params.get("job")[0];
+    	String nickname = params.get("nickname")[0];
+    	String gender = params.get("gender")[0];
+    	
     	String birth = params.get("birth")[0];  
     	
     	
@@ -126,6 +129,8 @@ public class UserController extends Controller{
     		user.memo = memo;
     		user.job = job;
     		user.birth = birth;
+    		user.nickname = nickname;
+    		user.gender = Integer.parseInt(gender);
     		user.update(); 
     		
     		result.code = HttpContants.OK_200;
