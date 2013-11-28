@@ -44,9 +44,13 @@ public class UserController extends Controller{
     	String os_version = params.get("os_version")[0]; 
     	  
     	ResUser user = new ResUser(User.join(udid, app_version, os_version));
+    	if(user != null) {
+    		result.code = HttpContants.OK_200;
+    		result.msg = "성공적으로 가입되었습니다.";
+    		result.body.add(user);
+    	}
     	
-    	
-    	return ok(new Gson().toJson(user));	 
+    	return ok(new Gson().toJson(result));	 
     }
     
     public static Result getProfile(String user_id) {
