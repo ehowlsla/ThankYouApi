@@ -140,21 +140,21 @@ public class UserController extends Controller{
     	if (request().body().asMultipartFormData() != null) {
             Map<String, String[]> params = request().body().asMultipartFormData().asFormUrlEncoded();
 
-//            Map<String, String[]>  reversedMap= new TreeMap<String, String>(codes.size());
-            for (Map.Entry entry : params.entrySet()) {
-            	String[] value = (String[]) entry.getValue();
-            	System.out.println(entry.getKey() + ", " + value[0]);
-//                reversedMap.put(entry.getValue(), entry.getKey());
-            }
+////            Map<String, String[]>  reversedMap= new TreeMap<String, String>(codes.size());
+//            for (Map.Entry entry : params.entrySet()) {
+//            	String[] value = (String[]) entry.getValue();
+//            	System.out.println(entry.getKey() + ", " + value[0]);
+////                reversedMap.put(entry.getValue(), entry.getKey());
+//            }
             
-            System.out.println("hihi");
-            String[] strUser_id = ((String[]) params.get("user_id"));
-            System.out.println(strUser_id);
-            String[] strImageNum = ((String[]) params.get("imageNum"));
-            System.out.println(strImageNum);
+//            System.out.println("hihi");
+//            String[] strUser_id = ((String[]) params.get("user_id"));
+//            System.out.println(strUser_id);
+//            String[] strImageNum = ((String[]) params.get("imageNum"));
+//            System.out.println(strImageNum);
             
-            long user_id = Long.parseLong(strUser_id[0]);
-            int imageNum = Integer.parseInt(strImageNum[0]);
+            long user_id = Long.parseLong(params.get("user_id")[0]);
+            int imageNum = Integer.parseInt(params.get("imageNum")[0]);
             
             User user = User.getUserInfo(user_id);
             if(user != null) {
