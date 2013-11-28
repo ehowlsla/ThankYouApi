@@ -87,8 +87,8 @@ public class User extends Model{
 	
 	public User(String udid, String app_version, String os_version) {
 		// TODO Auto-generated constructor stub
-		this.nickname = "이름이 없습니다.";
-		this.memo = "한줄 소개가 없습니다.";
+		this.nickname = "";
+		this.memo = "";
 		this.status = 'Y';
 		this.udid = udid;
 		this.status = 1;
