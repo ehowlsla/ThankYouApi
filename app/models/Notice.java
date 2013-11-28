@@ -4,12 +4,14 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import play.data.format.Formats;
-import play.db.ebean.Model.Finder;
+import play.db.ebean.Model;
 
-public class Notice {
+@Entity
+public class Notice extends Model{
 	
 	@Id
 	public long id;
