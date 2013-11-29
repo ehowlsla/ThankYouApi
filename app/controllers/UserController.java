@@ -45,25 +45,28 @@ public class UserController extends Controller{
     	
     	User tmp = User.getUserUdid(udid);
     	if(tmp == null) tmp = User.join(udid, app_version, os_version);
-    	
-    	System.out.println(udid);    	  
-    	ResUser user = new ResUser(tmp);
-    	System.out.println(tmp);
-    	System.out.println(user);
+    	  	  
+    	ResUser user = new ResUser(tmp); 
     	
     	if(user != null) {
     		result.code = HttpContants.OK_200;
             result.msg = "성공적으로 프로필 정보를 가져왔습니다.";
             
-            System.out.println("11");
+            System.out.println(user.udid);
+            
+            
     		
     		result.body.add(user);
+    		
+    		System.out.println(result.code);
     		
     		List<Notice> notices = Notice.getNotices(user.id, (long) 0);
     		for(Notice obj : notices) {
     			ResNotice value = new ResNotice(obj);
     			result.notices.add(value);
     		}
+    		
+    		System.out.println(result.msg);
     	} else {
 
             System.out.println("22");
@@ -71,6 +74,8 @@ public class UserController extends Controller{
     		result.code = HttpContants.EXPECTATION_FAILED_417;
             result.msg = "알수없는 결과입니다.";
     	}
+    	
+    	System.out.println(result.msg);
     	
     	return ok(new Gson().toJson(result));	 
     }
