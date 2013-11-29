@@ -75,7 +75,10 @@ public class ReplyController extends Controller{
         			reply.likeCount = likeCount + 1;
         			reply.update();
         			
-        			Notice notice = new Notice(reply.content_id, reply.user.id, user.nickname + "님이 댓글을 좋아합니다.", user.image_url1);
+        			String nickname = user.nickname;
+        			if(nickname.length() == 0) nickname = "익명";
+        			
+        			Notice notice = new Notice(reply.content_id, reply.user.id, nickname + "님이 댓글을 좋아합니다.", user.image_url1);
     				notice.save();
         			
                     result.msg = "추천하였습니다.";
@@ -127,7 +130,10 @@ public class ReplyController extends Controller{
 					result.replies.add(value);
 				}
 				
-				Notice notice = new Notice(content.id, content.user.id, user.nickname + "님이 일기에 댓글을 달았습니다.", user.image_url1);
+				String nickname = user.nickname;
+    			if(nickname.length() == 0) nickname = "익명";
+				
+				Notice notice = new Notice(content.id, content.user.id, nickname + "님이 일기에 댓글을 달았습니다.", user.image_url1);
 				notice.save();
 //				result.replies = replies;
 				

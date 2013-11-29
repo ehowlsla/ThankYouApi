@@ -20,8 +20,8 @@ public class Notice extends Model{
 	
 	@Column(columnDefinition = "nvarchar(255)")
 	public String imageURL;
-	
-	@Column(columnDefinition = "nvarchar(255)")
+
+	@Column(columnDefinition = "text")
 	public String message;
 	 
 	public long redirect_id;

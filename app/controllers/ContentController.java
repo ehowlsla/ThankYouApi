@@ -80,7 +80,10 @@ public class ContentController extends Controller{
         			content.likeCount = likeCount + 1;
         			content.update();
         			
-        			Notice notice = new Notice(content.id, user.id, user.nickname + "님이 일기를 좋아합니다.", user.image_url1);
+        			String nickname = user.nickname;
+        			if(nickname.length() == 0) nickname = "익명";
+        			
+        			Notice notice = new Notice(content.id, user.id, nickname + "님이 일기를 좋아합니다.", user.image_url1);
     				notice.save();
         			
                     result.msg = "추천하였습니다.";
