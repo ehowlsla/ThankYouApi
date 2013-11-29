@@ -2,7 +2,7 @@ package resModles;
 
 import java.util.Date;
 
-import models.Like;
+import models.ContentLike;
 import models.User;
 
 public class ResLike {
@@ -12,7 +12,7 @@ public class ResLike {
 	public long content_id;	 
 	public ResUser user;
 	
-	public ResLike(Like obj) {
+	public ResLike(ContentLike obj) {
 		// TODO Auto-generated constructor stub
 		if(obj != null) {
 			this.id = obj.id;

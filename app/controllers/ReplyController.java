@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import models.Content;
-import models.Like;
+import models.ContentLike;
 import models.Reply;
 import models.ReplyLike;
 import models.User;

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import models.Content;
-import models.Like;
+import models.ContentLike;
 import models.Reply;
 import models.ReplyLike;
 import models.User;
@@ -42,7 +42,7 @@ public class ContentController extends Controller{
     		for(Content obj : contents) {
 
     			ResContent content = new ResContent(obj);
-    			content.isLike = Like.getUserLike(Long.parseLong(user_id), obj.id);
+    			content.isLike = ContentLike.getUserLike(Long.parseLong(user_id), obj.id);
     			result.body.add(content);
     		}
     	} else {
@@ -65,7 +65,7 @@ public class ContentController extends Controller{
     	if(content != null) {
     		User user = User.getUserInfo(user_id);
     		if(user != null) {
-    			Like like = Like.getLike(user_id, content_id);
+    			ContentLike like = ContentLike.getLike(user_id, content_id);
         		if(like != null) {
         			like.delete();
         			int likeCount = content.likeCount;
@@ -74,7 +74,7 @@ public class ContentController extends Controller{
         			
                     result.msg = "추천을 취소하였습니다.";
         		} else {
-        			like = new Like(user, content_id);
+        			like = new ContentLike(user, content_id);
         			int likeCount = content.likeCount;
         			content.likeCount = likeCount + 1;
         			content.update();
@@ -110,8 +110,8 @@ public class ContentController extends Controller{
 	            	result.replies.add(value);
 	            }
 	            
-	            List<Like> likes = Like.getLikes(Long.parseLong(content_id));
-	            for(Like obj : likes) {
+	            List<ContentLike> likes = ContentLike.getLikes(Long.parseLong(content_id));
+	            for(ContentLike obj : likes) {
 	            	ResLike value = new ResLike(obj);
 	            	result.likes.add(value);
 	            }
