@@ -46,9 +46,11 @@ public class UserController extends Controller{
     	User tmp = User.getUserUdid(udid);
     	if(tmp == null) tmp = User.join(udid, app_version, os_version);
     	
-    	System.out.println(udid);
-    	  
+    	System.out.println(udid);    	  
     	ResUser user = new ResUser(tmp);
+    	System.out.println(tmp);
+    	System.out.println(user);
+    	
     	if(user != null) {
     		result.code = HttpContants.OK_200;
             result.msg = "성공적으로 프로필 정보를 가져왔습니다.";
