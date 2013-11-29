@@ -9,7 +9,9 @@ import models.Reply;
 import models.User;
 import play.mvc.Controller;
 import play.mvc.Result;
+import resModles.ResContent;
 import resModles.ResReply;
+import resResults.ContentResult;
 import resResults.ReplyResult;
 import Contants.HttpContants;
 
@@ -44,7 +46,7 @@ public class ReplyController extends Controller{
     }
     
     public static Result upload() {
-    	ReplyResult result = new ReplyResult();
+    	ContentResult result = new ContentResult();
 		
 		Map<String, String[]> params = request().body().asFormUrlEncoded(); 
 		Long user_id = Long.parseLong(params.get("user_id")[0]); 
@@ -62,9 +64,18 @@ public class ReplyController extends Controller{
 				
 				Reply reply = new Reply(user, content_id, contents);
 				reply.save();				
-
+				
             	result.code = HttpContants.OK_200;
                 result.msg = "성공적으로 등록되었습니다.";
+				result.body.add(new ResContent(content));
+				
+				List<Reply> replies = Reply.getContentReplies(content.id, (long) 0);
+				for(Reply obj : replies) {
+					ResReply value = new ResReply(obj);
+					result.replies.add(value);
+				}
+//				result.replies = replies;
+				
 			} else {
             	result.code = HttpContants.FORBIDDEN_403;
                 result.msg = "해당 게시글이 없습니다.";
