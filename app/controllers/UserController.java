@@ -50,32 +50,20 @@ public class UserController extends Controller{
     	
     	if(user != null) {
     		result.code = HttpContants.OK_200;
-            result.msg = "성공적으로 프로필 정보를 가져왔습니다.";
-            
-            System.out.println(user.udid);
-            
-            
-    		
+            result.msg = "성공적으로 프로필 정보를 가져왔습니다.";            
+             
     		result.body.add(user);
-    		
-    		System.out.println(result.code);
     		
     		List<Notice> notices = Notice.getNotices(user.id, (long) 0);
     		for(Notice obj : notices) {
     			ResNotice value = new ResNotice(obj);
     			result.notices.add(value);
-    		}
-    		
-    		System.out.println(result.msg);
+    		} 
     	} else {
-
-            System.out.println("22");
-            
     		result.code = HttpContants.EXPECTATION_FAILED_417;
             result.msg = "알수없는 결과입니다.";
     	}
-    	
-    	System.out.println(result.msg);
+    	 
     	
     	return ok(new Gson().toJson(result));	 
     }
@@ -97,7 +85,7 @@ public class UserController extends Controller{
     	return ok(new Gson().toJson(result));
     }
     
-    public static Result login(String user_id, String app_version, String os_version) {    	
+    public static Result login(String user_id, String udid, String app_version, String os_version) {    	
     	LoginResult result = new LoginResult();
     	
 //    	Map<String, String[]> params = request().body().asFormUrlEncoded();
@@ -122,9 +110,12 @@ public class UserController extends Controller{
     		result.code = HttpContants.OK_200;
             result.msg = "성공적으로 로그인 되었습니다.";
             result.body.add(new ResUser(user));
-    	} else {
-    		result.code = HttpContants.FORBIDDEN_403;
-			result.msg = "해당 유저가 존재하지 않습니다."; 
+    	} else {  	  	  
+        	ResUser resUser = new ResUser(User.join(udid, app_version, os_version)); 
+        	
+        	result.code = HttpContants.OK_200;
+            result.msg = "성공적으로 로그인 되었습니다.";
+            result.body.add(resUser);
     	}    		
     	return ok(new Gson().toJson(result));
     }
