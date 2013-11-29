@@ -48,10 +48,18 @@ public class Notice extends Model{
 	}	
 	
 	public static void updateRead (Long user_id, Long last_id) {
-		for(Notice obj : find.where().eq("user_id", user_id).lt("last_id", last_id).eq("status", 1).orderBy("id asc").findList()) {
-			obj.status = 0;
-			obj.update();
+		if(last_id > 0) {
+			for(Notice obj : find.where().eq("user_id", user_id).lt("last_id", last_id).eq("status", 1).orderBy("id asc").findList()) {
+				obj.status = 0;
+				obj.update();
+			}
+		} else {
+			for(Notice obj : find.where().eq("user_id", user_id).eq("status", 1).orderBy("id asc").findList()) {
+				obj.status = 0;
+				obj.update();
+			}
 		}
+		
 	}
 
 	 

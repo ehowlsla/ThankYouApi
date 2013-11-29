@@ -13,6 +13,7 @@ import java.util.Map;
 import models.Notice;
 import models.User;
 
+import org.apache.http.HttpStatus;
 import org.h2.util.IOUtils;
 
 import play.mvc.Controller;
@@ -113,7 +114,7 @@ public class UserController extends Controller{
     	} else {  	  	  
         	ResUser resUser = new ResUser(User.join(udid, app_version, os_version)); 
         	
-        	result.code = HttpContants.OK_200;
+        	result.code = HttpContants.CONTINUE_100;
             result.msg = "성공적으로 로그인 되었습니다.";
             result.body.add(resUser);
     	}    		
