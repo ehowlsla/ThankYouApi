@@ -29,6 +29,8 @@ public class NoticeController extends Controller{
     		result.code = HttpContants.FORBIDDEN_403;
 			result.msg = "타임라인 정보가 더이상 존재하지 않습니다."; 
     	}
+     	
+     	Notice.updateRead(Long.parseLong(user_id), Long.parseLong(last_id));
     	 
     	return ok(new Gson().toJson(result));
     }
