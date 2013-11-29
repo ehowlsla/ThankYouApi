@@ -38,15 +38,15 @@ public class ContentLike extends Model{
 	
 	public static int getUserLike(Long user_id, Long content_id) {
 	 
-		return find.where().eq("status", 1).eq("user_id", user_id).eq("content_id", content_id).findRowCount();
+		return find.where().eq("user_id", user_id).eq("content_id", content_id).findRowCount();
 	}
 	
 	public static ContentLike getLike (Long user_id, Long content_id) {
-		return find.where().eq("status", 1).eq("user_id", user_id).eq("content_id", content_id).findUnique(); 
+		return find.where().eq("user_id", user_id).eq("content_id", content_id).findUnique(); 
 	}
 	
 	public static List<ContentLike> getLikes (Long content_id) {		
-		return find.where().eq("status", 1).eq("content_id", content_id).orderBy("id desc").findList();			
+		return find.where().eq("content_id", content_id).orderBy("id desc").findList();			
 	}
 
 }

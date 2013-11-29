@@ -37,15 +37,15 @@ public class ReplyLike extends Model {
 	}
 	
 	public static int getUserLike(Long user_id, Long reply_id) {
-		return find.where().eq("status", 1).eq("user_id", user_id).eq("reply_id", reply_id).findPagingList(rSize).getPage(0).getList().size();
+		return find.where().eq("user_id", user_id).eq("reply_id", reply_id).findPagingList(rSize).getPage(0).getList().size();
 	}
 	
 	public static ReplyLike getLike (Long user_id, Long reply_id) {
-		return find.where().eq("status", 1).eq("user_id", user_id).eq("reply_id", reply_id).findUnique(); 
+		return find.where().eq("user_id", user_id).eq("reply_id", reply_id).findUnique(); 
 	}
 	
 	public static List<ReplyLike> getLikes (Long reply_id) {		
-		return find.where().eq("status", 1).eq("reply_id", reply_id) .orderBy("id desc").findList();			
+		return find.where().eq("reply_id", reply_id) .orderBy("id desc").findList();			
 	}
 
 }
