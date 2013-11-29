@@ -45,6 +45,8 @@ public class UserController extends Controller{
     	
     	User tmp = User.getUserUdid(udid);
     	if(tmp == null) tmp = User.join(udid, app_version, os_version);
+    	
+    	System.out.println(udid);
     	  
     	ResUser user = new ResUser(tmp);
     	if(user != null) {
@@ -60,6 +62,9 @@ public class UserController extends Controller{
     			ResNotice value = new ResNotice(obj);
     			result.notices.add(value);
     		}
+    	} else {
+    		result.code = HttpContants.EXPECTATION_FAILED_417;
+            result.msg = "알수없는 결과입니다.";
     	}
     	
     	return ok(new Gson().toJson(result));	 
