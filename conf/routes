@@ -8,7 +8,7 @@
 GET     /image/*path											controllers.ImageController.getImage(path)
 
 GET     /content/list/*user_id/*last_id/*openLevel				controllers.ContentController.list(user_id, last_id, openLevel)
-GET		/content/detail/*content_id/*reply_id					controllers.ContentController.getContentDetail(content_id, reply_id)
+GET		/content/detail/*user_id/*content_id/*reply_id					controllers.ContentController.getContentDetail(user_id, content_id, reply_id)
 
 
 GET     /reply/list/*content_id/*last_id						controllers.ReplyController.list(content_id, last_id)
@@ -22,9 +22,12 @@ GET     /notice/list/*user_id/*last_id							controllers.NoticeController.list(u
 POST    /content/upload											controllers.ContentController.upload()
 POST    /content/delete											controllers.ContentController.delete()
 POST    /content/ban											controllers.ContentController.ban()
+POST    /content/like											controllers.ContentController.like()
 
 POST    /reply/upload											controllers.ReplyController.upload()
 POST    /reply/delete											controllers.ReplyController.delete()
+POST    /reply/like												controllers.ReplyController.like()
+
 
 POST    /user/join												controllers.UserController.join()
 POST    /user/userUpdate										controllers.UserController.userUpdate()

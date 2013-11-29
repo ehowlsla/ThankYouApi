@@ -3,13 +3,16 @@ package models;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import play.data.format.Formats;
+import play.db.ebean.Model;
 import play.db.ebean.Model.Finder;
 
-public class ReplyLike {
+@Entity
+public class ReplyLike extends Model {
 	@Id
 	public long id;
 	
@@ -33,16 +36,16 @@ public class ReplyLike {
 		this.createDate = new Date(); 
 	}
 	
-	public static int getUserLike(Long user_id, Long content_id, Long reply_id) {
-		return find.where().eq("status", 1).eq("user_id", user_id).eq("content_id", content_id).eq("reply_id", reply_id).findPagingList(rSize).getPage(0).getList().size();
+	public static int getUserLike(Long user_id, Long reply_id) {
+		return find.where().eq("status", 1).eq("user_id", user_id).eq("reply_id", reply_id).findPagingList(rSize).getPage(0).getList().size();
 	}
 	
-	public static ReplyLike getLike (Long user_id, Long content_id, Long reply_id) {
-		return find.where().eq("status", 1).eq("user_id", user_id).eq("content_id", content_id).eq("reply_id", reply_id).findUnique(); 
+	public static ReplyLike getLike (Long user_id, Long reply_id) {
+		return find.where().eq("status", 1).eq("user_id", user_id).eq("reply_id", reply_id).findUnique(); 
 	}
 	
-	public static List<ReplyLike> getLikes (Long content_id, Long reply_id) {		
-		return find.where().eq("status", 1).eq("content_id", content_id).eq("reply_id", reply_id) .orderBy("id desc").findList();			
+	public static List<ReplyLike> getLikes (Long reply_id) {		
+		return find.where().eq("status", 1).eq("reply_id", reply_id) .orderBy("id desc").findList();			
 	}
 
 }

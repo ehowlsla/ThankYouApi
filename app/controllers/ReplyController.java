@@ -5,11 +5,14 @@ import java.util.List;
 import java.util.Map;
 
 import models.Content;
+import models.Like;
 import models.Reply;
+import models.ReplyLike;
 import models.User;
 import play.mvc.Controller;
 import play.mvc.Result;
 import resModles.ResContent;
+import resModles.ResLike;
 import resModles.ResReply;
 import resResults.ContentResult;
 import resResults.ReplyResult;
@@ -44,6 +47,52 @@ public class ReplyController extends Controller{
     	
     	return ok(new Gson().toJson(result));
     }
+	
+	public static Result like() {
+		ReplyResult result = new ReplyResult();
+		
+		Map<String, String[]> params = request().body().asFormUrlEncoded();
+    	Long user_id = Long.parseLong(params.get("user_id")[0]);   
+    	Long content_id = Long.parseLong(params.get("content_id")[0]);  
+    	Long reply_id = Long.parseLong(params.get("reply_id")[0]);     
+    	
+    	
+    	Reply reply = Reply.getReply(reply_id);
+    	if(reply != null) {
+    		User user = User.getUserInfo(user_id);
+    		if(user != null) {
+    			ReplyLike replyLike = ReplyLike.getLike(user_id, reply_id);
+        		if(replyLike != null) {
+        			replyLike.delete();
+        			int likeCount = reply.likeCount;
+        			reply.likeCount = likeCount - 1;
+        			reply.update();
+        			
+                    result.msg = "추천을 취소하였습니다.";
+        		} else {
+        			replyLike = new ReplyLike(user, reply_id);
+        			int likeCount = reply.likeCount;
+        			reply.likeCount = likeCount + 1;
+        			reply.update();
+        			
+                    result.msg = "추천하였습니다.";
+        		}
+        		 
+        		result.code = HttpContants.OK_200;
+                result.body.add(new ResReply(reply));
+    		} else {
+    			result.code = HttpContants.FORBIDDEN_403;
+    			result.msg = "해당 유저가 존재하지 않습니다."; 
+    		}
+    	} else {
+    		result.code = HttpContants.FORBIDDEN_403;
+			result.msg = "해당 댓글이 존재하지 않습니다."; 
+    	}
+    	
+    	 
+    	return ok(new Gson().toJson(result));
+	}
+	
     
     public static Result upload() {
     	ContentResult result = new ContentResult();

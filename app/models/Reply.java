@@ -36,6 +36,8 @@ public class Reply extends Model{
 	public int status;
 
 	private static final int rSize = 30;
+	
+	public int likeCount;
 
 	public static Finder<Long,Reply> find = new Finder<Long,Reply>(Long.class, Reply.class); 
 
@@ -44,6 +46,7 @@ public class Reply extends Model{
 		this.user = user;
 		this.content_id = content_id;
 		this.contents = contents;
+		this.likeCount = 0;
 		this.createDate = new Date();
 		this.status = 1;
 	}	

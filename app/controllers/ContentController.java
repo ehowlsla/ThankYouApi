@@ -106,7 +106,7 @@ public class ContentController extends Controller{
 	    			            
 	            for(Reply obj : replies) {
 	            	ResReply value = new ResReply(obj);
-	            	value.likes = ReplyLike.getLikes(content.id, value.id);
+	            	value.likes = ReplyLike.getLikes(value.id);
 	            	result.replies.add(value);
 	            }
 	            
