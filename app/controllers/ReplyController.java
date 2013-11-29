@@ -6,6 +6,7 @@ import java.util.Map;
 
 import models.Content;
 import models.ContentLike;
+import models.Notice;
 import models.Reply;
 import models.ReplyLike;
 import models.User;
@@ -74,6 +75,9 @@ public class ReplyController extends Controller{
         			reply.likeCount = likeCount + 1;
         			reply.update();
         			
+        			Notice notice = new Notice(reply.content_id, reply.user.id, user.nickname + "님이 댓글을 좋아합니다.", user.image_url1);
+    				notice.save();
+        			
                     result.msg = "추천하였습니다.";
         		}
         		 
@@ -122,6 +126,9 @@ public class ReplyController extends Controller{
 					ResReply value = new ResReply(obj);
 					result.replies.add(value);
 				}
+				
+				Notice notice = new Notice(content.id, content.user.id, user.nickname + "님이 일기에 댓글을 달았습니다.", user.image_url1);
+				notice.save();
 //				result.replies = replies;
 				
 			} else {

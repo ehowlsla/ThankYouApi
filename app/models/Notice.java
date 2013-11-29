@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import com.avaje.ebean.Ebean;
+
 import play.data.format.Formats;
 import play.db.ebean.Model;
 
@@ -44,6 +46,13 @@ public class Notice extends Model{
 		this.createDate = new Date();
 		this.status = 1; //no read
 	}	
+	
+	public static void updateRead (Long user_id, Long last_id) {
+		for(Notice obj : find.where().eq("user_id", user_id).lt("last_id", last_id).eq("status", 1).orderBy("id asc").findList()) {
+			obj.status = 0;
+			obj.update();
+		}
+	}
 
 	 
 

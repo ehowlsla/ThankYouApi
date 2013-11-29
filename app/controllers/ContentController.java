@@ -10,6 +10,7 @@ import java.util.Map;
 
 import models.Content;
 import models.ContentLike;
+import models.Notice;
 import models.Reply;
 import models.ReplyLike;
 import models.User;
@@ -78,6 +79,9 @@ public class ContentController extends Controller{
         			int likeCount = content.likeCount;
         			content.likeCount = likeCount + 1;
         			content.update();
+        			
+        			Notice notice = new Notice(content.id, user.id, user.nickname + "님이 일기를 좋아합니다.", user.image_url1);
+    				notice.save();
         			
                     result.msg = "추천하였습니다.";
         		}
