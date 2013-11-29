@@ -12,7 +12,7 @@ import models.User;
 import play.mvc.Controller;
 import play.mvc.Result;
 import resModles.ResContent;
-import resModles.ResLike;
+import resModles.ResContentLike;
 import resModles.ResReply;
 import resResults.ContentResult;
 import resResults.ReplyResult;
@@ -48,12 +48,11 @@ public class ReplyController extends Controller{
     	return ok(new Gson().toJson(result));
     }
 	
-	public static Result like() {
+	public static Result replyLike() {
 		ReplyResult result = new ReplyResult();
 		
 		Map<String, String[]> params = request().body().asFormUrlEncoded();
-    	Long user_id = Long.parseLong(params.get("user_id")[0]);   
-    	Long content_id = Long.parseLong(params.get("content_id")[0]);  
+    	Long user_id = Long.parseLong(params.get("user_id")[0]);    
     	Long reply_id = Long.parseLong(params.get("reply_id")[0]);     
     	
     	

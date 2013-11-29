@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import resModles.ResContent;
-import resModles.ResLike;
+import resModles.ResContentLike;
 import resModles.ResReply;
 
 public class ContentResult {
@@ -12,7 +12,7 @@ public class ContentResult {
 	public String msg;
 	public List<ResContent> body;
 	public List<ResReply> replies;
-	public List<ResLike> likes; 
+	public List<ResContentLike> likes; 
 	
 	public ContentResult() {
 		body = new ArrayList<ResContent>();

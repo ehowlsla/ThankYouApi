@@ -20,7 +20,7 @@ import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import resModles.ResContent;
-import resModles.ResLike;
+import resModles.ResContentLike;
 import resModles.ResReply;
 import resResults.ContentResult;
 import utils.ThumbnailGenerator;
@@ -53,7 +53,7 @@ public class ContentController extends Controller{
     	return ok(new Gson().toJson(result));
     }
 	
-	public static Result like() {
+	public static Result contentLike() {
 		ContentResult result = new ContentResult();
 		
 		Map<String, String[]> params = request().body().asFormUrlEncoded();
@@ -112,7 +112,7 @@ public class ContentController extends Controller{
 	            
 	            List<ContentLike> likes = ContentLike.getLikes(Long.parseLong(content_id));
 	            for(ContentLike obj : likes) {
-	            	ResLike value = new ResLike(obj);
+	            	ResContentLike value = new ResContentLike(obj);
 	            	result.likes.add(value);
 	            }
 	            
