@@ -37,7 +37,8 @@ public class ContentLike extends Model{
 	}
 	
 	public static int getUserLike(Long user_id, Long content_id) {
-		return find.where().eq("status", 1).eq("user_id", user_id).eq("content_id", content_id).findPagingList(lSize).getPage(0).getList().size();
+	 
+		return find.where().eq("status", 1).eq("user_id", user_id).eq("content_id", content_id).findRowCount();
 	}
 	
 	public static ContentLike getLike (Long user_id, Long content_id) {
