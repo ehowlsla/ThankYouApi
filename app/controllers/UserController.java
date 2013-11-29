@@ -42,14 +42,16 @@ public class UserController extends Controller{
     	String udid = params.get("udid")[0];
     	String app_version = params.get("app_version")[0];
     	String os_version = params.get("os_version")[0]; 
-    	  
-    	User.join(udid, app_version, os_version);
-    	User tempUser = User.getUserUdid(udid);
     	
-    	ResUser user = new ResUser(tempUser);
+    	User tmp = User.getUserUdid(udid);
+    	if(tmp == null) tmp = User.join(udid, app_version, os_version);
+    	  
+    	ResUser user = new ResUser(tmp);
     	if(user != null) {
     		result.code = HttpContants.OK_200;
             result.msg = "성공적으로 프로필 정보를 가져왔습니다.";
+            
+            
     		
     		result.body.add(user);
     		
