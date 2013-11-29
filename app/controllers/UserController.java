@@ -55,7 +55,7 @@ public class UserController extends Controller{
     		result.code = HttpContants.OK_200;
             result.msg = "성공적으로 프로필 정보를 가져왔습니다.";
             
-            
+            System.out.println("11");
     		
     		result.body.add(user);
     		
@@ -65,6 +65,9 @@ public class UserController extends Controller{
     			result.notices.add(value);
     		}
     	} else {
+
+            System.out.println("22");
+            
     		result.code = HttpContants.EXPECTATION_FAILED_417;
             result.msg = "알수없는 결과입니다.";
     	}
