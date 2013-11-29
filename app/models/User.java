@@ -122,30 +122,7 @@ public class User extends Model{
 	 
 	
 	public static User getUserInfo(long user_id) {
-		return find.where().eq("id", Long.valueOf(user_id)).findUnique(); 
+		return find.where().eq("id",user_id).findUnique(); 
 	}
-	 
-//	public static User update (User user) { 
-//		User userInfo = getUserInfo(user.id);
-//		if(userInfo != null) {
-//			userInfo.nickname = user.nickname;
-//			userInfo.memo = user.memo;
-//			userInfo.status = user.status;
-//			userInfo.udid = user.udid;
-//			userInfo.status = user.status;
-//			userInfo.gender = user.gender;
-//			userInfo.created_at = user.created_at;
-//			userInfo.image_url1 = user.image_url1;
-//			userInfo.image_url2 = user.image_url2;
-//			userInfo.image_url3 = user.image_url3;
-//			userInfo.image_url4 = user.image_url4;
-//			userInfo.job = user.job;
-//			userInfo.birth = user.birth;
-//			userInfo.app_version = user.app_version;
-//			userInfo.os_version = user.os_version; 
-//			userInfo.update();
-//		}  
-//		return userInfo;
-//	}
-
+	  
 }
