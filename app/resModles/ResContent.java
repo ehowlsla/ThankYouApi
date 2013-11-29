@@ -18,6 +18,7 @@ public class ResContent {
 	public int status;	
 	public int openLevel;
 	public ResUser user;
+	public int isLike;
 
 	public ResContent(Content obj) {
 		// TODO Auto-generated constructor stub
@@ -34,6 +35,7 @@ public class ResContent {
 			this.status = obj.status;
 			this.openLevel = obj.status;
 			this.user = new ResUser(obj.user);
+			this.isLike = 0;
 		}
 	}
 }

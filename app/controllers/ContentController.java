@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 import models.Content;
+import models.Like;
 import models.Reply;
+import models.ReplyLike;
 import models.User;
 
 import org.h2.util.IOUtils;
@@ -18,6 +20,7 @@ import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import resModles.ResContent;
+import resModles.ResLike;
 import resModles.ResReply;
 import resResults.ContentResult;
 import utils.ThumbnailGenerator;
@@ -29,23 +32,19 @@ public class ContentController extends Controller{
 	
 	public static Result list(String user_id, String last_id, String openLevel) {
 		ContentResult result = new ContentResult();
-		
-//		Map<String, String[]> params = request().body().asFormUrlEncoded();
-//		Long user_id = Long.parseLong(params.get("user_id")[0]);
-//		Long last_id = Long.parseLong(params.get("last_id")[0]);
-//    	int openLevel = Integer.parseInt(params.get("openLevel")[0]);
+ 
     	
     	List<Content> contents = Content.getContentList(Long.parseLong(user_id), Long.parseLong(last_id), Integer.parseInt(openLevel));
     	if(contents != null) {
     		result.code = HttpContants.OK_200;
     		result.msg = "타임라인 정보를 가져왔습니다.";
     		
-//    		List<ResContent> list = new ArrayList<ResContent>();
     		for(Content obj : contents) {
+
     			ResContent content = new ResContent(obj);
+    			content.isLike = Like.getUserLike(Long.parseLong(user_id), obj.id);
     			result.body.add(content);
     		}
-//    		result.body = list;
     	} else {
     		result.code = HttpContants.FORBIDDEN_403;
 			result.msg = "타임라인 정보가 더이상 존재하지 않습니다."; 
@@ -54,21 +53,72 @@ public class ContentController extends Controller{
     	return ok(new Gson().toJson(result));
     }
 	
-	 public static Result getContentDetail(String content_id, String reply_id) {
+	public static Result like() {
+		ContentResult result = new ContentResult();
+		
+		Map<String, String[]> params = request().body().asFormUrlEncoded();
+    	Long user_id = Long.parseLong(params.get("user_id")[0]);   
+    	Long content_id = Long.parseLong(params.get("content_id")[0]);    
+    	
+    	
+    	Content content = Content.getContentDetail(content_id);
+    	if(content != null) {
+    		User user = User.getUserInfo(user_id);
+    		if(user != null) {
+    			Like like = Like.getLike(user_id, content_id);
+        		if(like != null) {
+        			like.delete();
+        			int likeCount = content.likeCount;
+        			content.likeCount = likeCount - 1;
+        			content.update();
+        			
+                    result.msg = "추천을 취소하였습니다.";
+        		} else {
+        			like = new Like(user, content_id);
+        			int likeCount = content.likeCount;
+        			content.likeCount = likeCount + 1;
+        			content.update();
+        			
+                    result.msg = "추천하였습니다.";
+        		}
+        		 
+        		result.code = HttpContants.OK_200;
+                result.body.add(new ResContent(content));
+    		} else {
+    			result.code = HttpContants.FORBIDDEN_403;
+    			result.msg = "해당 유저가 존재하지 않습니다."; 
+    		}
+    	} else {
+    		result.code = HttpContants.FORBIDDEN_403;
+			result.msg = "해당 일기가 존재하지 않습니다."; 
+    	}
+    	
+    	 
+    	return ok(new Gson().toJson(result));
+	}
+	
+	 public static Result getContentDetail(String user_id, String content_id, String reply_id) {
 	    	ContentResult result = new ContentResult();
 	    	
 	    	Content content = Content.getContentDetail(Long.parseLong(content_id));
 	    	if(content != null) {
 	    		List<Reply> replies = Reply.getContentReplies(Long.parseLong(content_id), Long.parseLong(reply_id));
-	    		
-	    		result.code = HttpContants.OK_200;
-	            result.msg = "성공적으로 일기 정보를 가져왔습니다.";
-	            result.body.add(new ResContent(content));
-	            
+	    			            
 	            for(Reply obj : replies) {
 	            	ResReply value = new ResReply(obj);
+	            	value.likes = ReplyLike.getLikes(content.id, value.id);
 	            	result.replies.add(value);
 	            }
+	            
+	            List<Like> likes = Like.getLikes(Long.parseLong(content_id));
+	            for(Like obj : likes) {
+	            	ResLike value = new ResLike(obj);
+	            	result.likes.add(value);
+	            }
+	            
+	            result.code = HttpContants.OK_200;
+	            result.msg = "성공적으로 일기 정보를 가져왔습니다.";
+	            result.body.add(new ResContent(content));
 	    	} else {
 	    		result.code = HttpContants.FORBIDDEN_403;
 				result.msg = "해당 일기가 존재하지 않습니다."; 
