@@ -73,7 +73,7 @@ public class ReplyController extends Controller{
         			replyLike = new ReplyLike(user, reply_id);
         			int likeCount = reply.likeCount;
         			reply.likeCount = likeCount + 1;
-        			reply.update();
+        			reply.save();
         			
         			String nickname = user.nickname;
         			if(nickname.length() == 0) nickname = "익명";

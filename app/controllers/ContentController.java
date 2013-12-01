@@ -78,7 +78,7 @@ public class ContentController extends Controller{
         			like = new ContentLike(user, content_id);
         			int likeCount = content.likeCount;
         			content.likeCount = likeCount + 1;
-        			content.update();
+        			content.save();
         			
         			String nickname = user.nickname;
         			if(nickname.length() == 0) nickname = "익명";
