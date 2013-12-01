@@ -68,18 +68,21 @@ public class ReplyController extends Controller{
         			reply.likeCount = likeCount - 1;
         			reply.update();
         			
+        			
                     result.msg = "추천을 취소하였습니다.";
         		} else {
         			replyLike = new ReplyLike(user, reply_id);
         			int likeCount = reply.likeCount;
         			reply.likeCount = likeCount + 1;
-        			reply.save();
+        			reply.update();
         			
         			String nickname = user.nickname;
         			if(nickname.length() == 0) nickname = "익명";
         			
         			Notice notice = new Notice(reply.content_id, reply.user.id, nickname + "님이 댓글을 좋아합니다.", user.image_url1);
     				notice.save();
+
+        			replyLike.save();
         			
                     result.msg = "추천하였습니다.";
         		}

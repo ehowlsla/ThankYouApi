@@ -68,23 +68,27 @@ public class ContentController extends Controller{
     		if(user != null) {
     			ContentLike like = ContentLike.getLike(user_id, content_id);
         		if(like != null) {
-        			like.delete();
+//        			like.delete();
         			int likeCount = content.likeCount;
         			content.likeCount = likeCount - 1;
         			content.update();
+        			 
         			
                     result.msg = "추천을 취소하였습니다.";
         		} else {
         			like = new ContentLike(user, content_id);
+    				like.save();
+    				
         			int likeCount = content.likeCount;
         			content.likeCount = likeCount + 1;
-        			content.save();
+        			content.update();
         			
         			String nickname = user.nickname;
         			if(nickname.length() == 0) nickname = "익명";
         			
         			Notice notice = new Notice(content.id, user.id, nickname + "님이 일기를 좋아합니다.", user.image_url1);
     				notice.save();
+    				
         			
                     result.msg = "추천하였습니다.";
         		}

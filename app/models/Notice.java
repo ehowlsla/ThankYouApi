@@ -49,12 +49,12 @@ public class Notice extends Model{
 	
 	public static void updateRead (Long user_id, Long last_id) {
 		if(last_id > 0) {
-			for(Notice obj : find.where().eq("user_id", user_id).lt("last_id", last_id).eq("status", 1).orderBy("id asc").findList()) {
+			for(Notice obj : find.where().eq("user_id", user_id).lt("last_id", last_id).eq("status", 1).findList()) {
 				obj.status = 0;
 				obj.update();
 			}
 		} else {
-			for(Notice obj : find.where().eq("user_id", user_id).eq("status", 1).orderBy("id asc").findList()) {
+			for(Notice obj : find.where().eq("user_id", user_id).eq("status", 1).findList()) {
 				obj.status = 0;
 				obj.update();
 			}
@@ -66,8 +66,8 @@ public class Notice extends Model{
 
 	public static List<Notice> getNotices (Long user_id, Long last_id) {
 		if(last_id > 0)
-			return find.where().eq("user_id", user_id).lt("last_id", last_id).orderBy("id asc").findPagingList(nSize).getPage(0).getList();
+			return find.where().eq("user_id", user_id).lt("last_id", last_id).orderBy("id desc").findPagingList(nSize).getPage(0).getList();
 		else
-			return find.where().eq("user_id", user_id).orderBy("id asc").findPagingList(nSize).getPage(0).getList();
+			return find.where().eq("user_id", user_id).orderBy("id desc").findPagingList(nSize).getPage(0).getList();
 	}
 }
