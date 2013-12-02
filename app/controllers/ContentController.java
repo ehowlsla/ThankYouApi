@@ -224,6 +224,7 @@ public class ContentController extends Controller{
                 result.msg = "이미 삭제된 컨텐츠입니다.";
     		} else {
     			content.status = 0;
+    			content.update();
     			result.code = HttpContants.OK_200;
                 result.msg = "성공적으로 삭제되었습니다.";
     		} 
@@ -247,7 +248,7 @@ public class ContentController extends Controller{
     		int viewCount = content.banCount + 1; 
     		content.banCount = viewCount + 1;
     		if(content.banCount > 3) {
-    			content.status = 1;
+    			content.status = 0;
     		}
     		
     		content.update();
