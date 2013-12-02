@@ -56,7 +56,7 @@ public class ResReply {
 				result += String.valueOf(cal.get(Calendar.YEAR)) + "년 ";
 			 
 			result += String.valueOf(cal.get(Calendar.MONTH) + 1) + "월 ";
-			result += String.valueOf(cal.get(Calendar.DAY_OF_YEAR)) + "일";
+			result += String.valueOf(cal.get(Calendar.DAY_OF_MONTH)) + "일";
 		} else if(diffDays == 1) {
 			result += "어제 ";
 			
