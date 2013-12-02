@@ -84,17 +84,24 @@ public class Content extends Model{
 	}
 	
 	public static List<Content> getContentList (Long user_id, Long last_id, int openLevel) {
-		if(openLevel == OpenLevel.LEVEL_ME) {
-			if(last_id == 0)
-				return find.where().eq("status", 1).eq("user_id", user_id).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
-			else
-				return find.where().eq("status", 1).eq("user_id", user_id).lt("id", last_id).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
-		} else {
+		if(user_id == 0) {
 			if(last_id == 0)
 				return find.where().eq("status", 1).eq("openLevel", openLevel).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
 			else
 				return find.where().eq("status", 1).lt("id", last_id).eq("openLevel", openLevel).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
-		}
+		} else {
+			if(openLevel == OpenLevel.LEVEL_ME) {
+				if(last_id == 0)
+					return find.where().eq("status", 1).eq("user_id", user_id).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
+				else
+					return find.where().eq("status", 1).eq("user_id", user_id).lt("id", last_id).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
+			} else {
+				if(last_id == 0)
+					return find.where().eq("status", 1).eq("user_id", user_id).eq("openLevel", openLevel).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
+				else
+					return find.where().eq("status", 1).eq("user_id", user_id).lt("id", last_id).eq("openLevel", openLevel).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
+			}
+		} 
 	}
 	 
 	
