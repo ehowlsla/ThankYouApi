@@ -38,8 +38,8 @@ public class ContentLike extends Model{
 	
 	public static int getUserLike(Long user_id, Long content_id) {
 	 
-		System.out.println(find.where().eq("user_id", user_id).eq("content_id", content_id).findRowCount());
-		return find.where().eq("user_id", user_id).eq("content_id", content_id).findRowCount();
+		System.out.println(find.where().eq("user_id", user_id).eq("content_id", content_id).findList().size());
+		return find.where().eq("user_id", user_id).eq("content_id", content_id).findList().size();
 	}
 	
 	public static ContentLike getLike (Long user_id, Long content_id) {
