@@ -17,5 +17,6 @@ public class ContentResult {
 	public ContentResult() {
 		body = new ArrayList<ResContent>();
 		replies = new ArrayList<ResReply>();
+		likes = new ArrayList<ResContentLike>();
 	}
 }
