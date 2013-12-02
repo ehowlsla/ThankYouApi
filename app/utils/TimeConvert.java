@@ -34,7 +34,7 @@ public class TimeConvert {
 		} else if(diffDays == 1) {
 			result += "어제 ";
 			
-			if(cal.get(Calendar.AM_PM) == cal.get(Calendar.AM)) result += "오전 ";
+			if(cal.get(Calendar.AM_PM) == Calendar.AM) result += "오전 ";
 			else result += "오후 ";
 			
 			result += String.valueOf(cal.get(Calendar.HOUR)) + "시 ";
