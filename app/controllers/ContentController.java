@@ -68,7 +68,7 @@ public class ContentController extends Controller{
     		if(user != null) {
     			ContentLike like = ContentLike.getLike(user_id, content_id);
         		if(like != null) {
-//        			like.delete();
+        			like.delete();
         			int likeCount = content.likeCount;
         			content.likeCount = likeCount - 1;
         			content.update();
