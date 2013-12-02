@@ -87,9 +87,9 @@ public class Content extends Model{
 		if(target_id == 0) {
 			if(openLevel == OpenLevel.LEVEL_ME) {
 				if(last_id == 0)
-					return find.where().eq("status", 1).eq("user_id", target_id).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
+					return find.where().eq("status", 1).eq("user_id", user_id).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
 				else
-					return find.where().eq("status", 1).eq("user_id", target_id).lt("id", last_id).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
+					return find.where().eq("status", 1).eq("user_id", user_id).lt("id", last_id).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
 			} else {
 				if(last_id == 0)
 					return find.where().eq("status", 1).eq("openLevel", openLevel).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
