@@ -31,11 +31,11 @@ import com.google.gson.Gson;
 
 public class ContentController extends Controller{
 	
-	public static Result list(String user_id, String last_id, String openLevel) {
+	public static Result list(String user_id, String target_id, String last_id, String openLevel) {
 		ContentResult result = new ContentResult();
  
     	
-    	List<Content> contents = Content.getContentList(Long.parseLong(user_id), Long.parseLong(last_id), Integer.parseInt(openLevel));
+    	List<Content> contents = Content.getContentList(Long.parseLong(user_id), Long.parseLong(target_id), Long.parseLong(last_id), Integer.parseInt(openLevel));
     	if(contents != null) {
     		result.code = HttpContants.OK_200;
     		result.msg = "타임라인 정보를 가져왔습니다.";
