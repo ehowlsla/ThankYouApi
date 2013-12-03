@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import models.Content;
-import models.ContentLike;
 import models.Notice;
 import models.Reply;
 import models.ReplyLike;
@@ -13,7 +12,6 @@ import models.User;
 import play.mvc.Controller;
 import play.mvc.Result;
 import resModles.ResContent;
-import resModles.ResContentLike;
 import resModles.ResReply;
 import resResults.ContentResult;
 import resResults.ReplyResult;
@@ -79,8 +77,11 @@ public class ReplyController extends Controller{
         			String nickname = user.nickname;
         			if(nickname.length() == 0) nickname = "익명";
         			
-        			Notice notice = new Notice(reply.content_id, reply.user.id, nickname + "님이 댓글을 좋아합니다.", user.image_url1);
-    				notice.save();
+        			if(user_id != reply.user.id) {
+        				Notice notice = new Notice(reply.content_id, reply.user.id, nickname + "님이 댓글을 좋아합니다.", user.image_url1);
+        				notice.save();
+        			}
+        			
 
         			replyLike.save();
         			
@@ -133,12 +134,15 @@ public class ReplyController extends Controller{
 					result.replies.add(value);
 				}
 				
-				String nickname = user.nickname;
-    			if(nickname.length() == 0) nickname = "익명";
+				if(user_id != content.user.id) {
+					String nickname = user.nickname;
+	    			if(nickname.length() == 0) nickname = "익명";
+					
+					Notice notice = new Notice(content.id, content.user.id, nickname + "님이 일기에 댓글을 달았습니다.", user.image_url1);
+					notice.save();
+				}
 				
-				Notice notice = new Notice(content.id, content.user.id, nickname + "님이 일기에 댓글을 달았습니다.", user.image_url1);
-				notice.save();
-//				result.replies = replies;
+				 
 				
 			} else {
             	result.code = HttpContants.FORBIDDEN_403;
