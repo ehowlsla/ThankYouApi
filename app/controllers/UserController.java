@@ -159,7 +159,7 @@ public class UserController extends Controller{
     public static Result userImageUpdate() {
     	UserResult result = new UserResult();
     	
-    	System.out.println("wefew");
+     
     	
     	if (request().body().asMultipartFormData() != null) {
             Map<String, String[]> params = request().body().asMultipartFormData().asFormUrlEncoded();
@@ -168,8 +168,7 @@ public class UserController extends Controller{
             long user_id = Long.parseLong(params.get("user_id")[0]);
             int num = Integer.parseInt(params.get("num")[0]);
 
-            System.out.println(user_id);
-            System.out.println(num);
+        
             
             User user = User.getUserInfo(user_id);
             if(user != null) {
