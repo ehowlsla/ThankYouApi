@@ -221,9 +221,11 @@ public class UserController extends Controller{
                                         if(preImageURL.length() > 0) {
                                         	File preFile = new File(preImageURL);
                                         	if(preFile.isFile())
-                                        		if(preFile.delete()) {
-                                        			result.msg = num + "번째 사진이 수정되었습니다.";
-                                        		}
+                                        		result.msg = num + "번째 사진이 수정되었습니다.";
+                                        	
+//                                        		if(preFile.delete()) {
+//                                        			result.msg = num + "번째 사진이 수정되었습니다.";
+//                                        		}
                                         }
                                 } catch (FileNotFoundException e) {
                                         // TODO Auto-generated catch block
@@ -287,15 +289,19 @@ public class UserController extends Controller{
     			 
     			user.update();
     			
-        		if(file.delete()) {
-        			result.code = HttpContants.OK_200;
-        			result.msg = num + "번째 사진이 삭제되었습니다.";
-        			result.body.add(new ResUser(user));
-        		} else {
-        			result.code = HttpContants.CONFLICT_409;
-        			result.msg = num + "번째 사진은 이미 삭제되었습니다.";
-        			result.body.add(new ResUser(user));
-        		}
+    			result.code = HttpContants.OK_200;
+    			result.msg = num + "번째 사진이 삭제되었습니다.";
+    			result.body.add(new ResUser(user));
+    			
+//        		if(file.delete()) {
+//        			result.code = HttpContants.OK_200;
+//        			result.msg = num + "번째 사진이 삭제되었습니다.";
+//        			result.body.add(new ResUser(user));
+//        		} else {
+//        			result.code = HttpContants.CONFLICT_409;
+//        			result.msg = num + "번째 사진은 이미 삭제되었습니다.";
+//        			result.body.add(new ResUser(user));
+//        		}
         	} else {
         		result.code = HttpContants.CONFLICT_409;
     			result.msg = num + "번째 사진은 존재하지 않습니다.";
