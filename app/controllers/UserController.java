@@ -136,7 +136,7 @@ public class UserController extends Controller{
     	
     	
     	User user = User.getUserInfo(user_id);
-    	if(User.getNickname(nickname) > 0) {
+    	if(User.getNickname(user_id, nickname) > 0) {
     		result.code = HttpContants.FORBIDDEN_403;
             result.msg = "닉네임이 다른사람과 중복됩니다. 다른 닉네임으로 변경해주세.";
     	} else {
