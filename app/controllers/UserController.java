@@ -136,22 +136,28 @@ public class UserController extends Controller{
     	
     	
     	User user = User.getUserInfo(user_id);
-    	if(user != null) {
-    		user.memo = memo;
-    		user.job = job;
-    		user.birth = birth;
-    		user.nickname = nickname;
-    		user.city = city;
-    		user.gender = Integer.parseInt(gender);
-    		user.update(); 
-    		
-    		result.code = HttpContants.OK_200;
-            result.msg = "성공적으로 변경되었습니다.";
-            result.body.add(new ResUser(user));
+    	if(User.getNickname(nickname) > 0) {
+    		result.code = HttpContants.FORBIDDEN_403;
+            result.msg = "닉네임이 다른사람과 중복됩니다. 다른 닉네임으로 변경해주세.";
     	} else {
-        	result.code = HttpContants.FORBIDDEN_403;
-            result.msg = "해당 유저가 없습니다.";
+    		if(user != null) {
+        		user.memo = memo;
+        		user.job = job;
+        		user.birth = birth;
+        		user.nickname = nickname;
+        		user.city = city;
+        		user.gender = Integer.parseInt(gender);
+        		user.update(); 
+        		
+        		result.code = HttpContants.OK_200;
+                result.msg = "성공적으로 변경되었습니다.";
+                result.body.add(new ResUser(user));
+        	} else {
+            	result.code = HttpContants.FORBIDDEN_403;
+                result.msg = "해당 유저가 없습니다.";
+        	}
     	}
+    	
     		 
     	return ok(new Gson().toJson(result));
     }

@@ -124,5 +124,9 @@ public class User extends Model{
 	public static User getUserInfo(long user_id) {
 		return find.where().eq("id",user_id).findUnique(); 
 	}
+	
+	public static int getNickname(String nickname) {
+		return find.where().eq("nickname", nickname).findList().size();
+	}
 	  
 }
