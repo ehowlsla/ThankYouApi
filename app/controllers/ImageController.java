@@ -26,6 +26,14 @@ import com.google.gson.Gson;
 public class ImageController extends Controller{
 	
 	public static Result getImage(String path) {
-        return ok(new File(path));
+		File file = new File(path);
+		if(file.exists()) {
+			if(file.isFile())
+				return ok(file);
+			else
+				return ok("");
+		} else
+			return ok("");
+//        return ok(new File(path));
 	}
 }
