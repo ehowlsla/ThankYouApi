@@ -24,6 +24,8 @@ public class ResUser {
 	public String token_key;
 	public String app_version;
 	public String os_version;
+	public String phone;
+	public String device_id;
 
 	public ResUser(User obj) {
 		// TODO Auto-generated constructor stub
@@ -45,6 +47,8 @@ public class ResUser {
 			this.token_key = obj.token_key;
 			this.app_version = obj.app_version;
 			this.os_version = obj.os_version;
+			this.phone = obj.phone;
+			this.device_id = obj.device_id;
 		}
 	}
 }

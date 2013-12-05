@@ -69,6 +69,41 @@ public class UserController extends Controller{
     	return ok(new Gson().toJson(result));	 
     }
     
+    public static Result join2() {    	
+    	LoginResult result = new LoginResult();
+    	
+    	Map<String, String[]> params = request().body().asFormUrlEncoded();
+    	String udid = params.get("udid")[0];
+    	String app_version = params.get("app_version")[0];
+    	String os_version = params.get("os_version")[0]; 
+    	String phone = params.get("phone")[0]; 
+    	String device_id = params.get("device_id")[0]; 
+    	
+    	User tmp = User.getUserInfoPhoneDeviceID(phone, device_id);
+    	if(tmp == null) tmp = User.join(udid, app_version, os_version, phone, device_id);
+    	  	  
+    	ResUser user = new ResUser(tmp); 
+    	
+    	if(user != null) {
+    		result.code = HttpContants.OK_200;
+            result.msg = "성공적으로 프로필 정보를 가져왔습니다.";            
+             
+    		result.body.add(user);
+    		
+    		List<Notice> notices = Notice.getNotices(user.id, (long) 0);
+    		for(Notice obj : notices) {
+    			ResNotice value = new ResNotice(obj);
+    			result.notices.add(value);
+    		} 
+    	} else {
+    		result.code = HttpContants.EXPECTATION_FAILED_417;
+            result.msg = "알수없는 결과입니다.";
+    	}
+    	 
+    	
+    	return ok(new Gson().toJson(result));	 
+    }
+    
     public static Result getProfile(String user_id) {
     	UserResult result = new UserResult();
     	
@@ -126,6 +161,51 @@ public class UserController extends Controller{
     	return ok(new Gson().toJson(result));
     }
     
+    
+    public static Result login2(String user_id, String udid, String app_version, String os_version, String phone, String device_id) {    	
+    	LoginResult result = new LoginResult();
+ 
+    	
+    	
+    	User user = User.getUserInfoPhoneDeviceID(phone, device_id);
+    	
+    	if(user == null) {
+    		//업데이트 해야함 
+    		user = User.getUserInfo(Long.parseLong(user_id));
+    		if(user != null) {
+    			user.phone = user.phone;
+    			user.device_id = user.device_id;
+    			if(user.app_version != app_version || user.os_version != os_version) {
+        			user.app_version = app_version;
+        			user.os_version = os_version;
+    			}
+    			user.update();
+    			user = User.getUserInfoPhoneDeviceID(phone, device_id);
+    			
+    			List<Notice> notices = Notice.getNotices(user.id, (long) 0);
+        		for(Notice obj : notices) {
+        			ResNotice value = new ResNotice(obj);
+        			result.notices.add(value);
+        		}
+        		
+        		result.code = HttpContants.OK_200;
+                result.msg = "성공적으로 로그인 되었습니다.";
+                result.body.add(new ResUser(user));
+    		}
+    	}
+    	
+    	if(user == null) {
+    		ResUser resUser = new ResUser(User.join(udid, app_version, os_version, phone, device_id)); 
+        	
+        	result.code = HttpContants.CONTINUE_100;
+            result.msg = "성공적으로 로그인 되었습니다.";
+            result.body.add(resUser);
+    	}
+    	 
+    	 		
+    	return ok(new Gson().toJson(result));
+    }
+    
     public static Result userUpdate() {
     	UserResult result = new UserResult();
     	
@@ -143,7 +223,7 @@ public class UserController extends Controller{
     	User user = User.getUserInfo(user_id);
     	if(User.getNickname(user_id, nickname) > 0) {
     		result.code = HttpContants.FORBIDDEN_403;
-            result.msg = "닉네임이 다른사람과 중복됩니다. 다른 닉네임으로 변경해주세.";
+            result.msg = "닉네임이 다른사람과 중복됩니다. 다른 닉네임으로 변경해주세요.";
     	} else {
     		if(user != null) {
         		user.memo = memo;
