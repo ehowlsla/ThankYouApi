@@ -133,36 +133,42 @@ public class UserController extends Controller{
 //    	Long user_id = Long.parseLong(params.get("user_id")[0]);
 //    	String app_version = params.get("app_version")[0];
 //    	String os_version = params.get("os_version")[0];
-    	
-    	
-    	User user = User.getUserInfoUdid(Long.parseLong(user_id), udid);
-    	
-
-//    	System.out.println("user_id =" + user_id + ", udid = " + udid + " , user.id = " + user.id + ", user.udid = " + user.udid);
-    	
-    	if(user != null) {
-    		if(user.app_version != app_version || user.os_version != os_version) {
-    			user.app_version = app_version;
-    			user.os_version = os_version;
-    			user.update();
-    		}
-    		
-    		List<Notice> notices = Notice.getNotices(user.id, (long) 0);
-    		for(Notice obj : notices) {
-    			ResNotice value = new ResNotice(obj);
-    			result.notices.add(value);
-    		}
-    		
-    		result.code = HttpContants.OK_200;
-            result.msg = "성공적으로 로그인 되었습니다.";
-            result.body.add(new ResUser(user));
-    	} else {  	  	  
-        	ResUser resUser = new ResUser(User.join(udid, app_version, os_version)); 
+    	if(Float.parseFloat(app_version) < 1.11) {
+    		result.code = HttpContants.FORBIDDEN_403;
+            result.msg = "앱을 삭제 후 새로 설치하시기 바랍니다.";
+//            result.body.add(resUser);
+    	} else {
+    		User user = User.getUserInfoUdid(Long.parseLong(user_id), udid);
         	
-        	result.code = HttpContants.CONTINUE_100;
-            result.msg = "성공적으로 로그인 되었습니다.";
-            result.body.add(resUser);
-    	}    		
+
+//        	System.out.println("user_id =" + user_id + ", udid = " + udid + " , user.id = " + user.id + ", user.udid = " + user.udid);
+        	
+        	if(user != null) {
+        		if(user.app_version != app_version || user.os_version != os_version) {
+        			user.app_version = app_version;
+        			user.os_version = os_version;
+        			user.update();
+        		}
+        		
+        		List<Notice> notices = Notice.getNotices(user.id, (long) 0);
+        		for(Notice obj : notices) {
+        			ResNotice value = new ResNotice(obj);
+        			result.notices.add(value);
+        		}
+        		
+        		result.code = HttpContants.OK_200;
+                result.msg = "성공적으로 로그인 되었습니다.";
+                result.body.add(new ResUser(user));
+        	} else {  	  	  
+            	ResUser resUser = new ResUser(User.join(udid, app_version, os_version)); 
+            	
+            	result.code = HttpContants.CONTINUE_100;
+                result.msg = "성공적으로 로그인 되었습니다.";
+                result.body.add(resUser);
+        	}    
+    	}
+    	
+    			
     	return ok(new Gson().toJson(result));
     }
     
