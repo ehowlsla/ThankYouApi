@@ -94,7 +94,12 @@ public class UserController extends Controller{
 //    	String app_version = params.get("app_version")[0];
 //    	String os_version = params.get("os_version")[0];
     	
+    	
     	User user = User.getUserInfoUdid(Long.parseLong(user_id), udid);
+    	
+
+    	System.out.println("user_id =" + user_id + ", udid = " + udid + " , user.id = " + user.id + ", user.udid = " + user.udid);
+    	
     	if(user != null) {
     		if(user.app_version != app_version || user.os_version != os_version) {
     			user.app_version = app_version;
