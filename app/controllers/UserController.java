@@ -94,12 +94,12 @@ public class UserController extends Controller{
 //    	String app_version = params.get("app_version")[0];
 //    	String os_version = params.get("os_version")[0];
     	
-    	User user = User.getUserInfo(Long.parseLong(user_id));
+    	User user = User.getUserInfoUdid(Long.parseLong(user_id), udid);
     	if(user != null) {
     		if(user.app_version != app_version || user.os_version != os_version) {
     			user.app_version = app_version;
     			user.os_version = os_version;
-    			user.save();
+    			user.update();
     		}
     		
     		List<Notice> notices = Notice.getNotices(user.id, (long) 0);
