@@ -156,14 +156,16 @@ public class User extends Model{
 	
 	public static User getUserUdid(String udid) {
 		User user = find.where().eq("udid", udid).findUnique(); 
-		if("d41d8cd98f00b204e9800998ecf8427e".equals(user.udid)) user = null;
+		if(user != null)
+			if("d41d8cd98f00b204e9800998ecf8427e".equals(user.udid)) user = null;
 		return user;
 	}
 	 
 	
 	public static User getUserInfo(long user_id) {
 		User user = find.where().eq("id",user_id).findUnique(); 
-		if("d41d8cd98f00b204e9800998ecf8427e".equals(user.udid)) user = null;
+		if(user != null)
+			if("d41d8cd98f00b204e9800998ecf8427e".equals(user.udid)) user = null;
 		return user;
 	}
 	

@@ -133,7 +133,7 @@ public class UserController extends Controller{
     	User user = User.getUserInfoUdid(Long.parseLong(user_id), udid);
     	
 
-    	System.out.println("user_id =" + user_id + ", udid = " + udid + " , user.id = " + user.id + ", user.udid = " + user.udid);
+//    	System.out.println("user_id =" + user_id + ", udid = " + udid + " , user.id = " + user.id + ", user.udid = " + user.udid);
     	
     	if(user != null) {
     		if(user.app_version != app_version || user.os_version != os_version) {
