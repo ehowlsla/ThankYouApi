@@ -172,15 +172,14 @@ public class User extends Model{
 	public static User getUserInfoPhoneDeviceID(String phone, String device_id) {
 		User user = null;
 		
-		if(phone.length() > 0) {
+		if(!"0".equals(phone)) {
 			user = find.where().eq("phone", phone).findUnique(); 
 			if(user == null) user = find.where().eq("device_id", device_id).findUnique(); 
 		} else {
 			user = find.where().eq("device_id", device_id).findUnique(); 
 		}
 		
-		
-		
+	
 		
 		return user;
 	}
