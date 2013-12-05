@@ -192,6 +192,8 @@ public class UserController extends Controller{
                 result.msg = "성공적으로 로그인 되었습니다.";
                 result.body.add(new ResUser(user));
     		}  
+    		
+    	} else {
     		result.code = HttpContants.OK_200;
             result.msg = "성공적으로 로그인 되었습니다.";
             result.body.add(new ResUser(user));
