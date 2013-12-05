@@ -174,9 +174,13 @@ public class User extends Model{
 		
 		if(!"0".equals(phone)) {
 			user = find.where().eq("phone", phone).findUnique(); 
-			if(user == null) user = find.where().eq("device_id", device_id).findUnique(); 
+			if(user == null) {
+				if(device_id.length() >0)
+					user = find.where().eq("device_id", device_id).findUnique(); 
+			}
 		} else {
-			user = find.where().eq("device_id", device_id).findUnique(); 
+			if(device_id.length() > 0)
+				user = find.where().eq("device_id", device_id).findUnique(); 
 		}
 		
 	
