@@ -82,7 +82,7 @@ public class User extends Model{
 	@Column(columnDefinition = "nvarchar(20)")
 	public String phone;
 	
-	@Column(columnDefinition = "nvarchar(20)")
+	@Column(columnDefinition = "nvarchar(20)", unique=true)
 	public String device_id;
 	
 
