@@ -79,7 +79,7 @@ public class User extends Model{
 	@Column(columnDefinition = "nvarchar(20)")
 	public String token_key;
 	
-	@Column(columnDefinition = "nvarchar(20)")
+	@Column(columnDefinition = "nvarchar(40)", unique=true)
 	public String phone;
 	
 	@Column(columnDefinition = "nvarchar(40)", unique=true)
