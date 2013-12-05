@@ -80,7 +80,13 @@ public class UserController extends Controller{
     	String device_id = params.get("device_id")[0]; 
     	
     	User tmp = User.getUserInfoPhoneDeviceID(phone, device_id);
-    	if(tmp == null) tmp = User.join(udid, app_version, os_version, phone, device_id);
+    	if(tmp == null) {
+    		System.out.println("null");
+    		tmp = User.join(udid, app_version, os_version, phone, device_id);
+    	}
+    	
+
+		System.out.println(tmp.id);
     	  	  
     	ResUser user = new ResUser(tmp); 
     	
