@@ -135,7 +135,7 @@ public class UserController extends Controller{
 //    	String os_version = params.get("os_version")[0];
     	if(Float.parseFloat(app_version) < 1.11) {
     		result.code = HttpContants.FORBIDDEN_403;
-            result.msg = "앱을 삭제 후 새로 설치하시기 바랍니다.";
+            result.msg = "잠시후 새롭게 등록되는 1.11이상의 버전을 사용해주시기 바랍니다. 기존의 앱을 삭제 후 새로 설치하시기 바랍니다.";
 //            result.body.add(resUser);
     	} else {
     		User user = User.getUserInfoUdid(Long.parseLong(user_id), udid);
