@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +15,6 @@ import java.util.Map;
 import models.Notice;
 import models.User;
 
-import org.apache.http.HttpStatus;
 import org.h2.util.IOUtils;
 
 import play.mvc.Controller;
@@ -79,11 +80,25 @@ public class UserController extends Controller{
     	String phone = params.get("phone")[0]; 
     	String device_id = params.get("device_id")[0]; 
     	
+    	String strPhone = phone;
+    	
+    	if("0".equals(phone)) {
+    		strPhone = String.valueOf(System.currentTimeMillis());
+    		MessageDigest md;
+			try {
+				md = MessageDigest.getInstance("MD5");
+	    		byte[] thedigest = md.digest(strPhone.getBytes());
+	    		strPhone = String.valueOf(thedigest);
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
     	 
     	
-    	User tmp = User.getUserInfoPhoneDeviceID(phone, device_id);
+    	User tmp = User.getUserInfoPhoneDeviceID(strPhone, device_id);
     	if(tmp == null) { 
-    		tmp = User.join(udid, app_version, os_version, phone, device_id);
+    		tmp = User.join(udid, app_version, os_version, strPhone, device_id);
     	}
     	
  	  	  
