@@ -2,8 +2,17 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+<<<<<<< HEAD
 # Home page
 GET     /                           controllers.Application.index()
+=======
+# Home page 
+
+GET     /user/login/*udid				controllers.Application.login(udid)
+
+#POST     /user/join						controllers.Application.join()
+GET      /user/join/*udid/*app_version/*os_version   	controllers.Application.join(udid, app_version, os_version)
+>>>>>>> f9bbff977c083469bdbf3bb2961ba03e91204cae
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
