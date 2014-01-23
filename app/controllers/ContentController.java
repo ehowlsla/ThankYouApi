@@ -296,56 +296,56 @@ public class ContentController extends Controller {
 			int openLevel = Integer.parseInt(params.get("openLevel")[0]);
 			Content content = Content.getContentDetail(content_id);
 			
-			User user = User.getUserInfo(user_id);
-			if (user != null) {
-				List<FilePart> uploadFiles = request().body()
-						.asMultipartFormData().getFiles();
-
-				for (FilePart part : uploadFiles) {
-					if (part != null) {
-						File file = part.getFile();
-						Date date = new Date();
-						SimpleDateFormat format = new SimpleDateFormat(
-								"yyyyMMdd_HHmmss");
-						String imageURL = "Images/Contents/" + user_id + "_"
-								+ format.format(date) + "_"
-								+ String.valueOf(num) + ".JPG";
-						String s_imageURL = "Images/Contents/thumbnail_"
-								+ user_id + "_" + format.format(date) + "_"
-								+ String.valueOf(num) + ".JPG";
-
-						File saveFile = new File(imageURL);
-						FileInputStream is;
-						try {
-							is = new FileInputStream(file);
-							IOUtils.copy(is, new FileOutputStream(saveFile));
-
-							ThumbnailGenerator generator = new ThumbnailGenerator();
-							generator.transform(imageURL, s_imageURL, 480, 480);
-
-							if (num == 1) {
-								imageURL1 = s_imageURL;
-							} else if (num == 2) {
-								imageURL2 = s_imageURL;
-							} else if (num == 3) {
-								imageURL3 = s_imageURL;
-							} else if (num == 4) {
-								imageURL4 = s_imageURL;
-							}
-							num++;
-						} catch (Exception e) {
-							// TODO: handle exception
-						}
-					}
-				}
+//			User user = User.getUserInfo(user_id);
+//			if (user != null) {
+//				List<FilePart> uploadFiles = request().body()
+//						.asMultipartFormData().getFiles();
+//
+//				for (FilePart part : uploadFiles) {
+//					if (part != null) {
+//						File file = part.getFile();
+//						Date date = new Date();
+//						SimpleDateFormat format = new SimpleDateFormat(
+//								"yyyyMMdd_HHmmss");
+//						String imageURL = "Images/Contents/" + user_id + "_"
+//								+ format.format(date) + "_"
+//								+ String.valueOf(num) + ".JPG";
+//						String s_imageURL = "Images/Contents/thumbnail_"
+//								+ user_id + "_" + format.format(date) + "_"
+//								+ String.valueOf(num) + ".JPG";
+//
+//						File saveFile = new File(imageURL);
+//						FileInputStream is;
+//						try {
+//							is = new FileInputStream(file);
+//							IOUtils.copy(is, new FileOutputStream(saveFile));
+//
+//							ThumbnailGenerator generator = new ThumbnailGenerator();
+//							generator.transform(imageURL, s_imageURL, 480, 480);
+//
+//							if (num == 1) {
+//								imageURL1 = s_imageURL;
+//							} else if (num == 2) {
+//								imageURL2 = s_imageURL;
+//							} else if (num == 3) {
+//								imageURL3 = s_imageURL;
+//							} else if (num == 4) {
+//								imageURL4 = s_imageURL;
+//							}
+//							num++;
+//						} catch (Exception e) {
+//							// TODO: handle exception
+//						}
+//					}
+//				}
 
 				if (content != null) {
-					content.imageURL1 = imageURL1;
-					content.imageURL2 = imageURL2;
-					content.imageURL3 = imageURL3;
-					content.imageURL4 = imageURL4;
-					content.contents = contents;
-					content.openLevel = openLevel;
+//					content.imageURL1 = imageURL1;
+//					content.imageURL2 = imageURL2;
+//					content.imageURL3 = imageURL3;
+//					content.imageURL4 = imageURL4;
+//					content.contents = contents;
+//					content.openLevel = openLevel;
 
 					content.update();
 
