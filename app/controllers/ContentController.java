@@ -295,13 +295,13 @@ public class ContentController extends Controller {
 			String contents = params.get("contents")[0];
 			int openLevel = Integer.parseInt(params.get("openLevel")[0]);
 			Content content = Content.getContentDetail(content_id);
-			if(params.get(imageURL1)[0].length() >0)
+			if(params.get("imageURL1")[0].length() >0)
 				content.imageURL1 = params.get("imageURL1")[0];
-			if(params.get(imageURL2)[0].length() >0)
+			if(params.get("imageURL2")[0].length() >0)
 				content.imageURL2 = params.get("imageURL2")[0];
-			if(params.get(imageURL3)[0].length() >0)
+			if(params.get("imageURL3")[0].length() >0)
 				content.imageURL3 = params.get("imageURL3")[0];
-			if(params.get(imageURL4)[0].length() >0)
+			if(params.get("imageURL4")[0].length() >0)
 				content.imageURL4 = params.get("imageURL4")[0];
 			
 			User user = User.getUserInfo(user_id);
