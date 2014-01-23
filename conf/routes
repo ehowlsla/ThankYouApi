@@ -42,7 +42,7 @@ POST    /user/userImageDelete														controllers.UserController.userImageD
 
 
 #POST     /user/join						controllers.Application.join()
-GET      /user/join/*udid/*app_version/*os_version   	controllers.Application.join(udid, app_version, os_version)
+#GET      /user/join/*udid/*app_version/*os_version   	controllers.Application.join(udid, app_version, os_version)
 #GET      /user/join/*udid/*app_version/*os_version   	controllers.Application.join(udid, app_version, os_version)
 
 # Map static resources from the /public folder to the /assets URL path
