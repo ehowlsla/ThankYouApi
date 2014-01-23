@@ -295,6 +295,14 @@ public class ContentController extends Controller {
 			String contents = params.get("contents")[0];
 			int openLevel = Integer.parseInt(params.get("openLevel")[0]);
 			Content content = Content.getContentDetail(content_id);
+			if(params.get(imageURL1)[0].length() >0)
+				content.imageURL1 = params.get("imageURL1")[0];
+			if(params.get(imageURL2)[0].length() >0)
+				content.imageURL2 = params.get("imageURL2")[0];
+			if(params.get(imageURL3)[0].length() >0)
+				content.imageURL3 = params.get("imageURL3")[0];
+			if(params.get(imageURL4)[0].length() >0)
+				content.imageURL4 = params.get("imageURL4")[0];
 			
 			User user = User.getUserInfo(user_id);
 			if (user != null) {
@@ -325,12 +333,16 @@ public class ContentController extends Controller {
 
 							if (num == 1) {
 								imageURL1 = s_imageURL;
+								content.imageURL1 = imageURL1;
 							} else if (num == 2) {
 								imageURL2 = s_imageURL;
+								content.imageURL2 = imageURL2;
 							} else if (num == 3) {
 								imageURL3 = s_imageURL;
+								content.imageURL3 = imageURL3;
 							} else if (num == 4) {
 								imageURL4 = s_imageURL;
+								content.imageURL4 = imageURL4;
 							}
 							num++;
 						} catch (Exception e) {
@@ -340,10 +352,6 @@ public class ContentController extends Controller {
 				}
 
 				if (content != null) {
-					content.imageURL1 = imageURL1;
-					content.imageURL2 = imageURL2;
-					content.imageURL3 = imageURL3;
-					content.imageURL4 = imageURL4;
 					content.contents = contents;
 					content.openLevel = openLevel;
 
