@@ -32,20 +32,19 @@ public class Application extends Controller {
     
     public static Result join(String udid, String app_version, String os_version) {
     	//For Build Play Ebean to Mysql
-//    	ResUser user = new ResUser(User.join(udid, app_version, os_version));
-//    	return ok(new Gson().toJson(user));	
-    	return ok();
+    	ResUser user = new ResUser(User.join(udid, app_version, os_version));
+    	return ok(new Gson().toJson(user));	
+ 
     }
     
     public static Result join() {
-//    	Map<String, String[]> params = request().body().asFormUrlEncoded();
-//    	String udid = params.get("udid")[0];
-//    	String app_version = params.get("app_version")[0];
-//    	String os_version = params.get("os_version")[0];
-//    	  
-//    	ResUser user = new ResUser(User.join(udid, app_version, os_version));
-//    	return ok(new Gson().toJson(user));	
-    	return ok();
+    	Map<String, String[]> params = request().body().asFormUrlEncoded();
+    	String udid = params.get("udid")[0];
+    	String app_version = params.get("app_version")[0];
+    	String os_version = params.get("os_version")[0];
+    	  
+    	ResUser user = new ResUser(User.join(udid, app_version, os_version));
+    	return ok(new Gson().toJson(user));	 
     }
     
     public static Result userUpdate() {
