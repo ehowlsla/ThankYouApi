@@ -20,6 +20,7 @@ GET     /user/profile/*user_id														controllers.UserController.getProfil
 
 GET     /notice/list/*user_id/*last_id												controllers.NoticeController.list(user_id, last_id)
 
+POST    /content/modify																controllers.ContentController.modify()
 POST    /content/upload																controllers.ContentController.upload()
 POST    /content/delete																controllers.ContentController.delete()
 POST    /content/ban																controllers.ContentController.ban()
