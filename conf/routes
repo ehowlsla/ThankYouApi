@@ -29,10 +29,6 @@ POST    /content/like																controllers.ContentController.contentLike()
 POST    /reply/upload																controllers.ReplyController.upload()
 POST    /reply/delete																controllers.ReplyController.delete()
 POST    /reply/like																	controllers.ReplyController.replyLike()
-
-POST    /content/modify																controllers.ContentController.modify()
-
-
 POST    /user/join																	controllers.UserController.join()
 POST    /user/join2																	controllers.UserController.join2()
 POST    /user/userUpdate															controllers.UserController.userUpdate()
