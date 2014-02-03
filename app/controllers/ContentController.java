@@ -294,12 +294,15 @@ public class ContentController extends Controller {
 			String contents = params.get("contents")[0];
 			int openLevel = Integer.parseInt(params.get("openLevel")[0]);
 			Content content = Content.getContentDetail(content_id);
-			if(params.get("modify_status")[0] != null){
-				modify_status =Integer.parseInt(params.get("modify_status")[0]);
-			}else{
+			try{
+				if(params.get("modify_status")[0] != null){
+					modify_status =Integer.parseInt(params.get("modify_status")[0]);
+				}
+			}catch(Exception e){
 				result.code = HttpContants.FORBIDDEN_403;
 				result.msg = "감사일기 버전을 업데이트 해주세요.";
 			}
+			
 			int num = modify_status;
 			User user = User.getUserInfo(user_id);
 			if (user != null) {
