@@ -161,7 +161,7 @@ public class ContentController extends Controller {
 			Long user_id = Long.parseLong(params.get("user_id")[0]);
 			String contents = params.get("contents")[0];
 			int openLevel = Integer.parseInt(params.get("openLevel")[0]);
-
+			
 			User user = User.getUserInfo(user_id);
 			if (user != null) {
 				List<FilePart> uploadFiles = request().body()
@@ -285,8 +285,6 @@ public class ContentController extends Controller {
 		String imageURL3 = "";
 		String imageURL4 = "";
 
-		int num = 1;
-
 		if (request().body().asMultipartFormData() != null) {
 			Map<String, String[]> params = request().body()
 					.asMultipartFormData().asFormUrlEncoded();
@@ -295,17 +293,8 @@ public class ContentController extends Controller {
 			String contents = params.get("contents")[0];
 			int openLevel = Integer.parseInt(params.get("openLevel")[0]);
 			Content content = Content.getContentDetail(content_id);
-			
-//			if(params.get("imageURL1")[0].length() >0)
-//				content.imageURL1 = params.get("imageURL1")[0];
-//				System.out.println(params.get("imageURL1")[0]);
-//			if(params.get("imageURL2")[0].length() >0)
-//				content.imageURL2 = params.get("imageURL2")[0];
-//			if(params.get("imageURL3")[0].length() >0)
-//				content.imageURL3 = params.get("imageURL3")[0];
-//			if(params.get("imageURL4")[0].length() >0)
-//				content.imageURL4 = params.get("imageURL4")[0];
-			
+			int modify_status =Integer.parseInt(params.get("modify_status")[0]);
+			int num = modify_status;
 			User user = User.getUserInfo(user_id);
 			if (user != null) {
 				List<FilePart> uploadFiles = request().body()
@@ -332,19 +321,59 @@ public class ContentController extends Controller {
 
 							ThumbnailGenerator generator = new ThumbnailGenerator();
 							generator.transform(imageURL, s_imageURL, 480, 480);
-
-							if (num == 1) {
-								imageURL1 = s_imageURL;
-								content.imageURL1 = imageURL1;
-							} else if (num == 2) {
-								imageURL2 = s_imageURL;
-								content.imageURL2 = imageURL2;
-							} else if (num == 3) {
-								imageURL3 = s_imageURL;
-								content.imageURL3 = imageURL3;
-							} else if (num == 4) {
-								imageURL4 = s_imageURL;
-								content.imageURL4 = imageURL4;
+							
+//							if (num == 1) {
+//								imageURL1 = s_imageURL;
+//								content.imageURL1 = imageURL1;
+//							} else if (num == 2) {
+//								imageURL2 = s_imageURL;
+//								content.imageURL2 = imageURL2;
+//							} else if (num == 3) {
+//								imageURL3 = s_imageURL;
+//								content.imageURL3 = imageURL3;
+//							} else if (num == 4) {
+//								imageURL4 = s_imageURL;
+//								content.imageURL4 = imageURL4;
+//							}
+							
+							if(modify_status == 1){
+								if (num == 1) {
+									imageURL1 = s_imageURL;
+									content.imageURL1 = imageURL1;
+								} else if (num == 2) {
+									imageURL2 = s_imageURL;
+									content.imageURL2 = imageURL2;
+								} else if (num == 3) {
+									imageURL3 = s_imageURL;
+									content.imageURL3 = imageURL3;
+								} else if (num == 4) {
+									imageURL4 = s_imageURL;
+									content.imageURL4 = imageURL4;
+								}
+							}else if(modify_status == 2){
+								if (num == 1) {
+									imageURL1 = s_imageURL;
+									content.imageURL2 = imageURL1;
+								} else if (num == 2) {
+									imageURL2 = s_imageURL;
+									content.imageURL3 = imageURL2;
+								} else if (num == 3) {
+									imageURL3 = s_imageURL;
+								content.imageURL4 = imageURL3;
+								}
+							}else if(modify_status == 3){
+								if (num == 1) {
+									imageURL1 = s_imageURL;
+									content.imageURL3 = imageURL1;
+								} else if (num == 2) {
+									imageURL2 = s_imageURL;
+									content.imageURL4 = imageURL2;
+								}
+							}else if(modify_status == 4){
+								if (num == 1) {
+									imageURL1 = s_imageURL;
+									content.imageURL4 = imageURL1;
+								}
 							}
 							num++;
 						} catch (Exception e) {
