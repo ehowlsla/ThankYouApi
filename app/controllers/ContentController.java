@@ -351,26 +351,26 @@ public class ContentController extends Controller {
 									content.imageURL4 = imageURL4;
 								}
 							}else if(modify_status == 2){
-								if (num == 1) {
+								if (num == 2) {
 									imageURL1 = s_imageURL;
 									content.imageURL2 = imageURL1;
-								} else if (num == 2) {
+								} else if (num == 3) {
 									imageURL2 = s_imageURL;
 									content.imageURL3 = imageURL2;
-								} else if (num == 3) {
+								} else if (num == 4) {
 									imageURL3 = s_imageURL;
 								content.imageURL4 = imageURL3;
 								}
 							}else if(modify_status == 3){
-								if (num == 1) {
+								if (num == 3) {
 									imageURL1 = s_imageURL;
 									content.imageURL3 = imageURL1;
-								} else if (num == 2) {
+								} else if (num == 4) {
 									imageURL2 = s_imageURL;
 									content.imageURL4 = imageURL2;
 								}
 							}else if(modify_status == 4){
-								if (num == 1) {
+								if (num == 4) {
 									imageURL1 = s_imageURL;
 									content.imageURL4 = imageURL1;
 								}
