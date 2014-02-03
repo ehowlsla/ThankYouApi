@@ -297,7 +297,8 @@ public class ContentController extends Controller {
 			if(params.get("modify_status")[0] != null){
 				modify_status =Integer.parseInt(params.get("modify_status")[0]);
 			}else{
-				modify_status =1;
+				result.code = HttpContants.FORBIDDEN_403;
+				result.msg = "감사일기 버전을 업데이트 해주세요.";
 			}
 			int num = modify_status;
 			User user = User.getUserInfo(user_id);
