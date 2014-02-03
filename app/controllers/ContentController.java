@@ -375,7 +375,7 @@ public class ContentController extends Controller {
 //									imageURL1 = s_imageURL;
 //									content.imageURL4 = imageURL1;
 //								}
-							}
+//							}
 							num++;
 						} catch (Exception e) {
 							// TODO: handle exception
