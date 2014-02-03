@@ -294,6 +294,7 @@ public class ContentController extends Controller {
 			String contents = params.get("contents")[0];
 			int openLevel = Integer.parseInt(params.get("openLevel")[0]);
 			Content content = Content.getContentDetail(content_id);
+			System.out.println(params.get("modify_status")[0]);
 			if(params.get("modify_status")[0] != null){
 				modify_status =Integer.parseInt(params.get("modify_status")[0]);
 			}
