@@ -294,13 +294,13 @@ public class ContentController extends Controller {
 			String contents = params.get("contents")[0];
 			int openLevel = Integer.parseInt(params.get("openLevel")[0]);
 			Content content = Content.getContentDetail(content_id);
-			try{
-				if(params.get("modify_status")[0] != null){
+//			try{
+				if(params.get("modify_status")[0].equals(null)){
 					modify_status =Integer.parseInt(params.get("modify_status")[0]);
 				}
-			}catch(NullPointerException e){
-				result.msg = "새로운 버전으로 업데이트 해주세요.";
-			}
+//			}catch(NullPointerException e){
+//				result.msg = "새로운 버전으로 업데이트 해주세요.";
+//			}
 			
 			int num = modify_status;
 			User user = User.getUserInfo(user_id);
