@@ -16,6 +16,8 @@ GET     /reply/list/*content_id/*last_id											controllers.ReplyController.l
 #GET     /user/join/*udid/*app_version/*os_version									controllers.UserController.join(udid, app_version, os_version)
 GET     /user/login/*user_id/*udid/*app_version/*os_version							controllers.UserController.login(user_id, udid, app_version, os_version)
 GET     /user/login2/*user_id/*udid/*app_version/*os_version/*phone/*device_id		controllers.UserController.login2(user_id, udid, app_version, os_version, phone, device_id)
+GET     /user/login_email_auto/*user_id/*app_version/*os_version/*email/*password	controllers.UserController.login_email_auto(user_id, app_version, os_version, email, password)
+GET     /user/login_email_first/*app_version/*os_version/*email/*password			controllers.UserController.login_email_first(app_version, os_version, email, password)
 GET     /user/profile/*user_id														controllers.UserController.getProfile(user_id)
 
 GET     /notice/list/*user_id/*last_id												controllers.NoticeController.list(user_id, last_id)
@@ -26,6 +28,8 @@ POST    /content/delete																controllers.ContentController.delete()
 POST    /content/ban																controllers.ContentController.ban()
 POST    /content/like																controllers.ContentController.contentLike()
 
+POST    /user/join_email															controllers.UserController.join_email()
+POST    /user/already_join_email													controllers.UserController.already_join_email()
 POST    /reply/upload																controllers.ReplyController.upload()
 POST    /reply/delete																controllers.ReplyController.delete()
 POST    /reply/like																	controllers.ReplyController.replyLike()

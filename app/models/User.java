@@ -1,5 +1,6 @@
 package models;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -20,11 +21,11 @@ public class User extends Model{
 	@Id
 	public long id;
 	
-//	@Column(columnDefinition = "nvarchar(100)")
-//	public String email;
-//	
-//	@Column(columnDefinition = "nvarchar(100)")
-//	public String password;
+	@Column(columnDefinition = "nvarchar(255)")
+	public String email;
+	
+	@Column(columnDefinition = "nvarchar(255)")
+	public String password;
 	
 	
 	//email, password
@@ -108,6 +109,8 @@ public class User extends Model{
 		this.app_version = app_version;
 		this.os_version = os_version;
 		this.token_key = "";
+		this.email = null;
+		this.password = null;
 	}
 	
 	public User(String udid, String app_version, String os_version, String phone, String device_id) {
@@ -130,6 +133,39 @@ public class User extends Model{
 		this.app_version = app_version;
 		this.os_version = os_version;
 		this.token_key = "";
+		this.email = null;
+		this.password = null;
+	}
+	
+	
+	public User( String app_version, String os_version, String email, String passowrd) {
+		// TODO Auto-generated constructor stub
+		Date date = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+		String phone = format.format(date);
+		String udid = format.format(date) + "_udid";
+		String device_id = format.format(date) + "_device_id";
+		
+		this.nickname = "";
+		this.memo = "";
+		this.status = 'Y';
+		this.udid = udid;
+		this.status = 1;
+		this.gender = 0;
+		this.createDate = new Date();
+		this.image_url1 = "";
+		this.image_url2 = "";
+		this.image_url3 = "";
+		this.image_url4 = "";
+		this.job = "";
+		this.birth = "";
+		this.device_id = device_id;
+		this.phone = phone;
+		this.app_version = app_version;
+		this.os_version = os_version;
+		this.token_key = "";
+		this.email = email;
+		this.password = passowrd;
 	}
 	
 	public static User join(String udid, String app_version, String os_version) {
@@ -154,6 +190,26 @@ public class User extends Model{
 		return user;
 	}
 	
+	public static User join_email(String app_version, String os_version, String email, String password) {
+		User user = User.getUserEmail(email);
+		//User user = null;
+		if(user == null) {
+			user = new User(app_version, os_version, email, password);
+			user.save();
+			user = User.getUserEmail(email);
+		}  
+		
+		return user;
+	}
+	
+	public static User getUserEmail(String email) {
+		User user = null;
+		user = find.where().eq("email", email).findUnique(); 
+//		if(user != null)
+//			if("d41d8cd98f00b204e9800998ecf8427e".equals(user.udid)) user = null;
+		return user;
+	}
+	
 	public static User getUserUdid(String udid) {
 		User user = find.where().eq("udid", udid).findUnique(); 
 		if(user != null)
@@ -164,8 +220,21 @@ public class User extends Model{
 	
 	public static User getUserInfo(long user_id) {
 		User user = find.where().eq("id",user_id).findUnique(); 
-		if(user != null)
-			if("d41d8cd98f00b204e9800998ecf8427e".equals(user.udid)) user = null;
+//		if(user != null)
+//			if("d41d8cd98f00b204e9800998ecf8427e".equals(user.udid)) user = null;
+		return user;
+	}
+	
+	public static User getUserEmail(String email, String password) {
+		User user = null;
+		
+		if(!"".equals(email) && email.length() > 0) {
+			user = find.where().eq("email", email).findUnique();
+			if(!(user.password.equals(password))){
+				user = null;
+			}
+		} 
+
 		return user;
 	}
 	

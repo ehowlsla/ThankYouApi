@@ -26,6 +26,8 @@ public class ResUser {
 	public String os_version;
 	public String phone;
 	public String device_id;
+	public String email;
+	public String password;
 
 	public ResUser(User obj) {
 		// TODO Auto-generated constructor stub
@@ -49,6 +51,8 @@ public class ResUser {
 			this.os_version = obj.os_version;
 			this.phone = obj.phone;
 			this.device_id = obj.device_id;
+			this.email = obj.email;
+			this.password = obj.password;
 		}
 	}
 }

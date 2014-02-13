@@ -60,6 +60,8 @@ create table reply_like (
 
 create table user (
   id                        bigint auto_increment not null,
+  email                     nvarchar(255),
+  password                  nvarchar(255),
   nickname                  nvarchar(255),
   udid                      nvarchar(100),
   memo                      text,
