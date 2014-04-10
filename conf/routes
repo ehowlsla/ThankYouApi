@@ -18,6 +18,7 @@ GET     /user/login/*user_id/*udid/*app_version/*os_version							controllers.Us
 GET     /user/login2/*user_id/*udid/*app_version/*os_version/*phone/*device_id		controllers.UserController.login2(user_id, udid, app_version, os_version, phone, device_id)
 GET     /user/login_email_auto/*user_id/*app_version/*os_version/*email/*password	controllers.UserController.login_email_auto(user_id, app_version, os_version, email, password)
 GET     /user/login_email_first/*app_version/*os_version/*email/*password			controllers.UserController.login_email_first(app_version, os_version, email, password)
+GET     /user/withdraw/*app_version/*os_version/*email								controllers.UserController.withdraw(app_version, os_version, email)
 GET     /user/profile/*user_id														controllers.UserController.getProfile(user_id)
 
 GET     /notice/list/*user_id/*last_id												controllers.NoticeController.list(user_id, last_id)

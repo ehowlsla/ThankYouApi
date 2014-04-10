@@ -374,9 +374,14 @@ public class UserController extends Controller{
 			result.code = HttpContants.CONTINUE_100;
 			result.msg = "없는 계정입니다.회원가입을 다시해 주세요.";
 		}else {
-			result.code = HttpContants.OK_200;
-			result.msg = "성공적으로 로그인 되었습니다.";
-			result.body.add(new ResUser(user));
+			if(user.status == 0){
+				result.code = HttpContants.CONTINUE_100;
+				result.msg = "자동로그인 실패 : 탈퇴한 회원입니다.";
+			}else{
+				result.code = HttpContants.OK_200;
+				result.msg = "성공적으로 로그인 되었습니다.";
+				result.body.add(new ResUser(user));
+			}
 		}
 
 
@@ -393,21 +398,46 @@ public class UserController extends Controller{
 			result.code = HttpContants.CONTINUE_100;
 			result.msg = "없는 이메일 주소입니다.";
 		}else{
-			if(user.password.equals(password)){
-				result.code = HttpContants.OK_200;
-				result.msg = "성공적으로 로그인 되었습니다.";
-				result.body.add(new ResUser(user));
-			}else{
-				System.out.println(user.password);
-				System.out.println(password);
+
+			if(user.status == 0){
+				System.out.println("aa");
 				result.code = HttpContants.CONTINUE_100;
-				result.msg = "비밀번호가 틀렸습니다.";
+			}else{
+				if(user.password.equals(password)){
+					result.code = HttpContants.OK_200;
+					result.msg = "성공적으로 로그인 되었습니다.";
+					result.body.add(new ResUser(user));
+				}else{
+					result.code = HttpContants.CONTINUE_100;
+					result.msg = "비밀번호가 틀렸습니다.";
+				}
 			}
 		}
 
 
 		return ok(new Gson().toJson(result));
 	}
+
+
+	public static Result withdraw(String app_version, String os_version, String email) {    	
+		LoginResult result = new LoginResult();
+
+		User user = User.getUserEmail(email);    	
+
+		if(user == null) {
+			result.code = HttpContants.CONTINUE_100;
+			result.msg = "없는 이메일 주소입니다.";
+		}else{
+			user.status =0;
+			user.update();
+			System.out.println(user.status);
+			result.code = HttpContants.OK_200;
+			result.msg = "탈퇴처리가 완료되었습니다.";
+			result.body.add(new ResUser(user));
+		}
+		return ok(new Gson().toJson(result));
+	}
+
 
 	public static Result userImageUpdate() {
 		UserResult result = new UserResult();
