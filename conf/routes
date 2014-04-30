@@ -2,11 +2,10 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-#GET     /                           controllers.Application.index()
-
+GET     /                      														controllers.Application.index()
+POST     /login																		controllers.Application.login()	
 
 GET     /image/*path																controllers.ImageController.getImage(path)
-
 GET     /content/list/*user_id/*target_id/*last_id/*openLevel						controllers.ContentController.list(user_id, target_id, last_id, openLevel)
 GET		/content/detail/*user_id/*content_id/*reply_id								controllers.ContentController.getContentDetail(user_id, content_id, reply_id)
 

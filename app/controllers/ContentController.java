@@ -16,7 +16,6 @@ import models.ReplyLike;
 import models.User;
 
 import org.h2.util.IOUtils;
-
 import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
@@ -26,7 +25,6 @@ import resModles.ResReply;
 import resResults.ContentResult;
 import utils.ThumbnailGenerator;
 import Contants.HttpContants;
-
 import com.google.gson.Gson;
 
 public class ContentController extends Controller {
@@ -56,6 +54,8 @@ public class ContentController extends Controller {
 
 		return ok(new Gson().toJson(result));
 	}
+	
+	
 
 	public static Result contentLike() {
 		ContentResult result = new ContentResult();
@@ -403,5 +403,16 @@ public class ContentController extends Controller {
 
 		return ok(new Gson().toJson(result));
 	}
+	
+	
+	
+
+
+	
+//	public static Result sayHello(String myName) {
+//		Date date = new Date();
+//		
+//		return ok(index.render("title"));
+//    }
 
 }
