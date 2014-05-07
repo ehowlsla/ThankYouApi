@@ -68,6 +68,6 @@ public class Notice extends Model{
 		if(last_id > 0)
 			return find.where().eq("user_id", user_id).lt("last_id", last_id).orderBy("id desc").setMaxRows(nSize).findList();
 		else
-			return find.where().eq("user_id", user_id).orderBy("id desc").setMaxRows(pSize).findList();
+			return find.where().eq("user_id", user_id).orderBy("id desc").setMaxRows(nSize).findList();
 	}
 }
