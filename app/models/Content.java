@@ -92,7 +92,7 @@ public class Content extends Model{
 					return find.where().eq("status", 1).eq("user_id", user_id).lt("id", last_id).orderBy("id desc").setMaxRows(pSize).setFirstRow(0).findPagingList(pSize).getPage(0).getList();
 			} else {
 				if(last_id == 0)
-					return find.where().eq("status", 1).eq("openLevel", openLevel).orderBy("id desc").setMaxRows(pSize).setFirstRow(31).findList();
+					return find.where().eq("status", 1).eq("openLevel", openLevel).orderBy("id desc").setMaxRows(pSize).findList();
 				else
 //					return find.where().eq("status", 1).lt("id", last_id).eq("openLevel", openLevel).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
 					return find.where().eq("status", 1).lt("id", last_id).eq("openLevel", openLevel).orderBy("id desc").setMaxRows(pSize).findList();
