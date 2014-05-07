@@ -66,8 +66,8 @@ public class Notice extends Model{
 
 	public static List<Notice> getNotices (Long user_id, Long last_id) {
 		if(last_id > 0)
-			return find.where().eq("user_id", user_id).lt("last_id", last_id).orderBy("id desc").findPagingList(nSize).getPage(0).getList();
+			return find.where().eq("user_id", user_id).lt("last_id", last_id).orderBy("id desc").setMaxRows(nSize).findList();
 		else
-			return find.where().eq("user_id", user_id).orderBy("id desc").findPagingList(nSize).getPage(0).getList();
+			return find.where().eq("user_id", user_id).orderBy("id desc").setMaxRows(pSize).findList();
 	}
 }

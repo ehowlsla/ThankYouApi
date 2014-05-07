@@ -37,7 +37,7 @@ public class ReplyLike extends Model {
 	}
 	
 	public static int getUserLike(Long user_id, Long reply_id) {
-		return find.where().eq("user_id", user_id).eq("reply_id", reply_id).findPagingList(rSize).getPage(0).getList().size();
+		return find.where().eq("user_id", user_id).eq("reply_id", reply_id).setMaxRows(rSize).findList().size();
 	}
 	
 	public static ReplyLike getLike (Long user_id, Long reply_id) {

@@ -60,9 +60,9 @@ public class Reply extends Model{
 
 	public static List<Reply> getContentReplies (Long content_id, Long reply_id) {
 		if(reply_id == 0)
-			return find.where().eq("content_id", content_id).eq("status", 1).orderBy("id desc").findPagingList(rSize).getPage(0).getList();
+			return find.where().eq("content_id", content_id).eq("status", 1).orderBy("id desc").setMaxRows(rSize).findList();
 		else
-			return find.where().eq("content_id", content_id).gt("id", reply_id).eq("status", 1).orderBy("id desc").findPagingList(rSize).getPage(0).getList();
+			return find.where().eq("content_id", content_id).gt("id", reply_id).eq("status", 1).orderBy("id desc").setMaxRows(rSize).findList();
 	}
   
 	
