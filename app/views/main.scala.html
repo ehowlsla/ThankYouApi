@@ -14,11 +14,12 @@
         <meta name="author" content="Codrops" />
         <link rel="shortcut icon" href="../favicon.ico"> 
         <link rel="stylesheet" type="text/css" href="/assets/css/style.css" />
-        <script src="js/modernizr.custom.63321.js"></script>
+        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")"></script>
+        <script src="@routes.Assets.at("javascripts/application.js")"></script>        
         <!--[if lte IE 7]><style>.main{display:none;} .support-note .note-ie{display:block;}</style><![endif]-->
 		<style>
 			body {
-				background: #e1c192 url(images/wood_pattern.jpg);
+				background: #e1c192 url(/assets/images/wood_pattern.jpg);
 			}
 		</style>
     </head>
@@ -56,7 +57,7 @@
 						<input type="password" name="password" placeholder="Password" class="showpassword">
 					</p>
 					<p class="clearfix"> 
-						<input type="submit" name="submit" value="로그인">
+						<input type="button" id="login-btn" class="submit-type" value="로그인">
 						<a href="#" class="log-twitter">회원가입</a>    
 					</p>
 				</form>​​
@@ -64,8 +65,7 @@
 			
         </div>
 		<!-- jQuery if needed -->
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-		<script type="text/javascript">
+        <script type="text/javascript">
 			$(function(){
 			    $(".showpassword").each(function(index,input) {
 			        var $input = $(input);
