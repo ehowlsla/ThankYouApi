@@ -59,7 +59,7 @@ public class Content extends Model{
 	public static Finder<Long,Content> find = new Finder<Long,Content>(Long.class, Content.class); 
 
 	@ManyToOne
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "user")
 	public User user;
 	
 	private static final int pSize = 30;
