@@ -39,10 +39,10 @@ public class User extends Model{
 	@Column(columnDefinition = "text")
 	public String memo;
 
-//	@Column(columnDefinition = "int")
+	@Column(columnDefinition = "int")
 	public int status;
 
-//	@Column(columnDefinition = "char(1)")
+	@Column(columnDefinition = "char(1)")
 	public int gender;
 	
 	@Column(columnDefinition = "nvarchar(20)")
