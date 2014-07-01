@@ -14,7 +14,7 @@ public class ResUser {
 	public String memo;
 	public int gender;
 	public String city;
-	public Date createDate;
+	public Date create_date;
 	public String image_url1;
 	public String image_url2;
 	public String image_url3;
@@ -45,7 +45,7 @@ public class ResUser {
 			this.job = obj.job;
 			this.status = obj.status;
 			this.gender = obj.gender;
-			this.createDate = obj.createDate;
+			this.create_date = obj.create_date;
 			this.token_key = obj.token_key;
 			this.app_version = obj.app_version;
 			this.os_version = obj.os_version;

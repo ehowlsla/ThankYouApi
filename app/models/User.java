@@ -46,7 +46,7 @@ public class User extends Model{
 	public String birth;
 
 	@Formats.DateTime(pattern="yyyy-MM-dd HH:mm:ss")
-	public Date createDate;
+	public Date create_date;
 	
 	@Column(columnDefinition = "nvarchar(100)")
 	public String city;
@@ -93,7 +93,7 @@ public class User extends Model{
 		this.udid = udid;
 		this.status = 1;
 		this.gender = 0;
-		this.createDate = new Date();
+		this.create_date = new Date();
 		this.image_url1 = "";
 		this.image_url2 = "";
 		this.image_url3 = "";
@@ -116,7 +116,7 @@ public class User extends Model{
 		this.udid = udid;
 		this.status = 1;
 		this.gender = 0;
-		this.createDate = new Date();
+		this.create_date = new Date();
 		this.image_url1 = "";
 		this.image_url2 = "";
 		this.image_url3 = "";
@@ -145,7 +145,7 @@ public class User extends Model{
 		this.udid = udid;
 		this.status = 1;
 		this.gender = 0;
-		this.createDate = new Date();
+		this.create_date = new Date();
 		this.image_url1 = "";
 		this.image_url2 = "";
 		this.image_url3 = "";
