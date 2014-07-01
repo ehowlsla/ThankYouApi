@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import Contants.OpenLevel;
 import play.data.format.Formats;
@@ -59,7 +60,7 @@ public class Content extends Model{
 	
 	public static Finder<Long,Content> find = new Finder<Long,Content>(Long.class, Content.class); 
 
-	@ManyToOne
+	@OneToOne(mappedBy = "user")
 	@JoinColumn(name = "user_id")
 	public User user;
 	
