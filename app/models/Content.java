@@ -6,10 +6,10 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import Contants.OpenLevel;
-
 import play.data.format.Formats;
 import play.db.ebean.Model;
 
@@ -59,6 +59,7 @@ public class Content extends Model{
 	public static Finder<Long,Content> find = new Finder<Long,Content>(Long.class, Content.class); 
 
 	@ManyToOne
+	@JoinColumn(name = "id")
 	public User user;
 	
 	private static final int pSize = 30;
@@ -83,7 +84,7 @@ public class Content extends Model{
 		return find.where().eq("status", 1).eq("id", content_id).findUnique(); 
 	}
 	
-	public static List<Content> getContentList (Long user_id, Long target_id, Long last_id, int openLevel) {
+	public static List<Content> getContentList (Long user_id, Long target_id, Long last_id, int openLevel) {		
 		if(target_id == 0) {
 			if(openLevel == OpenLevel.LEVEL_ME) {
 				if(last_id == 0)
