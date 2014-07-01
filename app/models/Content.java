@@ -54,13 +54,10 @@ public class Content extends Model{
 	public int open_level;
 	
     public int banCount;
-	 
-	
-	public static Finder<Long,Content> find = new Finder<Long,Content>(Long.class, Content.class); 
-
-	@ManyToOne
+    
 	public User user;
 	
+	public static Finder<Long,Content> find = new Finder<Long,Content>(Long.class, Content.class); 
 	private static final int pSize = 30;
 
 	public Content(User user, String content, String imageURL1, String imageURL2, String imageURL3, String imageURL4, int openLevel) {
