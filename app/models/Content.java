@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -58,8 +59,8 @@ public class Content extends Model{
 	
 	public static Finder<Long,Content> find = new Finder<Long,Content>(Long.class, Content.class); 
 
-	@ManyToOne
-	@JoinColumn(name = "user")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
 	public User user;
 	
 	private static final int pSize = 30;
