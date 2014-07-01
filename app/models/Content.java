@@ -3,6 +3,7 @@ package models;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -60,7 +61,7 @@ public class Content extends Model{
 	
 	public static Finder<Long,Content> find = new Finder<Long,Content>(Long.class, Content.class); 
 
-	@OneToOne(mappedBy = "user")
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
 	public User user;
 	
