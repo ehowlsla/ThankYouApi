@@ -21,64 +21,64 @@ public class User extends Model{
 	@Id
 	public long id;
 	
-	@Column(columnDefinition = "nvarchar(255)")
+//	@Column(columnDefinition = "nvarchar(255)")
 	public String email;
 	
-	@Column(columnDefinition = "nvarchar(255)")
+//	@Column(columnDefinition = "nvarchar(255)")
 	public String password;
 
-	@Column(columnDefinition = "nvarchar(255)")
+//	@Column(columnDefinition = "nvarchar(255)")
 	public String nickname;
 
-	@Column(columnDefinition = "nvarchar(100)")
+//	@Column(columnDefinition = "nvarchar(100)")
 	public String udid;
 
-	@Column(columnDefinition = "text")
+//	@Column(columnDefinition = "text")
 	public String memo;
 
-	@Column(columnDefinition = "int")
+//	@Column(columnDefinition = "int")
 	public int status;
 
-	@Column(columnDefinition = "char(1)")
+//	@Column(columnDefinition = "char(1)")
 	public int gender;
 	
-	@Column(columnDefinition = "nvarchar(20)")
+//	@Column(columnDefinition = "nvarchar(20)")
 	public String birth;
 
-	@Formats.DateTime(pattern="yyyy-MM-dd HH:mm:ss")
+//	@Formats.DateTime(pattern="yyyy-MM-dd HH:mm:ss")
 	public Date createDate;
 	
-	@Column(columnDefinition = "nvarchar(100)")
+//	@Column(columnDefinition = "nvarchar(100)")
 	public String city;
 	
-	@Column(columnDefinition = "nvarchar(100)")
+//	@Column(columnDefinition = "nvarchar(100)")
 	public String job;
 
-	@Column(columnDefinition = "nvarchar(255)")
+//	@Column(columnDefinition = "nvarchar(255)")
 	public String image_url1;
 	
-	@Column(columnDefinition = "nvarchar(255)")
+//	@Column(columnDefinition = "nvarchar(255)")
 	public String image_url2;
 	
-	@Column(columnDefinition = "nvarchar(255)")
+//	@Column(columnDefinition = "nvarchar(255)")
 	public String image_url3;
 	
-	@Column(columnDefinition = "nvarchar(255)")
+//	@Column(columnDefinition = "nvarchar(255)")
 	public String image_url4;
 	
-	@Column(columnDefinition = "nvarchar(20)")
+//	@Column(columnDefinition = "nvarchar(20)")
 	public String app_version;
 	
-	@Column(columnDefinition = "nvarchar(20)")
+//	@Column(columnDefinition = "nvarchar(20)")
 	public String os_version;
 	
-	@Column(columnDefinition = "nvarchar(20)")
+//	@Column(columnDefinition = "nvarchar(20)")
 	public String token_key;
 	
-	@Column(columnDefinition = "nvarchar(40)", unique=true)
+//	@Column(columnDefinition = "nvarchar(40)", unique=true)
 	public String phone;
 	
-	@Column(columnDefinition = "nvarchar(40)", unique=true)
+//	@Column(columnDefinition = "nvarchar(40)", unique=true)
 	public String device_id;
 	
 
