@@ -26,9 +26,6 @@ public class User extends Model{
 	
 	@Column(columnDefinition = "nvarchar(255)")
 	public String password;
-	
-	
-	//email, password
 
 	@Column(columnDefinition = "nvarchar(255)")
 	public String nickname;
@@ -57,8 +54,6 @@ public class User extends Model{
 	@Column(columnDefinition = "nvarchar(100)")
 	public String job;
 
- 
-	
 	@Column(columnDefinition = "nvarchar(255)")
 	public String image_url1;
 	

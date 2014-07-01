@@ -61,7 +61,7 @@ public class Content extends Model{
 	@ManyToOne
 	public User user;
 	
-	private static int pSize = 30;
+	private static final int pSize = 30;
 
 	public Content(User user, String content, String imageURL1, String imageURL2, String imageURL3, String imageURL4, int openLevel) {
 		// TODO Auto-generated constructor stub
