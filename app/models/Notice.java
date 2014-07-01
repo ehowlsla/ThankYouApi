@@ -7,14 +7,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.avaje.ebean.Ebean;
-
 import play.data.format.Formats;
 import play.db.ebean.Model;
 
 @Entity
 public class Notice extends Model{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	public long id;
 	
@@ -33,7 +36,7 @@ public class Notice extends Model{
 	@Formats.DateTime(pattern="yyyy-MM-dd HH:mm:ss")
 	public Date createDate;
 	
-	private static final int nSize = 30;
+	private static int nSize = 30;
 
 	public static Finder<Long,Notice> find = new Finder<Long,Notice>(Long.class, Notice.class); 
 

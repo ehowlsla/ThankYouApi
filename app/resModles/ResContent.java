@@ -21,7 +21,7 @@ public class ResContent {
 	public String imageURL3;	 
 	public String imageURL4;
 	public int status;	
-	public int openLevel;
+	public int open_level;
 	public ResUser user;
 	public int isLike;
 
@@ -38,7 +38,7 @@ public class ResContent {
 			this.imageURL3 = obj.imageURL3;
 			this.imageURL4 = obj.imageURL4;
 			this.status = obj.status;
-			this.openLevel = obj.status;
+			this.open_level = obj.open_level;
 			this.user = new ResUser(obj.user);
 			this.isLike = 0;
 		}

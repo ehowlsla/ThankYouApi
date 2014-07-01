@@ -38,7 +38,7 @@ public class ContentController extends Controller {
 				Long.parseLong(last_id), Integer.parseInt(openLevel));
 		if (contents != null) {
 			result.code = HttpContants.OK_200;
-			result.msg = "타임라인 정보를 가져왔습니다.";
+			result.msg = "占쏙옙占쏙옙占쎌�깍옙占� 占쏙옙癰���占쏙옙 揶�占쏙옙紐�占쏙옙占쎈�э옙占쏙옙占�.";
 
 			for (Content obj : contents) {
 
@@ -49,7 +49,7 @@ public class ContentController extends Controller {
 			}
 		} else {
 			result.code = HttpContants.FORBIDDEN_403;
-			result.msg = "타임라인 정보가 더이상 존재하지 않습니다.";
+			result.msg = "占쏙옙占쏙옙占쎌�깍옙占� 占쏙옙癰��울옙 占쏙옙占쎈��占쏙옙 鈺곕��占싼�占쏙옙筌�占� 占쏙옙占쎈�э옙占쏙옙占�.";
 		}
 
 		return ok(new Gson().toJson(result));
@@ -75,7 +75,7 @@ public class ContentController extends Controller {
 					content.likeCount = likeCount - 1;
 					content.update();
 
-					result.msg = "추천을 취소하였습니다.";
+					result.msg = "�곤옙筌ｏ옙占쏙옙 ���ο옙占쏙옙占쏙옙占쏙옙�э옙占쏙옙占�.";
 				} else {
 					like = new ContentLike(user, content_id);
 					like.save();
@@ -86,26 +86,26 @@ public class ContentController extends Controller {
 
 					String nickname = user.nickname;
 					if (nickname.length() == 0)
-						nickname = "익명";
+						nickname = "占쎈�э옙";
 
 					if (user_id != content.user.id) {
 						Notice notice = new Notice(content.id, content.user.id,
-								nickname + "님이 일기를 좋아합니다.", user.image_url1);
+								nickname + "占쏙옙占쏙옙 占쎌�⑤┛��占� �ワ옙占쏙옙占썩�몌옙占쏙옙占�.", user.image_url1);
 						notice.save();
 					}
 
-					result.msg = "추천하였습니다.";
+					result.msg = "�곤옙筌ｏ옙占쏙옙占쏙옙占쎈�э옙占쏙옙占�.";
 				}
 
 				result.code = HttpContants.OK_200;
 				result.body.add(new ResContent(content));
 			} else {
 				result.code = HttpContants.FORBIDDEN_403;
-				result.msg = "해당 유저가 존재하지 않습니다.";
+				result.msg = "占쎈��占쏙옙 占쏙옙占쏙옙揶�占� 鈺곕��占싼�占쏙옙筌�占� 占쏙옙占쎈�э옙占쏙옙占�.";
 			}
 		} else {
 			result.code = HttpContants.FORBIDDEN_403;
-			result.msg = "해당 일기가 존재하지 않습니다.";
+			result.msg = "占쎈��占쏙옙 占쎌�⑤┛揶�占� 鈺곕��占싼�占쏙옙筌�占� 占쏙옙占쎈�э옙占쏙옙占�.";
 		}
 
 		return ok(new Gson().toJson(result));
@@ -134,11 +134,11 @@ public class ContentController extends Controller {
 			}
 
 			result.code = HttpContants.OK_200;
-			result.msg = "성공적으로 일기 정보를 가져왔습니다.";
+			result.msg = "占쎄��э옙占쏙옙�곤옙 占쎌�⑤┛ 占쏙옙癰���占쏙옙 揶�占쏙옙紐�占쏙옙占쎈�э옙占쏙옙占�.";
 			result.body.add(new ResContent(content));
 		} else {
 			result.code = HttpContants.FORBIDDEN_403;
-			result.msg = "해당 일기가 존재하지 않습니다.";
+			result.msg = "占쎈��占쏙옙 占쎌�⑤┛揶�占� 鈺곕��占싼�占쏙옙筌�占� 占쏙옙占쎈�э옙占쏙옙占�.";
 		}
 
 		return ok(new Gson().toJson(result));
@@ -210,15 +210,15 @@ public class ContentController extends Controller {
 				content.save();
 
 				result.code = HttpContants.OK_200;
-				result.msg = "성공적으로 업로드 되었습니다.";
+				result.msg = "占쎄��э옙占쏙옙�곤옙 占쏙옙嚥∽옙占쏙옙 占쏙옙占쏙옙占쎈�э옙占쏙옙占�.";
 				result.body.add(new ResContent(content));
 			} else {
 				result.code = HttpContants.FORBIDDEN_403;
-				result.msg = "해당 유저가 없습니다.";
+				result.msg = "占쎈��占쏙옙 占쏙옙占쏙옙揶�占� 占쏙옙占쎈�э옙占쏙옙占�.";
 			}
 		} else {
 			result.code = HttpContants.FORBIDDEN_403;
-			result.msg = "멀티파트 형식이 아닙니다.";
+			result.msg = "筌�占쏙옙怨�占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙.";
 		}
 
 		return ok(new Gson().toJson(result));
@@ -234,16 +234,16 @@ public class ContentController extends Controller {
 		if (content != null) {
 			if (content.status == 0) {
 				result.code = HttpContants.FORBIDDEN_403;
-				result.msg = "이미 삭제된 컨텐츠입니다.";
+				result.msg = "占쎈��占쏙옙 占쏙옙占쏙옙占쏙옙 ����占쏙옙筌ο옙占쏙옙占쏙옙占쏙옙.";
 			} else {
 				content.status = 0;
 				content.update();
 				result.code = HttpContants.OK_200;
-				result.msg = "성공적으로 삭제되었습니다.";
+				result.msg = "占쎄��э옙占쏙옙�곤옙 占쏙옙占쏙옙占쏙옙占쏙옙占쎈�э옙占쏙옙占�.";
 			}
 		} else {
 			result.code = HttpContants.FORBIDDEN_403;
-			result.msg = "해당 유저가 없습니다.";
+			result.msg = "占쎈��占쏙옙 占쏙옙占쏙옙揶�占� 占쏙옙占쎈�э옙占쏙옙占�.";
 		}
 
 		return ok(new Gson().toJson(result));
@@ -267,11 +267,11 @@ public class ContentController extends Controller {
 			content.update();
 
 			result.code = HttpContants.OK_200;
-			result.msg = "성공적으로 신고되었습니다.";
+			result.msg = "占쎄��э옙占쏙옙�곤옙 占쏙옙�⑨옙占쏙옙占쏙옙占쎈�э옙占쏙옙占�.";
 			result.body.add(new ResContent(content));
 		} else {
 			result.code = HttpContants.FORBIDDEN_403;
-			result.msg = "잘못된 게시글이거나 이미 삭제되었습니다.";
+			result.msg = "占쏙옙筌��놂옙占� 野�占쏙옙占썸묾占쏙옙�욧�占쏙옙 占쎈��占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙占쎈�э옙占쏙옙占�.";
 		}
 
 		return ok(new Gson().toJson(result));
@@ -294,13 +294,9 @@ public class ContentController extends Controller {
 			String contents = params.get("contents")[0];
 			int openLevel = Integer.parseInt(params.get("openLevel")[0]);
 			Content content = Content.getContentDetail(content_id);
-//			try{
 				if(params.get("modify_status") != null){
 					modify_status =Integer.parseInt(params.get("modify_status")[0]);
 				}
-//			}catch(NullPointerException e){
-//				result.msg = "새로운 버전으로 업데이트 해주세요.";
-//			}
 			
 			int num = modify_status;
 			User user = User.getUserInfo(user_id);
@@ -379,40 +375,30 @@ public class ContentController extends Controller {
 
 				if (content != null) {
 					content.contents = contents;
-					content.openLevel = openLevel;
+					content.open_level = openLevel;
 
 					content.update();
 
 					result.code = HttpContants.OK_200;
-					result.msg = "성공적으로 수정되었습니다.";
+					result.msg = "占쎄��э옙占쏙옙�곤옙 占쏙옙占쏙옙占쏙옙占쏙옙占쎈�э옙占쏙옙占�.";
 					result.body.add(new ResContent(content));
 				} else {
 					result.code = HttpContants.FORBIDDEN_403;
-					result.msg = "잘못된 게시글이거나 이미 삭제되었습니다.";
+					result.msg = "占쏙옙筌��놂옙占� 野�占쏙옙占썸묾占쏙옙�욧�占쏙옙 占쎈��占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙占쎈�э옙占쏙옙占�.";
 				}
 
 			} else {
 				result.code = HttpContants.FORBIDDEN_403;
-				result.msg = "해당 유저가 없습니다.";
+				result.msg = "占쎈��占쏙옙 占쏙옙占쏙옙揶�占� 占쏙옙占쎈�э옙占쏙옙占�.";
 			}
 
 		} else {
 			result.code = HttpContants.FORBIDDEN_403;
-			result.msg = "멀티파트 형식이 아닙니다.";
+			result.msg = "筌�占쏙옙怨�占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙.";
 		}
 
 		return ok(new Gson().toJson(result));
 	}
 	
-	
-	
-
-
-	
-//	public static Result sayHello(String myName) {
-//		Date date = new Date();
-//		
-//		return ok(index.render("title"));
-//    }
 
 }

@@ -51,7 +51,7 @@ public class Content extends Model{
 
 	public int status;
 	
-	public int openLevel;
+	public int open_level;
 	
     public int banCount;
 	 
@@ -76,7 +76,7 @@ public class Content extends Model{
 		this.imageURL4 = imageURL4;
 		this.replyCount = 0;
 		this.banCount = 0;
-		this.openLevel = openLevel; 
+		this.open_level = openLevel; 
 	}
 	
 	public static Content getContentDetail (Long content_id) {
@@ -92,10 +92,9 @@ public class Content extends Model{
 					return find.where().eq("status", 1).eq("user_id", user_id).lt("id", last_id).orderBy("id desc").setMaxRows(pSize).findList();
 			} else {
 				if(last_id == 0)
-					return find.where().eq("status", 1).eq("openLevel", openLevel).orderBy("id desc").setMaxRows(pSize).findList();
+					return find.where().eq("status", 1).eq("open_level", openLevel).orderBy("id desc").setMaxRows(pSize).findList();
 				else
-//					return find.where().eq("status", 1).lt("id", last_id).eq("openLevel", openLevel).orderBy("id desc").findPagingList(pSize).getPage(0).getList();
-					return find.where().eq("status", 1).lt("id", last_id).eq("openLevel", openLevel).orderBy("id desc").setMaxRows(pSize).findList();
+					return find.where().eq("status", 1).lt("id", last_id).eq("open_level", openLevel).orderBy("id desc").setMaxRows(pSize).findList();
 				}
 		}else {
 			if(openLevel == OpenLevel.LEVEL_ME) {
@@ -105,9 +104,9 @@ public class Content extends Model{
 					return find.where().eq("status", 1).eq("user_id", target_id).lt("id", last_id).orderBy("id desc").setMaxRows(pSize).findList();
 			} else {
 				if(last_id == 0)
-					return find.where().eq("status", 1).eq("user_id", target_id).eq("openLevel", openLevel).orderBy("id desc").setMaxRows(pSize).findList();
+					return find.where().eq("status", 1).eq("user_id", target_id).eq("open_level", openLevel).orderBy("id desc").setMaxRows(pSize).findList();
 				else
-					return find.where().eq("status", 1).eq("user_id", target_id).lt("id", last_id).eq("openLevel", openLevel).orderBy("id desc").setMaxRows(pSize).findList();
+					return find.where().eq("status", 1).eq("user_id", target_id).lt("id", last_id).eq("open_level", openLevel).orderBy("id desc").setMaxRows(pSize).findList();
 			}
 		} 
 	}

@@ -138,7 +138,7 @@ public class User extends Model{
 	}
 	
 	
-	public User( String app_version, String os_version, String email, String passowrd) {
+	public User(String app_version, String os_version, String email, String passowrd) {
 		// TODO Auto-generated constructor stub
 		Date date = new Date();
 		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
