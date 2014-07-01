@@ -110,22 +110,4 @@ public class Content extends Model{
 			}
 		} 
 	}
-	 
-	
-//	public static Content deleteContent(String user_id, String content_id) {
-//		Content content = find.where().eq("user_id", user_id).eq("id", content_id).findUnique();
-//		if(content != null) {
-//			content.status = 0;
-//			content.update();
-//		}
-//		return content;
-//	}
-//	 
-//	
-//	public static Content upload (String user_id, String content, String imageURL1, String imageURL2, String imageURL3, String imageURL4, int openLevel) {
-//		User user = User.getUserInfo(Long.parseLong(user_id));
-//		Content contents = new Content(user, content, imageURL1, imageURL2, imageURL3, imageURL4, openLevel);
-//		contents.save();
-//		return contents;
-//	}
 }

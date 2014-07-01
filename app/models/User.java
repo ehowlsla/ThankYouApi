@@ -21,64 +21,66 @@ public class User extends Model{
 	@Id
 	public long id;
 	
-//	@Column(columnDefinition = "nvarchar(255)")
+	@Column(columnDefinition = "nvarchar(255)")
 	public String email;
 	
-//	@Column(columnDefinition = "nvarchar(255)")
+	@Column(columnDefinition = "nvarchar(255)")
 	public String password;
 
-//	@Column(columnDefinition = "nvarchar(255)")
+	@Column(columnDefinition = "nvarchar(255)")
 	public String nickname;
 
-//	@Column(columnDefinition = "nvarchar(100)")
+	@Column(columnDefinition = "nvarchar(100)")
 	public String udid;
 
-//	@Column(columnDefinition = "text")
+	@Column(columnDefinition = "text")
 	public String memo;
 
-//	@Column(columnDefinition = "int")
+	@Column(columnDefinition = "int")
 	public int status;
 
-//	@Column(columnDefinition = "char(1)")
+	@Column(columnDefinition = "char(1)")
 	public int gender;
 	
-//	@Column(columnDefinition = "nvarchar(20)")
+	@Column(columnDefinition = "nvarchar(20)")
 	public String birth;
 
-//	@Formats.DateTime(pattern="yyyy-MM-dd HH:mm:ss")
+	@Formats.DateTime(pattern="yyyy-MM-dd HH:mm:ss")
 	public Date createDate;
 	
-//	@Column(columnDefinition = "nvarchar(100)")
+	@Column(columnDefinition = "nvarchar(100)")
 	public String city;
 	
-//	@Column(columnDefinition = "nvarchar(100)")
+	@Column(columnDefinition = "nvarchar(100)")
 	public String job;
 
-//	@Column(columnDefinition = "nvarchar(255)")
+ 
+	
+	@Column(columnDefinition = "nvarchar(255)")
 	public String image_url1;
 	
-//	@Column(columnDefinition = "nvarchar(255)")
+	@Column(columnDefinition = "nvarchar(255)")
 	public String image_url2;
 	
-//	@Column(columnDefinition = "nvarchar(255)")
+	@Column(columnDefinition = "nvarchar(255)")
 	public String image_url3;
 	
-//	@Column(columnDefinition = "nvarchar(255)")
+	@Column(columnDefinition = "nvarchar(255)")
 	public String image_url4;
 	
-//	@Column(columnDefinition = "nvarchar(20)")
+	@Column(columnDefinition = "nvarchar(20)")
 	public String app_version;
 	
-//	@Column(columnDefinition = "nvarchar(20)")
+	@Column(columnDefinition = "nvarchar(20)")
 	public String os_version;
 	
-//	@Column(columnDefinition = "nvarchar(20)")
+	@Column(columnDefinition = "nvarchar(20)")
 	public String token_key;
 	
-//	@Column(columnDefinition = "nvarchar(40)", unique=true)
+	@Column(columnDefinition = "nvarchar(40)", unique=true)
 	public String phone;
 	
-//	@Column(columnDefinition = "nvarchar(40)", unique=true)
+	@Column(columnDefinition = "nvarchar(40)", unique=true)
 	public String device_id;
 	
 
@@ -88,7 +90,6 @@ public class User extends Model{
 		// TODO Auto-generated constructor stub
 		this.nickname = "";
 		this.memo = "";
-		this.status = 'Y';
 		this.udid = udid;
 		this.status = 1;
 		this.gender = 0;
@@ -112,7 +113,6 @@ public class User extends Model{
 		// TODO Auto-generated constructor stub
 		this.nickname = "";
 		this.memo = "";
-		this.status = 'Y';
 		this.udid = udid;
 		this.status = 1;
 		this.gender = 0;
@@ -140,10 +140,8 @@ public class User extends Model{
 		String phone = format.format(date);
 		String udid = format.format(date) + "_udid";
 		String device_id = format.format(date) + "_device_id";
-		
 		this.nickname = "";
 		this.memo = "";
-		this.status = 'Y';
 		this.udid = udid;
 		this.status = 1;
 		this.gender = 0;
@@ -200,8 +198,6 @@ public class User extends Model{
 	public static User getUserEmail(String email) {
 		User user = null;
 		user = find.where().eq("email", email).findUnique(); 
-//		if(user != null)
-//			if("d41d8cd98f00b204e9800998ecf8427e".equals(user.udid)) user = null;
 		return user;
 	}
 	
@@ -215,8 +211,6 @@ public class User extends Model{
 	
 	public static User getUserInfo(long user_id) {
 		User user = find.where().eq("id",user_id).findUnique(); 
-//		if(user != null)
-//			if("d41d8cd98f00b204e9800998ecf8427e".equals(user.udid)) user = null;
 		return user;
 	}
 	
@@ -246,9 +240,7 @@ public class User extends Model{
 			if(device_id.length() > 0)
 				user = find.where().eq("device_id", device_id).findUnique(); 
 		}
-		
-	
-		
+
 		return user;
 	}
 	
