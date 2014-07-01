@@ -13,6 +13,11 @@ import play.db.ebean.Model.Finder;
 
 @Entity
 public class ReplyLike extends Model {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	public long id;
 	

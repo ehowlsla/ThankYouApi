@@ -14,6 +14,7 @@ object ApplicationBuild extends Build {
     javaEbean,
     cache,
     "com.google.code.gson" % "gson" % "2.2.4",
+    "com.typesafe.akka" % "akka-actor_2.10"      % "2.1.2",
     "mysql" % "mysql-connector-java" % "5.1.25"
   )
 
