@@ -61,7 +61,7 @@ public class Content extends Model{
 	
 	public static Finder<Long,Content> find = new Finder<Long,Content>(Long.class, Content.class); 
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	@JoinColumn(name = "user_id")
 	public User user;
 	
