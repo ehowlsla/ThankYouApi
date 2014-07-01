@@ -76,7 +76,7 @@ public class Content extends Model{
 		this.imageURL4 = imageURL4;
 		this.replyCount = 0;
 		this.banCount = 0;
-		this.open_level = openLevel; 
+		this.open_level = openLevel;  
 	}
 	
 	public static Content getContentDetail (Long content_id) {
