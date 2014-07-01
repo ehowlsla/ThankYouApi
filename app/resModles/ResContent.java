@@ -38,7 +38,7 @@ public class ResContent {
 			this.imageURL3 = obj.imageURL3;
 			this.imageURL4 = obj.imageURL4;
 			this.status = obj.status;
-			this.openLevel = obj.status;
+			this.openLevel = obj.openLevel;
 			this.user = new ResUser(obj.user);
 			this.isLike = 0;
 		}
