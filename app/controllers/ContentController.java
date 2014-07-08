@@ -393,6 +393,32 @@ public class ContentController extends Controller {
 				if (content != null) {
 					content.contents = contents;
 					content.open_level = openLevel;
+					content.update();
+					result.code = HttpContants.OK_200;
+					result.msg = "성공적으로 수정되었습니다.";
+					result.body.add(new ResContent(content));
+				} else {
+					result.code = HttpContants.FORBIDDEN_403;
+					result.msg = "잘못된 게시글이거나 이미 삭제되었습니다.";
+				}
+
+			} else {
+				result.code = HttpContants.FORBIDDEN_403;
+				result.msg = "해당 유저가 없습니다.";
+			}
+
+		} else if(request().body().asFormUrlEncoded() != null){
+			Map<String, String[]> params = request().body().asFormUrlEncoded();
+			Long user_id = Long.parseLong(params.get("user_id")[0]);
+			Long content_id = Long.parseLong(params.get("content_id")[0]);
+			String contents = params.get("contents")[0];
+			int openLevel = Integer.parseInt(params.get("openLevel")[0]);
+			Content content = Content.getContentDetail(content_id);
+			User user = User.getUserInfo(user_id);
+			if (user != null) {
+				if (content != null) {
+					content.contents = contents;
+					content.open_level = openLevel;
 
 					content.update();
 
@@ -408,10 +434,9 @@ public class ContentController extends Controller {
 				result.code = HttpContants.FORBIDDEN_403;
 				result.msg = "해당 유저가 없습니다.";
 			}
-
-		} else {
+		}else{
 			result.code = HttpContants.FORBIDDEN_403;
-			result.msg = "멀티파트 형식이 아닙니다.";
+			result.msg = "형식이 잘못 되었습니다..";
 		}
 
 		return ok(new Gson().toJson(result));

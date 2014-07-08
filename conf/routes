@@ -4,7 +4,8 @@
 
 GET     /                      														controllers.Application.index()
 POST    /login																		controllers.Application.login()
-GET     /home                      											        controllers.Application.home()	
+GET     /home                      											        controllers.Application.home()
+GET     /opendiry                      										    	controllers.Application.opendiry()		
 
 GET     /image/*path																controllers.ImageController.getImage(path)
 GET     /content/list/*user_id/*target_id/*last_id/*openLevel						controllers.ContentController.list(user_id, target_id, last_id, openLevel)
