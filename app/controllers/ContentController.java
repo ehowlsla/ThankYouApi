@@ -153,7 +153,6 @@ public class ContentController extends Controller {
 		String imageURL4 = "";
 
 		int num = 1;
-		System.out.println("aa");
 		if (request().body().asMultipartFormData() != null) {
 			Map<String, String[]> params = request().body()
 					.asMultipartFormData().asFormUrlEncoded();
@@ -217,7 +216,6 @@ public class ContentController extends Controller {
 				result.msg = "해당 유저가 없습니다.";
 			}
 		} else if(request().body().asFormUrlEncoded() != null){
-			System.out.println("bb");
 			Map<String, String[]> params = request().body().asFormUrlEncoded();
 			Long user_id = Long.parseLong(params.get("user_id")[0]);
 			System.out.println(user_id);
@@ -226,7 +224,6 @@ public class ContentController extends Controller {
 
 			User user = User.getUserInfo(user_id);
 			if (user != null) {
-				System.out.println("cc");
 				Content content = new Content(user, contents, openLevel);
 				content.save();
 				result.code = HttpContants.OK_200;
