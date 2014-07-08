@@ -183,7 +183,6 @@ public class User extends Model{
 	
 	public static User join_email(String app_version, String os_version, String email, String password) {
 		User user = User.getUserEmail(email);
-		//User user = null;
 		if(user == null) {
 			user = new User(app_version, os_version, email, password);
 			user.save();

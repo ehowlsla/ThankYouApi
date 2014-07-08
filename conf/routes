@@ -25,6 +25,7 @@ GET     /notice/list/*user_id/*last_id												controllers.NoticeController.l
 
 POST    /content/modify																controllers.ContentController.modify()
 POST    /content/upload																controllers.ContentController.upload()
+POST    /content/upload_string_only													controllers.ContentController.upload_string_only()
 POST    /content/delete																controllers.ContentController.delete()
 POST    /content/ban																controllers.ContentController.ban()
 POST    /content/like																controllers.ContentController.contentLike()

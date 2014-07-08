@@ -82,6 +82,22 @@ public class Content extends Model{
 		this.open_level = openLevel;  
 	}
 	
+	public Content(User user, String content, int openLevel) {
+		// TODO Auto-generated constructor stub
+		this.contents = content;
+		this.createDate = new Date();
+		this.likeCount = 0; 
+		this.status = 1;
+		this.user = user;
+		this.imageURL1 = "";
+		this.imageURL2 = "";
+		this.imageURL3 = "";
+		this.imageURL4 = "";
+		this.replyCount = 0;
+		this.banCount = 0;
+		this.open_level = openLevel;  
+	}
+	
 	public static Content getContentDetail (Long content_id) {
 		return find.where().eq("status", 1).eq("id", content_id).findUnique(); 
 	}

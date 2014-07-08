@@ -38,7 +38,7 @@ public class Application extends Controller {
 		
 		LoginResult result = new LoginResult();
 		User user = User.getUserEmail(email);
-		ContentResult result2;
+		ContentResult result2 = null;
 		List<Content> contents = Content.getContentList(
 				user.id, Long.parseLong("0"),
 				Long.parseLong("0"), 1);
@@ -79,6 +79,7 @@ public class Application extends Controller {
 		
 		
 		return ok(views.html.home.render(user, contents));
+//		return ok(new Gson().toJson(result2));
 	}
 	
 

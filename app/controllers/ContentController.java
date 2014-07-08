@@ -54,8 +54,8 @@ public class ContentController extends Controller {
 
 		return ok(new Gson().toJson(result));
 	}
-	
-	
+
+
 
 	public static Result contentLike() {
 		ContentResult result = new ContentResult();
@@ -161,7 +161,7 @@ public class ContentController extends Controller {
 			Long user_id = Long.parseLong(params.get("user_id")[0]);
 			String contents = params.get("contents")[0];
 			int openLevel = Integer.parseInt(params.get("openLevel")[0]);
-			
+
 			User user = User.getUserInfo(user_id);
 			if (user != null) {
 				List<FilePart> uploadFiles = request().body()
@@ -223,6 +223,41 @@ public class ContentController extends Controller {
 
 		return ok(new Gson().toJson(result));
 	}
+
+
+
+	public static Result upload_string_only() {
+		ContentResult result = new ContentResult();
+
+		if (request().body().asFormUrlEncoded() != null) {
+			Map<String, String[]> params = request().body().asFormUrlEncoded();
+
+			Long user_id = Long.parseLong(params.get("user_id")[0]);
+			String contents = params.get("contents")[0];
+			int openLevel = Integer.parseInt(params.get("openLevel")[0]);
+
+			User user = User.getUserInfo(user_id);
+			if (user != null) {
+				Content content = new Content(user, contents, openLevel);
+				content.save();
+				result.code = HttpContants.OK_200;
+				result.msg = "성공적으로 업로드 되었습니다.";
+				result.body.add(new ResContent(content));
+			} else {
+				result.code = HttpContants.FORBIDDEN_403;
+				result.msg = "해당 유저가 없습니다.";
+			}
+		} else {
+			result.code = HttpContants.FORBIDDEN_403;
+			result.msg = "폼URL 형식이 아닙니다.";
+		}
+
+		return ok(new Gson().toJson(result));
+	}
+
+
+
+
 
 	public static Result delete() {
 		ContentResult result = new ContentResult();
@@ -294,10 +329,10 @@ public class ContentController extends Controller {
 			String contents = params.get("contents")[0];
 			int openLevel = Integer.parseInt(params.get("openLevel")[0]);
 			Content content = Content.getContentDetail(content_id);
-				if(params.get("modify_status") != null){
-					modify_status =Integer.parseInt(params.get("modify_status")[0]);
-				}
-			
+			if(params.get("modify_status") != null){
+				modify_status =Integer.parseInt(params.get("modify_status")[0]);
+			}
+
 			int num = modify_status;
 			User user = User.getUserInfo(user_id);
 			if (user != null) {
@@ -325,8 +360,8 @@ public class ContentController extends Controller {
 
 							ThumbnailGenerator generator = new ThumbnailGenerator();
 							generator.transform(imageURL, s_imageURL, 480, 480);
-							
-							
+
+
 							if(modify_status == 1){
 								if (num == 1) {
 									imageURL1 = s_imageURL;
@@ -350,7 +385,7 @@ public class ContentController extends Controller {
 									content.imageURL3 = imageURL2;
 								} else if (num == 4) {
 									imageURL3 = s_imageURL;
-								content.imageURL4 = imageURL3;
+									content.imageURL4 = imageURL3;
 								}
 							}else if(modify_status == 3){
 								if (num == 3) {
@@ -399,6 +434,6 @@ public class ContentController extends Controller {
 
 		return ok(new Gson().toJson(result));
 	}
-	
+
 
 }

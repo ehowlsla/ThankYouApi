@@ -142,9 +142,7 @@ public class UserController extends Controller{
 			if(user != null) {
 				result.code = HttpContants.OK_200;
 				result.msg = "성공적으로 프로필 정보를 가져왔습니다.";            
-
 				result.body.add(user);
-
 				List<Notice> notices = Notice.getNotices(user.id, (long) 0);
 				for(Notice obj : notices) {
 					ResNotice value = new ResNotice(obj);
@@ -180,7 +178,6 @@ public class UserController extends Controller{
 			if(user != null) {
 				result.code = HttpContants.CONTINUE_100;
 				result.msg = "기존의 데이터가 없어서 새롭게 계정을 생성하였습니다.";            
-
 				result.body.add(user);
 
 				List<Notice> notices = Notice.getNotices(user.id, (long) 0);
@@ -398,9 +395,8 @@ public class UserController extends Controller{
 			result.code = HttpContants.CONTINUE_100;
 			result.msg = "없는 이메일 주소입니다.";
 		}else{
-
 			if(user.status == 0){
-				System.out.println("aa");
+				System.out.println("탈퇴한 회원입니다.");
 				result.code = HttpContants.CONTINUE_100;
 			}else{
 				if(user.password.equals(password)){
@@ -413,8 +409,6 @@ public class UserController extends Controller{
 				}
 			}
 		}
-
-
 		return ok(new Gson().toJson(result));
 	}
 
