@@ -216,20 +216,7 @@ public class ContentController extends Controller {
 				result.code = HttpContants.FORBIDDEN_403;
 				result.msg = "해당 유저가 없습니다.";
 			}
-		} else {
-			result.code = HttpContants.FORBIDDEN_403;
-			result.msg = "멀티파트 형식이 아닙니다.";
-		}
-
-		return ok(new Gson().toJson(result));
-	}
-
-
-
-	public static Result upload_string_only() {
-		ContentResult result = new ContentResult();
-
-		if (request().body().asFormUrlEncoded() != null) {
+		} else if(request().body().asFormUrlEncoded() != null){
 			Map<String, String[]> params = request().body().asFormUrlEncoded();
 
 			Long user_id = Long.parseLong(params.get("user_id")[0]);
@@ -247,17 +234,13 @@ public class ContentController extends Controller {
 				result.code = HttpContants.FORBIDDEN_403;
 				result.msg = "해당 유저가 없습니다.";
 			}
-		} else {
+		}else{
 			result.code = HttpContants.FORBIDDEN_403;
-			result.msg = "폼URL 형식이 아닙니다.";
+			result.msg = "형식이 잘못되었습니다.";
 		}
 
 		return ok(new Gson().toJson(result));
 	}
-
-
-
-
 
 	public static Result delete() {
 		ContentResult result = new ContentResult();
