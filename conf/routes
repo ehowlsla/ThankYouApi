@@ -3,9 +3,17 @@
 # ~~~~
 
 GET     /                      														controllers.Application.index()
-POST    /login																		controllers.Application.login()
+POST    /login																		controllers.Application.login_web()
+POST    /logout																		controllers.Application.logout()
+POST    /join																		controllers.Application.join_web()
+POST    /more																		controllers.Application.more()
 GET     /home                      											        controllers.Application.home()
-GET     /opendiry                      										    	controllers.Application.opendiry()		
+GET     /opendiary                      										    controllers.Application.opendiary()
+GET     /join_info                      										    controllers.Application.join_info()
+GET     /profile_image                      										controllers.Application.profile_image()
+GET     /neighbordiary/*target_id                      								controllers.Application.neighbordiary(target_id)	
+GET     /christian                      							 				controllers.Application.christian()
+GET     /today_qt	 		               							 				controllers.Application.today_qt()		
 
 GET     /image/*path																controllers.ImageController.getImage(path)
 GET     /content/list/*user_id/*target_id/*last_id/*openLevel						controllers.ContentController.list(user_id, target_id, last_id, openLevel)

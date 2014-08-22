@@ -1,0 +1,861 @@
+@(user: models.User, content: resResults.ContentResult)
+@import java.util._ 
+@import java.text.SimpleDateFormat._
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>크리스천</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+<!-- Le styles -->
+<link href="../assets/css/bootstrap.css" rel="stylesheet">
+<link href="../assets/css/font-awesome.css" rel="stylesheet">
+<link href="../assets/css/font-awesome.min.css" rel="stylesheet">
+<link href="../assets/css/home.css" rel="stylesheet">
+
+
+<!-- Fav and touch icons -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144"
+	href="../assets/ico/apple-touch-icon-144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114"
+	href="../assets/ico/apple-touch-icon-114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72"
+	href="../assets/ico/apple-touch-icon-72-precomposed.png">
+<link rel="apple-touch-icon-precomposed"
+	href="../assets/ico/apple-touch-icon-57-precomposed.png">
+<link rel="shortcut icon" href="../assets/ico/thankdiary.png">
+</head>
+
+<!-- Le javascript
+    ================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="../assets/js/jquery.js"></script>
+<script src="../assets/js/jquery.form.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+
+var scroll_load = {
+	locked: false,
+	event: function() {
+		thisObject = this;
+		$(window).scroll(function () {
+			if(($(window).scrollTop() > $(document).height() * 0.8) && !thisObject.locked) {
+				thisObject.locked = true;
+        		$.ajax({
+        			url: "/more",
+        			type: "POST",
+        			data: {target_id : 0, target_content_id : $("[name=content_id]:last").val(), openLevel : 2},
+        			dataType: "html",
+        			error: function() {
+        				thisObject.locked = false;
+        			},
+        			success: function(data) {
+        				if(data.length > 68){
+        					thisObject.locked = false;
+        					$("#mother").append(data);
+        					thisObject.reload();
+        				}
+        			}
+        		});
+        	}
+		});
+	},
+	
+	reload: function() {
+		$('#thumbnail .container .thumb').unbind();
+		$("#content-box_in > a").unbind();
+		$("#modify").unbind();
+		$("[name=modifybutton]").unbind();
+		$("[name=modifycancelbutton]").unbind();
+		$("#content_delete").unbind();
+		$("#ban").unbind();
+		$("#reply_td a").unbind();
+		$("#reply_delete_confirm").unbind();
+		$("[name=like]").unbind();
+		$("[name=replying]").unbind();
+		$("[name=repple]").unbind();
+		$("[name=repple]").unbind();
+
+		
+		
+		$('#thumbnail .container .thumb').on('click', function(){
+			var id = $(this).parents("ul").attr("name");
+	 		var image = $('[img_content_id=' + id + ']' + '> p > img');
+			image.attr('src', $(this).children("img").attr("src")); 
+		});
+		
+		$("#content-box_in > a").click(
+				function(e) {
+					var content_id = $(this).attr("content_id");
+					var modifybox = $("[modify_content_id=" + content_id + "]");
+					var modifycontens = $("[contens_content_id=" + content_id + "]");
+					e.preventDefault();
+					$(document).on('click.control',
+							function(e) {
+						if ($(e.target).parents('.edit-box').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index("edit-box") < 0)) {
+							$(".edit-box").remove();
+							$(document).unbind('click.control');}
+					});
+					if($(this).attr("user_id") == @user.id){
+						$("body").append("<div class='edit-box hidden'><ul class='list'><li><a id ='modify'>수정하기</a></li><li><a id='content_delete'>삭제하기</a></li></ul></div>");
+						$(".edit-box").css({
+							top : $(this).offset().top + 18,
+							left : $(this).offset().left - 40
+						});
+						$(".edit-box").removeClass("hidden");
+						$(".edit-box").fadeIn(300);
+
+						$("#modify").click(function() {
+							if ($(modifybox).is(":hidden")) {
+								$(modifybox).css({
+									display : "none"
+								});
+								$(modifybox).removeClass("hidden");
+								$(modifybox).show(300);
+								$(modifycontens).addClass("hidden");
+
+							} else {
+								$(modifybox).hide(300, function() {
+									$(modifycontens).css({
+										display : "none"
+									});
+									$(modifycontens).removeClass("hidden");
+									$(modifycontens).show(300);
+									$(modifybox).addClass("hidden");
+								});
+							}
+
+							$("[name=modifybutton]").click(function(){
+								$.ajax({
+									url: "/content/modify",
+									type: "POST",
+									data: {user_id : @user.id, content_id : content_id, openLevel : 2, contents : $("[textarea_in=" + content_id + "]").val()},
+									dataType: "json",
+									success: function(data) {
+										$("body").append("<div id='toast'><b>수정되었습니다.</b></div>");
+										var timer = setInterval(function () {
+											$("#toast").remove();
+											clearInterval(timer);
+										}, 1000);
+										location.reload();
+									}
+								});
+							});
+
+							$("[name=modifycancelbutton]").click(function(){
+								$(modifycontens).css({
+									display : "none"
+								});
+								$(modifycontens).removeClass("hidden");
+								$(modifycontens).show(300);
+								$(modifybox).addClass("hidden");
+							});
+						});
+
+						$("#content_delete").click(function(){
+							$.ajax({
+								url: "/content/delete",
+								type: "POST",
+								data: {content_id : content_id},
+								dataType: "json",
+								success: function(data) {
+									$("body").append("<div id='toast'><b>삭제되었습니다.</b></div>");
+									var timer = setInterval(function () {
+										$("#toast").remove();
+										clearInterval(timer);
+									}, 1000);
+									location.reload();
+								}
+							});
+						});
+						return false;
+					}else{
+						$("body").append("<div class='edit-box hidden'><ul class='list'><li><a id='ban'>신고하기</a></li></ul></div>");
+						$(".edit-box").css({
+							top : $(this).offset().top + 18,
+							left : $(this).offset().left - 40
+						});
+						$(".edit-box").removeClass("hidden");
+						$(".edit-box").fadeIn(300);
+						$("#ban").click(function(){
+							$.ajax({
+								url: "/content/ban",
+								type: "POST",
+								data: {user_id : @user.id, content_id : content_id},
+								dataType: "json",
+								success: function(data) {
+									$("body").append("<div id='toast'><b>신고되었습니다.</b></div>");
+									var timer = setInterval(function () {
+										$("#toast").remove();
+										clearInterval(timer);
+									}, 1000);
+								}
+							});
+						});
+						return false;
+					}
+				});
+
+		$("#reply_td a").click( function(e) {
+			e.preventDefault();
+			var reply_id = $(this).attr("name");
+			$(document).on('click.control',
+					function(e) {
+				if ($(e.target).parents('.reply-delete-box').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index(".reply-delete-box") < 0)) {
+					$(".reply-delete-box").remove();
+					$(document).unbind('click.control');}
+			});
+
+			$("body").append("<div class='reply-delete-box hidden'><ul class='list'><li><a id = 'reply_delete_confirm'>댓글삭제</a></li></ul></div>");
+			$(".reply-delete-box").css({
+				top : $(this).offset().top + 18,
+				left : $(this).offset().left - 40
+			});
+			$(".reply-delete-box").removeClass("hidden");
+			$(".reply-delete-box").fadeIn(300);
+
+			$("#reply_delete_confirm").click(function(){
+				$.ajax({
+					url: "/reply/delete",
+					type: "POST",
+					data: {user_id : @user.id, reply_id : reply_id},
+					dataType: "json",
+					success: function(data) {
+						$("body").append("<div id='toast'><b>댓글이 삭제되었습니다.</b></div>");
+						var timer = setInterval(function () {
+							$("#toast").remove();
+							clearInterval(timer);
+						}, 1000);
+						location.reload();
+					}
+				});
+			});
+			return false;
+		});
+
+
+
+		$("[name=like]").click(function() {
+			$.ajax({
+				url: "/content/like",
+				type: "POST",
+				data: { content_id: $(this).attr("content_id"), user_id : $(this).attr("user_id") },
+				dataType: "json",
+				error: function() {
+
+				},
+				success: function(data) {
+					location.reload();
+				}				
+			}); 			
+		});
+
+
+		$("[name=replying]").keypress(function(e) {
+			if(e.which == 13) 
+				$(this).parent().find("[name=repple]").click()			
+
+
+		});
+
+		$("[name=repple]").click(function() {
+			$.ajax({
+				url: "/reply/upload",
+				type: "POST",
+				data: {user_id : $(this).attr("user_id"), content_id: $(this).attr("content_id"), contents: $(this).parent().find("[name=replying]").val()},
+				dataType: "json",
+				error: function() {
+
+				},
+				success: function(data) {
+					location.reload();
+				}				
+			}); 			
+		});
+		
+	}
+}    
+	$(function() {
+		scroll_load.event();
+		
+		$('#thumbnail .container .thumb').on('click', function(){
+			var id = $(this).parents("ul").attr("name");
+	 		var image = $('[img_content_id=' + id + ']' + '> p > img');
+			image.attr('src', $(this).children("img").attr("src")); 
+		});
+		
+		 $('#myForm').ajaxForm(function() { 
+		    	location.reload();
+		    }); 
+		 
+		$("#diary-write").click(function(e) {
+			e.preventDefault();
+			if ($("#textbox").is(":hidden")) {
+				$("#textbox").css({
+					display : "none"
+				});
+				$("#textbox").removeClass("hidden");
+				$("#textbox").show(300);
+
+			} else {
+				$("#textbox").hide(300, function() {
+					$("#textbox").addClass("hidden");
+				});
+			}
+		});
+
+		$("#diary-img").click(function(e) {
+			e.preventDefault();
+			if ($("#textbox").is(":hidden")) {
+				$("#textbox").css({
+					display : "none"
+				});
+				$("#textbox").removeClass("hidden");
+				$("#textbox").show(300);
+
+				$("#plus").css({
+					display : "none"
+				});
+				$("#plus").removeClass("hidden");
+				$("#plus").show(300);
+
+			} else if ($("#plus").is(":hidden")) {
+				$("#plus").css({
+					display : "none"
+				});
+				$("#plus").removeClass("hidden");
+				$("#plus").show(300);
+			} else {
+				$("#plus").hide(300, function() {
+					$("#plus").addClass("hidden");
+				});
+			}
+		});
+
+		$("#control-box")
+				.click(
+						function(e) {
+							e.preventDefault();
+							$(document).on(
+											'click.control',
+											function(e) {												
+												if ($(e.target).parents('.control-box').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index("control-box") < 0 )) {
+													$(".control-box").remove();
+													$(document).unbind(
+															'click.control');
+												}
+											});
+							$(".top").append("<div class='control-box hidden'><ul class='list'><li><a id='logout'>로그아웃</a></li></ul></div>");
+							$("#logout").click(function(){
+								$.ajax({
+									url: "/logout",
+									type: "POST",
+									success: function(data) {
+										location.href = '/';
+									}
+								});
+							});
+							$(".control-box").css({
+								top : "80px",
+								right : "10px"
+							});
+							$(".control-box").removeClass("hidden");
+							$(".control-box").fadeIn(300);
+							return false;
+						});
+
+		$("#content-box_in > a").click(
+				function(e) {
+					var content_id = $(this).attr("content_id");
+					var modifybox = $("[modify_content_id=" + content_id + "]");
+					var modifycontens = $("[contens_content_id=" + content_id + "]");
+					e.preventDefault();
+					$(document).on('click.control',
+							function(e) {
+						if ($(e.target).parents('.edit-box').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index("edit-box") < 0)) {
+							$(".edit-box").remove();
+							$(document).unbind('click.control');}
+					});
+					if($(this).attr("user_id") == @user.id){
+						$("body").append("<div class='edit-box hidden'><ul class='list'><li><a id ='modify'>수정하기</a></li><li><a id='content_delete'>삭제하기</a></li></ul></div>");
+						$(".edit-box").css({
+							top : $(this).offset().top + 18,
+							left : $(this).offset().left - 40
+						});
+						$(".edit-box").removeClass("hidden");
+						$(".edit-box").fadeIn(300);
+
+						$("#modify").click(function() {
+							if ($(modifybox).is(":hidden")) {
+								$(modifybox).css({
+									display : "none"
+								});
+								$(modifybox).removeClass("hidden");
+								$(modifybox).show(300);
+								$(modifycontens).addClass("hidden");
+
+							} else {
+								$(modifybox).hide(300, function() {
+									$(modifycontens).css({
+										display : "none"
+									});
+									$(modifycontens).removeClass("hidden");
+									$(modifycontens).show(300);
+									$(modifybox).addClass("hidden");
+								});
+							}
+
+							$("[name=modifybutton]").click(function(){
+								$.ajax({
+									url: "/content/modify",
+									type: "POST",
+									data: {user_id : @user.id, content_id : content_id, openLevel : 2, contents : $("[textarea_in=" + content_id + "]").val()},
+									dataType: "json",
+									success: function(data) {
+										$("body").append("<div id='toast'><b>수정되었습니다.</b></div>");
+										var timer = setInterval(function () {
+											$("#toast").remove();
+											clearInterval(timer);
+										}, 1000);
+										location.reload();
+									}
+								});
+							});
+
+							$("[name=modifycancelbutton]").click(function(){
+								$(modifycontens).css({
+									display : "none"
+								});
+								$(modifycontens).removeClass("hidden");
+								$(modifycontens).show(300);
+								$(modifybox).addClass("hidden");
+							});
+						});
+
+						$("#content_delete").click(function(){
+							$.ajax({
+								url: "/content/delete",
+								type: "POST",
+								data: {content_id : content_id},
+								dataType: "json",
+								success: function(data) {
+									$("body").append("<div id='toast'><b>삭제되었습니다.</b></div>");
+									var timer = setInterval(function () {
+										$("#toast").remove();
+										clearInterval(timer);
+									}, 1000);
+									location.reload();
+								}
+							});
+						});
+						return false;
+					}else{
+						$("body").append("<div class='edit-box hidden'><ul class='list'><li><a id='ban'>신고하기</a></li></ul></div>");
+						$(".edit-box").css({
+							top : $(this).offset().top + 18,
+							left : $(this).offset().left - 40
+						});
+						$(".edit-box").removeClass("hidden");
+						$(".edit-box").fadeIn(300);
+						$("#ban").click(function(){
+							$.ajax({
+								url: "/content/ban",
+								type: "POST",
+								data: {user_id : @user.id, content_id : content_id},
+								dataType: "json",
+								success: function(data) {
+									$("body").append("<div id='toast'><b>신고되었습니다.</b></div>");
+									var timer = setInterval(function () {
+										$("#toast").remove();
+										clearInterval(timer);
+									}, 1000);
+								}
+							});
+						});
+						return false;
+					}
+				});
+		
+		$("#reply_td a").click( function(e) {
+					e.preventDefault();
+					var reply_id = $(this).attr("name");
+					$(document).on('click.control',
+									function(e) {
+										if ($(e.target).parents('.reply-delete-box').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index(".reply-delete-box") < 0)) {
+											$(".reply-delete-box").remove();
+											$(document).unbind('click.control');}
+									});
+
+						$("body").append("<div class='reply-delete-box hidden'><ul class='list'><li><a id = 'reply_delete_confirm'>댓글삭제</a></li></ul></div>");
+						$(".reply-delete-box").css({
+							top : $(this).offset().top + 18,
+							left : $(this).offset().left - 40
+						});
+						$(".reply-delete-box").removeClass("hidden");
+						$(".reply-delete-box").fadeIn(300);
+						
+						$("#reply_delete_confirm").click(function(){
+							$.ajax({
+								url: "/reply/delete",
+								type: "POST",
+								data: {user_id : @user.id, reply_id : reply_id},
+								dataType: "json",
+								success: function(data) {
+									$("body").append("<div id='toast'><b>댓글이 삭제되었습니다.</b></div>");
+									var timer = setInterval(function () {
+										$("#toast").remove();
+										clearInterval(timer);
+									}, 1000);
+									location.reload();
+								}
+							});
+						});
+						return false;
+				});
+		
+		
+		
+		$("[name=like]").click(function() {
+			$.ajax({
+				url: "/content/like",
+				type: "POST",
+				data: { content_id: $(this).attr("content_id"), user_id : $(this).attr("user_id") },
+				dataType: "json",
+				error: function() {
+				
+				},
+				success: function(data) {
+					location.reload();
+				}				
+			}); 			
+		});
+		
+
+		$("[name=replying]").keypress(function(e) {
+			if(e.which == 13) 
+				$(this).parent().find("[name=repple]").click()			
+			
+				
+		});
+		
+		$("#text-area").click(function() {
+			$(this).delay("slow").attr("rows", 10);
+				
+		});
+		
+		$("[name=repple]").click(function() {
+			$.ajax({
+				url: "/reply/upload",
+				type: "POST",
+				data: {user_id : $(this).attr("user_id"), content_id: $(this).attr("content_id"), contents: $(this).parent().find("[name=replying]").val()},
+				dataType: "json",
+				error: function() {
+				
+				},
+				success: function(data) {
+					location.reload();
+				}				
+			}); 			
+		});
+		
+		$(".fileData").change(function(){
+	        readURL(this, $(this).attr('name'));
+	        
+	    });
+		
+		$("[name = user_profile]").click(function(){
+			open_profile_image();
+		});
+		
+		
+	});
+    
+    function readURL(input, img_num) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+			
+            reader.onload = function (e) {
+            	$("#" + img_num).attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    
+    function open_profile_image() {
+    	$(".modal").css({
+    		"z-index": 10000
+    	});
+    	
+    	$("#modal_profile_image").on("hidden.bs.modal", function() {
+    		$(".modal").css({
+    			"z-index": -1
+    		});
+    	});
+    	$("#modal_profile_image").modal('show');
+    }
+
+	
+</script>
+
+<body>
+	<div class="top">
+		<ul class="top_menu">
+			<li style="margin-top: -10px; margin-right: 40px; margin-left: 60px;">
+				<a href="/christian"><img src="../assets/Img/logo_white.png"
+					width="120px;" style="cursor: pointer;"></a>
+			</li>
+			<li><a href="/home">나의일기</a></li>
+			<li><a href="/opendiary" style="color: white;">공개일기</a></li>
+			<li><a href="/christian">크리스천</a></li>
+			<li><a href="/today_qt">오늘QT</a></li>
+			<li><a href="#">자유나눔</a></li>
+			<li
+				style="position: absolute; padding: 0; margin-top: -30px; right: 0; margin-right: 20px;">
+				<div
+					style="background-color: rgb(18, 138, 120); width: 55px; height: 60px; padding: 10px; display: inline-block;">
+					<img src="/image/@user.image_url1"
+						style="width: 55px; height: 55px; border-radius: 5px;"/>
+				</div> <span class="nickname"
+				style="color: rgb(18, 138, 120); margin-right: 15px;"> <a
+					href="/home">@user.nickname</a></span> <a id="control-box" href="#"
+				style="text-decoration: none;"> <img
+					src="../assets/Img/logout.png" style="width: 50px;">
+			</a>
+			</li>
+		</ul>
+	</div>
+	<div class="line-back"></div>
+	<div id ="mother">
+		<div class="content">
+			<div class="menu-box">
+				<!-- <a style="display: inline-block; width: 48%; text-decoration: none"
+					href="#" id="diary-write"> <img src="/assets/Img/write_btn.png"
+					style="cursor: pointer;" />
+				</a>  -->
+				<div id="textbox">
+					<form id="myForm" action="/content/upload" method="post"
+						name="form" style="margin: 0; padding: 0;">
+						<div class="write-box">
+							<textarea id ="text-area" class="form-control" placeholder="오늘 감사했던 이야기를 들려주세요"
+								name="contents" rows="3" cols="50"
+								style="width: 484px;  border: 0; border-radius: 8px 8px 0 0;"></textarea>
+							<input type="text" name="user_id" value="@user.id"
+								style="display: none;" /> <input type="text" name="openLevel"
+								value="2" style="display: none;" />
+						</div>
+						<div id="plus" class="hidden" style="margin-top: 10px; margin-bottom: 10px;">
+							<div class="container">
+								<ul>
+									<li class="thumb"><span class="buttonWrap"> <input
+											type="file" class="fileData" name="1" /> <img class="preview"
+											src="../assets/img/profile_img.png" id="1" />
+									</span></li>
+									<li class="thumb"><span class="buttonWrap"> <input
+											type="file" class="fileData" name="2" /> <img class="preview"
+											src="../assets/img/profile_img.png" id="2" />
+									</span></li>
+									<li class="thumb"><span class="buttonWrap"> <input
+											type="file" class="fileData" name="3" /> <img class="preview"
+											src="../assets/img/profile_img.png" id="3" />
+									</span></li>
+									<li class="thumb"><span class="buttonWrap"> <input
+											type="file" class="fileData" name="4" /> <img class="preview"
+											src="../assets/img/profile_img.png" id="4" />
+									</span></li>
+								</ul>
+							</div>
+						</div>
+							<div class="button-box">
+								<a style="display: inline-block; width: 30px; margin-left: 10px; text-decoration: none"
+									id="diary-img" href="#"> <img
+									src="/assets/Img/camera.png" style="cursor: pointer;" />
+								</a>
+								<button type="submit" name="commit"
+									style="float:right; display: inline-block; text-decoration: none; background-color: rgb(79, 189, 158); border: 0; margin-right: 5px; border-radius: 5px; height: 30px; width: 80px;">
+									<span style="color: white;"> <i
+										class="fa fa-paper-plane" style="display: inline;"> </i> 글쓰기
+									</span>
+								</button>
+							</div>
+						</form>
+				</div>
+
+			</div>
+			@for(i <-0 until content.body.size()){
+			<input type="hidden" name="content_id" value="@content.body.get(i).id" />
+				<div id="content-box" class="content-box">
+					<div id = "content-box_in" style="padding: 1em; padding-bottom: 10px;">
+						<h4
+							style="display: inline; font-weight: bold; color: rgb(79, 189, 158);">@content.body.get(i).user.nickname
+						</h4>
+						<h6 style="display: inline; color: gray;">@content.body.get(i).createDate
+						</h6>
+						<a class="fa fa-caret-square-o-down"
+							style="float: right; text-decoration: none; color: rgb(79, 189, 158);"
+							href="#" user_id="@content.body.get(i).user.id"
+							content_id="@content.body.get(i).id"></a>
+
+						<div id="modifybox" class="hidden"
+							modify_content_id="@content.body.get(i).id">
+							<div class="write-box">
+								<textarea class="form-control" placeholder="이야기를 들려주세요"
+									textarea_in="@content.body.get(i).id" rows="10" cols="50"
+									style="width: 97%; margin-top: 15px;">@content.body.get(i).contents </textarea>
+							</div>
+							<div class="button-box" style="background-color: white; text-align: right;">
+								<button type="button"
+									name="modifybutton"
+									style="display: inline-block; background-color: rgb(79, 189, 158); border: 0; margin-right: 5px; border-radius: 5px; height: 30px; width: 60px;"
+									user_id="@user.id">
+									<span style="color: white;">수정</span>
+								</button>
+								<button type="button"
+									name="modifycancelbutton" style="display: inline-block; background-color: r#CDCCCB; border: 0; margin-right: 5px; border-radius: 5px; height: 30px; width: 60px;">
+									<span style="color: white;">취소</span>
+								</button>
+							</div>
+						</div>
+						<h5 id="contents" contens_content_id="@content.body.get(i).id">@content.body.get(i).contents</h5>
+						@if(!content.body.get(i).imageURL1.isEmpty()){
+
+						<div>
+							<img id="image" img_content_id="@content.body.get(i).id" class="gallery" num = "@i" src="/image/@content.body.get(i).imageURL1" />
+						</div>
+
+						<div id="thumbnail">
+							<div class="container">
+								<ul name="@content.body.get(i).id">
+									@if(!content.body.get(i).imageURL1.isEmpty()){
+									<li class="thumb"><img
+										src="/image/@content.body.get(i).imageURL1"
+										 /></li> }
+									@if(!content.body.get(i).imageURL2.isEmpty()){
+									<li class="thumb"><img
+										src="/image/@content.body.get(i).imageURL2"
+										 /></li> }
+									@if(!content.body.get(i).imageURL3.isEmpty()){
+									<li class="thumb"><img
+										src="/image/@content.body.get(i).imageURL3"
+										 /></li> }
+									@if(!content.body.get(i).imageURL4.isEmpty()){
+									<li class="thumb"><img
+										src="/image/@content.body.get(i).imageURL4"
+										 /></li> }
+
+								</ul>
+							</div>
+
+						</div>
+						} <span class="like-box "> @if(content.body.get(i).isLike >
+							0){
+							<button type="button" name="like"
+								style="display: inline-block; text-decoration: none; background-color: rgb(255, 99, 100); border: 0; border-radius: 5px; height: 30px;"
+								user_id="@user.id" content_id="@content.body.get(i).id">
+								<span style="color: white;"> 좋아요 취소
+									</span>
+								}else{
+								<button type="button" name="like"
+									style="display: inline-block; text-decoration: none; background-color: rgb(255, 99, 100); border: 0; border-radius: 5px; height: 30px;"
+									user_id="@user.id" content_id="@content.body.get(i).id">
+									<span style="color: white;"> <i
+										class="fa fa-thumbs-o-up" style="display: inline;"></i> 좋아요
+									</span>
+									}
+								</button>
+								<b style="float: right; color: rgb(255, 99, 100);"> 좋아요
+									@content.body.get(i).likeCount 댓글
+									@content.body.get(i).replyCount </b>
+						</span>
+					</div>
+					<div class="reply ">
+						<p>
+							<input class="span2" type="text" name="replying"
+								placeholder="댓글을 입력하세요.."
+								style="width: 77%; display: inline-block; margin-left: 10px; margin-top: 10px; margin-right: 5px;">
+
+							<button type="button" name="repple"
+								style="display: inline-block; text-decoration: none; background-color: #CDCCCB; border: 0; border-radius: 5px; height: 30px; width: 70px;"
+								user_id="@user.id" content_id="@content.body.get(i).id">
+								<span style="color: white;"> <i class="fa fa-paper-plane"
+									style="display: inline;"> </i> 댓글
+								</span>
+							</button>
+						</p>
+					</div>
+
+
+					@if(content.body.get(i).replyCount > 0){ @for(j <-0 until
+					content.replies.size()){ @if(content.replies.get(j).content_id ==
+					content.body.get(i).id){
+					<div style="padding: 10px;">
+						<TABLE>
+							<TR>
+								<TD style="width: 60px;"><a
+									href="/neighbordiary/@content.replies.get(j).user.id"><img
+										src="/image/@content.replies.get(j).user.image_url1"
+										class="ripple" /> </a></TD>
+								<TD id="reply_td" style="padding: 10px; width: 87%"><b
+									style="font-weight: bold; color: black; font-size: 13px; color: rgb(79, 189, 158)">@content.replies.get(j).user.nickname
+								</b> <b style="color: gray; font-size: 11px;">
+										@content.replies.get(j).createDate </b>
+									@if(content.replies.get(j).user.id == user.id){ <a
+									style="font-size: 13px; float: right; color: rgb(79, 189, 158)" href="#"
+									name="@content.replies.get(j).id"> <i
+										class="fa fa-minus-square"></i> }
+								</a> <b style="display: block; font-size: 12px;">
+										@content.replies.get(j).contents </b></TD>
+							</TR>
+						</TABLE>
+
+					</div>
+					} } }
+					<div class="profile">
+						<a href="/neighbordiary/@content.body.get(i).user.id"><img
+							src="/image/@content.body.get(i).user.image_url1"
+							style="width: 100px;" /></a>
+					</div>
+
+				</div>
+				}
+		</div>
+	</div>
+		<div class='modal fade' id='modal_profile_image' style="z-index: -1;">
+		<div class='modal-dialog'>
+			<div class='modal-header'>@user.nickname 프로필 사진</div>
+			<div class='modal-body'>
+				<TABLE id="information" style="width: 100%">
+					<TR>
+						<TD style="width: 320px;"><img src="/image/@user.image_url1"
+							style="width: 300px;" class="img-rounded" id="image_profile" /></TD>
+
+						<TD>
+							<h4>소속 : @user.job</h4>
+							<h4>사는곳 : @user.city</h4>
+							<h4>생일 : @user.birth</h4>
+							<h4>한마디 : @user.memo</h4>
+						</TD>
+					</TR>
+				</TABLE>
+
+			</div>
+			<form id="image_form" action="/user/userImageUpdate" method="post"
+				name="form">
+				<div class='model-footer' style="text-align: center;">
+					<input type="file" id="input_image_profile" name="1"> <input
+						type="text" name="user_id" value="@user.id" style="display: none;" />
+					<input type="text" name="num" value="1" style="display: none;" />
+				</div>
+				<div class='model-footer' style="text-align: center;">
+					<button id="profile_image_update" class='btn btn-default'
+						style="margin: 10px;" type="submit">확인</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

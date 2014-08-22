@@ -159,6 +159,34 @@ public class User extends Model{
 		this.password = passowrd;
 	}
 	
+	public User(String email, String passowrd) {
+		// TODO Auto-generated constructor stub
+		Date date = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+		String phone = format.format(date);
+		String udid = format.format(date) + "_udid";
+		String device_id = format.format(date) + "_device_id";
+		this.nickname = "";
+		this.memo = "";
+		this.udid = udid;
+		this.status = 1;
+		this.gender = 0;
+		this.create_date = new Date();
+		this.image_url1 = "";
+		this.image_url2 = "";
+		this.image_url3 = "";
+		this.image_url4 = "";
+		this.job = "";
+		this.birth = "";
+		this.device_id = device_id;
+		this.phone = phone;
+		this.app_version = "";
+		this.os_version = "";
+		this.token_key = "";
+		this.email = email;
+		this.password = passowrd;
+	}
+	
 	public static User join(String udid, String app_version, String os_version) {
 		User user = User.getUserUdid(udid);
 		if(user == null) {
@@ -185,6 +213,17 @@ public class User extends Model{
 		User user = User.getUserEmail(email);
 		if(user == null) {
 			user = new User(app_version, os_version, email, password);
+			user.save();
+			user = User.getUserEmail(email);
+		}  
+		
+		return user;
+	}
+	
+	public static User join_email_web(String email, String password) {
+		User user = User.getUserEmail(email);
+		if(user == null) {
+			user = new User(email, password);
 			user.save();
 			user = User.getUserEmail(email);
 		}  

@@ -396,7 +396,6 @@ public class UserController extends Controller{
 			result.msg = "없는 이메일 주소입니다.";
 		}else{
 			if(user.status == 0){
-				System.out.println("탈퇴한 회원입니다.");
 				result.code = HttpContants.CONTINUE_100;
 			}else{
 				if(user.password.equals(password)){
@@ -424,7 +423,6 @@ public class UserController extends Controller{
 		}else{
 			user.status =0;
 			user.update();
-			System.out.println(user.status);
 			result.code = HttpContants.OK_200;
 			result.msg = "탈퇴처리가 완료되었습니다.";
 			result.body.add(new ResUser(user));
@@ -440,16 +438,16 @@ public class UserController extends Controller{
 
 		if (request().body().asMultipartFormData() != null) {
 			Map<String, String[]> params = request().body().asMultipartFormData().asFormUrlEncoded();
-
+			
 
 			long user_id = Long.parseLong(params.get("user_id")[0]);
 			int num = Integer.parseInt(params.get("num")[0]);
-
-
+			
 
 			User user = User.getUserInfo(user_id);
 			if(user != null) {
 				List<FilePart> uploadFiles = request().body().asMultipartFormData().getFiles();
+				
 
 				for (FilePart part : uploadFiles) {
 					if (part != null) {
@@ -486,7 +484,7 @@ public class UserController extends Controller{
 							user.update();
 
 							result.code = HttpContants.OK_200;
-							result.msg = num + "번째 사진이 업로드 었습니다.";
+							result.msg = num + "번째 사진이 업로드 되었습니다.";
 							result.body.add(new ResUser(user));
 
 							if(preImageURL.length() > 0) {

@@ -1,0 +1,221 @@
+@(user: models.User) 
+@import java.util._ 
+@import java.text.SimpleDateFormat._
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>회원정보입력</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+<!-- Le styles -->
+<link href="../assets/css/bootstrap.css" rel="stylesheet">
+<link href="../assets/css/font-awesome.css" rel="stylesheet">
+<link href="../assets/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="../assets/js/jquery.js"></script>
+<script src="../assets/js/jquery.form.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="@routes.Assets.at("javascripts/join_info.js")"></script>
+
+<script type="text/javascript">
+$(function() {
+	scroll_resize();
+	$("#information_update").click(function(){
+		if($("#nickname").val() == "" ||$("#job").val() =="" || $("#city").val() == "" || $("#memo").val() ==""){
+			$("body").append("<div id='toast'><b>정보를 모두 입력해주세요.</b></div>");
+			var timer = setInterval(function () {
+				$("#toast").remove();
+				clearInterval(timer);
+			}, 1000);
+		}else{
+			$.ajax({
+				url: "/user/userUpdate",
+				type: "POST",
+				data: {user_id : @user.id , memo : $("#memo").val(), job : $("#job").val(), nickname : $("#nickname").val(), gender : getRadioValue($("[name=chk_info]")), city : $("#city").val(), birth : $("#birth").val()},
+				dataType: "json",
+				error :function(data){
+					alert("회원정보등록에 실패하였습니다.");
+				},
+				success: function(data) {
+					if(data.code == 200){
+						location.href = '/profile_image';
+					}else if(data.code == 403){
+						alert("중복된 닉네임이 있습니다.");
+					}
+				}
+			});
+		}
+		
+	});
+});
+
+function scroll_resize(){
+	$(window).resize(function() {
+		if($(window).height() <= 748) {
+			$("footer").fadeOut(0);
+		}else{
+			$("footer").fadeIn(0);
+		}
+	});
+}
+
+</script>
+
+<style type="text/css">
+body {
+	color: rgb(97, 117, 107);
+}
+
+.intro_head {
+	position: relative;
+	margin-top: 60px;
+}
+
+.join_info {
+	position: relative;
+	width: 300px;
+	margin: 0 auto;
+}
+
+.border_box {
+	float: left;
+	width: 100%;
+}
+
+.border_box img {
+	width: 80px;
+	position: absolute;
+}
+
+.border_box_in {
+	border: 2px solid rgb(79, 189, 158);
+	width: 100%;
+	height: 400px;
+	border-radius: 15px;
+	margin: 20px 0 0 20px;
+}
+
+tr {
+	height: 60px;
+}
+
+tr td {
+	color: rgb(79, 189, 158);
+	font-size: 25px;
+}
+
+#information{
+	width: 700px;
+}
+
+#information input{
+	width: 200px;
+	height: 30px;
+}
+
+footer img {
+	width: 940px;
+}
+
+#toast {
+	position: fixed;
+	z-index: 1000;
+	top: 80%;
+	left: 50%;
+	width: 200px;
+	background-color: black;
+	color: white;
+	margin-left: -100px;
+	border: 1px solid #666;
+	padding: 10px 0;
+	text-align: center;
+	opacity: .9;
+	/* opacity time */
+	-webkit-transition: opacity 0.5s ease-out;
+	-moz-transition: opacity 0.5s ease-out;
+	-ms-transition: opacity 0.5s ease-out;
+	-o-transition: opacity 0.5s ease-out;
+	transition: opacity 0.5s ease-out;
+	/* round border */
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+</style>
+
+</head>
+<body>
+	<div class="intro_head">
+		<div class="container">
+			<img src="/assets/Img/intro_logo.png">
+		</div>
+	</div>
+	<div class="container" style="margin-top: 70px;">
+		<div class="border_box">
+			<img src="/assets/Img/intro_join.png"/>
+			<div class="border_box_in">
+				<div style="margin: 60px;">
+					<h2>회원가입정보</h2>
+				</div>
+				<div style="float: left; margin-left: 60px;">
+					<TABLE id="information">
+						<TR>
+							<TD>닉네임</TD>
+							<TD><input id="nickname" class="span2" type="text"
+								placeholder="닉네임" value="@user.nickname"/></TD>
+							<TD>생일</TD>
+
+							<TD><input id="birth" type="date" min="1900-01-01"
+								name="date" value="@user.birth" placeholder="1987-04-22"/></TD>
+						</TR>
+
+						<TR>
+							<TD>소속</TD>
+							<TD><input id="job" class="span2" type="text"
+								placeholder="OO교회" value="@user.job"/></TD>
+							<TD>성별</TD>
+
+							<TD style="color: rgb(97,117,107); font-size: 15px;">@if(user.gender > 0){ 남 <input type="radio"
+								name="chk_info" value="1"
+								style="width: 20px; margin-bottom: 7px;" checked="true" /> 여 <input
+								type="radio" name="chk_info" value="0"
+								style="width: 20px; margin-bottom: 7px;" /> }else{ 남 <input
+								type="radio" name="chk_info" value="1"
+								style="width: 20px; margin-bottom: 7px;" /> 여 <input
+								type="radio" name="chk_info" value="0"
+								style="width: 20px; margin-bottom: 7px;" checked="true" /> }
+							</TD>
+						</TR>
+
+						<TR>
+							<TD>사는곳</TD>
+
+							<TD><input id="city" class="span2" type="text"
+								placeholder="서울" value="@user.city"/></TD>
+							<TD>한마디</TD>
+							<TD><input id="memo" class="span2" type="text"
+								placeholder="항상 감사합니다." value="@user.memo"/></TD>
+						</TR>
+					</TABLE>
+				</div>
+				<div style="float: right; margin-right: 70px;">
+					<input type="image" id="information_update"
+						src="/assets/Img/join_next.png"
+						style="width: 60px; position: relative; top: 90px;" />
+						<p style="position: relative; top: 90px;">다음단계</p>
+				</div>
+			</div>
+		</div>
+
+		<footer>
+			<img src="../assets/Img/footer.jpg"/>
+		</footer>
+
+	</div>
+
+
+</body>
+</html>

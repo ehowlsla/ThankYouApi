@@ -1,0 +1,418 @@
+@CHARSET "UTF-8";
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+	background-color: #EAEAEA;
+	font-size: 1em;
+}
+
+#toast {
+	position: fixed;
+	z-index: 1000;
+	top: 80%;
+	left: 50%;
+	width: 200px;
+	background-color: black;
+	color: white;
+	margin-left: -100px;
+	border: 1px solid #666;
+	padding: 10px 0;
+	text-align: center;
+	opacity: .9;
+	/* opacity time */
+	-webkit-transition: opacity 0.5s ease-out;
+	-moz-transition: opacity 0.5s ease-out;
+	-ms-transition: opacity 0.5s ease-out;
+	-o-transition: opacity 0.5s ease-out;
+	transition: opacity 0.5s ease-out;
+	/* round border */
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+.edit-box {
+	position: absolute;
+	z-index: 1000;
+	font-size: 12px;
+	width: 58px;
+	border: 1px solid #e2e2e2;
+	background-color: #fff;
+}
+
+.edit-box .list {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.edit-box .list li {
+	padding: 5px;
+	float: right;
+	cursor: pointer;
+}
+
+.edit-box .list li:hover {
+	background-color: #f1f1f1;
+}
+
+.reply-delete-box {
+	position: absolute;
+	z-index: 1000;
+	font-size: 12px;
+	width: 58px;
+	border: 1px solid #e2e2e2;
+	background-color: #fff;
+}
+
+.reply-delete-box .list {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.reply-delete-box .list li {
+	padding: 5px;
+	float: right;
+	cursor: pointer;
+}
+
+.reply-delete-box .list li:hover {
+	background-color: #f1f1f1;
+}
+
+.control-box {
+	position: absolute;
+	z-index: 1000;
+	font-size: 12px;
+	width: 73px;
+	right: 0.3em;
+	border: 1px solid #e2e2e2;
+	background-color: #fff;
+}
+
+.control-box .list {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.control-box .list li {
+	padding: 1em;
+	float: right;
+	cursor: pointer;
+}
+
+.control-box .list li:hover {
+	background-color: #f1f1f1;
+}
+
+.sidebar-nav {
+	padding: 9px 0;
+}
+
+.media (max-width: 980px ) {
+	/* Enable use of floated navbar text */ .navbar-text .pull-right {
+	float: none;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+}
+.line-back {
+	position: fixed;
+	z-index: 0;
+	left: 0px;
+	top: 55px;
+	bottom: 0px;
+	right: 0px;
+	width: 530px;
+	margin: 0 auto;
+	border-left: 2px solid #DBDDE0;
+	border-right: 2px solid #DBDDE0;
+}
+
+.content {
+	margin: 0 auto;
+	min-width: 500px;
+	width: 500px;
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+.content .content-box {
+	position: relative;
+	display: block;
+	padding: 1em;
+	margin-top: 2em;
+	min-height: 60px;
+	background-color: #fff;
+	border-radius: 5px;
+}
+
+.content .menu-box {
+	position: relative;
+	display: block;
+	padding: 10px;
+	min-height: 35px;
+	height: 100%;
+	background-color: #f5f5f5;
+}
+
+.content .menu-box .write {
+	position: relative;
+	border: 1px solid;
+	display: block;
+	width: 44%;
+	padding: 10px;
+	min-height: 20px;
+	border-color: gray;
+	background-color: #fff;
+}
+
+.content .content-box .profile {
+	left: -70px;
+	top: 10px;
+	position: absolute;
+	width: 60px;
+	height: 60px;
+	overflow: hidden;
+	border-radius: 5px;
+	background-color: #fff;
+	border: 1px solid #f1f1f1;
+}
+
+.content .content-box .profile img {
+	cursor: pointer;
+}
+
+.ripple {
+	width: 60px;
+	height: 60px;
+	overflow: hidden;
+	border-radius: 5px;
+	background-color: #fff;
+	border: 1px solid #f1f1f1;
+	margin-top: 10px;
+}
+
+.like-box {
+	position: relative;
+	margin-top: 30px;
+	display: block;
+	width: 100%;
+	min-height: 10px;
+	font-size: 13px;
+}
+
+.like-box .like {
+	position: relative;
+	border: 1px solid;
+	display: block;
+	width: 60px;
+	padding: 5px;
+	min-height: 10px;
+	border-color: gray;
+	background-color: #fff;
+}
+
+.reply {
+	position: relative;
+	margin-top: 5px;
+	display: block;
+	width: 100%;
+	min-height: 10px;
+}
+
+.reply .reply_button {
+	position: relative;
+	border: 1px solid;
+	margin-top: 5px;
+	display: block;
+	padding: 5px;
+	min-height: 5px;
+	border-color: gray;
+	font-size: 13px;
+	background-color: #fff;
+}
+
+.well1 {
+	min-height: 20px;
+	padding: 19px;
+	margin-bottom: 20px;
+	background-color: #f5f5f5;
+	border: 1px solid #e3e3e3;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	width: 400px;
+	float: left;
+	position: fixed;
+}
+
+#gallery {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin: -297px 0 0 -412px;
+	width: 824px;
+	height: 595px;
+}
+
+#image {
+	width: 100%;
+	margin: 0 auto;
+}
+
+#image p {
+	display: none;
+}
+
+#image p img {
+	width: 100%;
+	height: 470px;
+}
+
+#thumbnail {
+	position: relative;
+	width: 100%;
+	height: 95px;
+	margin-top: 30px;
+}
+
+#thumbnail div {
+	float: left;
+}
+
+#thumbnail .left {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 33px;
+	height: 95px;
+	padding-top: 30px;
+	text-align: center;
+	cursor: pointer;
+}
+
+#thumbnail .right {
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 33px;
+	height: 95px;
+	padding-top: 30px;
+	text-align: center;
+	cursor: pointer;
+}
+
+#thumbnail .container {
+	overflow: hidden;
+	position: relative;
+	left: 33px;
+	width: 760px;
+	height: 95px;
+}
+
+#thumbnail .container ul {
+	position: absolute;
+	width: 2560px;
+	margin-left: -8px;
+}
+
+#thumbnail .container .thumb {
+	float: left;
+	width: 98px;
+	height: 60px;
+	margin-left: 5px;
+	list-style: none;
+}
+
+#thumbnail .container .thumb.ml0 {
+	margin-left: 0
+}
+
+.button-box {
+	text-align: center;
+	padding-top: 1em;
+	padding-bottom: 0.5em;
+}
+
+#plus {
+	position: relative;
+	width: 100%;
+	height: 100px;
+	margin-top: 10px;
+}
+
+#plus div {
+	float: left;
+}
+
+#plus .container {
+	overflow: hidden;
+	position: relative;
+	width: 760px;
+	height: 100px;
+}
+
+#plus .container ul {
+	position: absolute;
+	width: 100%;
+	margin: 0 0 0 0;
+}
+
+#plus .container .thumb {
+	float: left;
+	margin-left: 15px;
+	list-style: none;
+}
+
+.modal-header {
+	background-color: #DD604A;
+	color: white;
+}
+
+#information input {
+	width: 90%;
+}
+
+.hidden {
+	display: none;
+}
+
+.buttonWrap {
+	position: relative;
+	float: left;
+	overflow: hidden;
+	cursor: pointer;
+	width: 100px;
+	height: 100px;
+}
+
+.buttonWrap input {position：absolute;
+	margin-left: -10px;
+	filter: alpha(opacity = 0);
+	opacity: 0;
+	-moz-opacity: 0;
+	cursor: pointer;
+	width: 100px;
+	height: 100px;
+}
+
+.fileData {
+	position: relative;
+	z-index: 100;
+}
+
+.preview {
+	position: absolute;
+	height: 100px;
+	width: 100px;
+	z-index: 0;
+	left: 0px;
+	top: 0px;
+}
