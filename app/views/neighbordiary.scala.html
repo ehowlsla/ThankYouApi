@@ -64,12 +64,41 @@ var scroll_load = {
 			$("[name=replying]").unbind();
 			$("[name=repple]").unbind();
 			$("[name=repple]").unbind();
+$(".gallery").unbind();
+			
+			$(".gallery").click(function() {
+		 		$(document).on('click.control',
+						function(e) {
+					if ($(e.target).parents('.gallery-tool').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index("gallery-tool") < 0)) {
+						$(".gallery-tool").remove();
+						$(document).unbind('click.control');}
+				});
+		 		
+		 		
+				
+				$("body").append("<div class='gallery-tool hidden' style='position:fixed;'><div><div class='gallery-box'><img id='gallery-in' style='opacity:1;' src=''></div></div></div>");
+				
+				$(".gallery-tool").css({
+		       		width: $(window).width() + "px",
+		       		height: $(window).height()+ "px"
+				});
+				
+			 	 $("#gallery-in").attr("src", $(this).attr("src").replace("thumbnail_", "")).load(function(){
+					$(".gallery-box").css({
+			       		left: (( $(window).width() - $("#gallery-in").width() ) / 2) + "px",
+			       		top: (( $(window).height() - $("#gallery-in").height() ) / 2) + "px"
+					});
+				});  
+					$(".gallery-tool").removeClass("hidden");
+					$(".gallery-tool").show();
+				return false;
+			});
 
 			
 			
 			$('#thumbnail .container .thumb').on('click', function(){
 				var id = $(this).parents("ul").attr("name");
-		 		var image = $('[img_content_id=' + id + ']' + '> p > img');
+		 		var image = $('[img_content_id=' + id + ']');
 				image.attr('src', $(this).children("img").attr("src")); 
 			});
 			
@@ -190,7 +219,7 @@ var scroll_load = {
 				var reply_id = $(this).attr("name");
 				$(document).on('click.control',
 						function(e) {
-					if ($(e.target).parents('.reply-delete-box').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index(".reply-delete-box") < 0)) {
+					if ($(e.target).parents('.reply-delete-box').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index("reply-delete-box") < 0)) {
 						$(".reply-delete-box").remove();
 						$(document).unbind('click.control');}
 				});
@@ -268,9 +297,38 @@ var scroll_load = {
 
 $(function() {
 	scroll_load.event();
+	$(".gallery").click(function() {
+ 		$(document).on('click.control',
+				function(e) {
+			if ($(e.target).parents('.gallery-tool').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index("gallery-tool") < 0)) {
+				$(".gallery-tool").remove();
+				$(document).unbind('click.control');}
+		});
+ 		
+ 		
+		
+		$("body").append("<div class='gallery-tool hidden' style='position:fixed;'><div><div class='gallery-box'><img id='gallery-in' style='opacity:1;' src=''></div></div></div>");
+		
+		$(".gallery-tool").css({
+       		width: $(window).width() + "px",
+       		height: $(window).height()+ "px"
+		});
+		
+	 	 $("#gallery-in").attr("src", $(this).attr("src").replace("thumbnail_", "")).load(function(){
+			$(".gallery-box").css({
+	       		left: (( $(window).width() - $("#gallery-in").width() ) / 2) + "px",
+	       		top: (( $(window).height() - $("#gallery-in").height() ) / 2) + "px"
+			});
+		});  
+			$(".gallery-tool").removeClass("hidden");
+			$(".gallery-tool").show();
+		return false;
+	});
+	
+	
 	$('#thumbnail .container .thumb').on('click', function(){
 		var id = $(this).parents("ul").attr("name");
- 		var image = $('[img_content_id=' + id + ']' + '> p > img');
+ 		var image = $('[img_content_id=' + id + ']');
 		image.attr('src', $(this).children("img").attr("src")); 
 	});
 	
@@ -467,7 +525,7 @@ $(function() {
 				var reply_id = $(this).attr("name");
 				$(document).on('click.control',
 								function(e) {
-									if ($(e.target).parents('.reply-delete-box').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index(".reply-delete-box") < 0)) {
+									if ($(e.target).parents('.reply-delete-box').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index("reply-delete-box") < 0)) {
 										$(".reply-delete-box").remove();
 										$(document).unbind('click.control');}
 								});
