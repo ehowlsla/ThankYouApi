@@ -65,7 +65,6 @@ var scroll_load = {
 			$("[name=like]").unbind();
 			$("[name=replying]").unbind();
 			$("[name=repple]").unbind();
-			$("[name=repple]").unbind();
 			$(".gallery").unbind();
 			
 			$(".gallery").click(function() {
@@ -274,8 +273,6 @@ var scroll_load = {
 			$("[name=replying]").keypress(function(e) {
 				if(e.which == 13) 
 					$(this).parent().find("[name=repple]").click()			
-
-
 			});
 
 			$("[name=repple]").click(function() {
@@ -308,10 +305,27 @@ $(function() {
 	$('#myForm').ajaxForm(function() { 
 		location.reload();
 	}); 
+	
+	var options = { 
+			dataType: "json",
+			success: function(data) {
+				if(data.code == 200){
+					location.reload();
+				}else{
+					if(!@user.image_url1.equals("")){
+						location.href = '/profile_image';
+					}else{
+						$("body").append("<div id='toast'><b>사진을 등록해주세요.</b></div>");
+						var timer = setInterval(function () {
+							$("#toast").remove();
+							clearInterval(timer);
+						}, 1000);
+					}
+				}
+			}
+	}
 
-	$('#image_form').ajaxForm(function() { 
-		location.reload();
-	}); 
+	$('#image_form').ajaxForm(options); 
 
 	$("#diary-write").click(function(e) {
 		e.preventDefault();
@@ -594,6 +608,11 @@ $(function() {
 		readURL(this, $(this).attr('name'));
 
 	});
+	
+	$(".fileData2").change(function(){
+		readURL2(this, $(this).attr('name'));
+
+	});
 
 
 	$("[name = user_profile]").click(function(){
@@ -643,6 +662,18 @@ function profile_preview(input) {
 }
 
 function readURL(input, img_num) {
+	if (input.files && input.files[0]) {
+		var reader = new FileReader();
+
+		reader.onload = function (e) {
+			$("#" + img_num).attr('src', e.target.result);
+		}
+
+		reader.readAsDataURL(input.files[0]);
+	}
+}
+
+function readURL2(input, img_num) {
 	if (input.files && input.files[0]) {
 		var reader = new FileReader();
 
@@ -801,8 +832,10 @@ function getRadioValue(obj) {
 			</li>
 		</ul>
 	</div>
-	<div class="container" style="width: 1500px; position: relative;">
-	<div style="float: left; position: fixed; top: 120px; border: 2px solid rgb(79, 189, 158); border-radius: 15px; background-color: white;">
+	<div class="container" style="width: 1500px; position: relative; top: 80px;">
+	<div class="line-back"></div>
+	<div style="padding-left: 30px;">
+	<div style="float: left; position: relative; top: 20px; border: 2px solid rgb(79, 189, 158); border-radius: 15px; background-color: white;">
 		<ul style="list-style:none; margin: 20px; color: rgb(97,117,107);">
 			<li style="margin-bottom: 50px;">
 				<div style="float: left;">
@@ -839,8 +872,8 @@ function getRadioValue(obj) {
 			</li>
 		</ul>
 	</div>
+	</div>
 	<!--/span-->
-	<div class="line-back"></div>
 	<div id ="mother">
 		<div class="content">
 			<div class="menu-box">
@@ -1090,9 +1123,8 @@ function getRadioValue(obj) {
 						</div>
 						<div style="float: right; margin-right: 70px;">
 							<input type="image" id="information_update"
-								src="/assets/Img/join_next.png"
-								style="width: 60px; position: relative; top: 90px;" />
-							<p style="position: relative; top: 90px;">확인</p>
+								src="/assets/Img/profile_img_end_btn.png"
+								style="width: 60px; position: relative; top: 100px;" />
 						</div>
 					</div>
 				</div>
@@ -1118,32 +1150,35 @@ function getRadioValue(obj) {
 							name="form">
 							<span class="buttonWrap "
 								style="display: inline-block; margin-right: 15px; height: 180px; width: 180px;"> <input
-								type="file" class="fileData" name="1" style="height: 180px; width: 180px;"/>
+								type="file" class="fileData2" name="5" style="height: 180px; width: 180px;"/>
 								<input type="text" name="user_id" value="@user.id"
 								style="display: none;" /> <input type="text" name="num"
-								value="1" style="display: none;" /> <img class="preview"
-								src="../assets/Img/profile_img.png" id="1" style="height: 180px; width: 180px;"/>
+								value="1" style="display: none;" />
+								@if(!user.image_url1.equals("")){
+								 	<img class="preview" src="/image/@user.image_url1" id="5" style="height: 180px; width: 180px;"/>}else{
+								 	<img class="preview" src="../assets/Img/profile_img.png" id="5" style="height: 180px; width: 180px;"/>
+								 	}
 							</span> <span class="buttonWrap"
 								style="display: inline-block; margin-right: 15px;height: 180px; width: 180px;"> <input
-								type="file" class="fileData" name="2" style="height: 180px; width: 180px;"/>
+								type="file" class="fileData2" name="6" style="height: 180px; width: 180px;"/>
 								<input type="text" name="user_id" value="@user.id"
 								style="display: none;" /> <input type="text" name="num"
 								value="2" style="display: none;" /> <img class="preview"
-								src="../assets/Img/profile_img.png" id="2" style="height: 180px; width: 180px;"/>
+								src="../assets/Img/profile_img.png" id="6" style="height: 180px; width: 180px;"/>
 							</span> <span class="buttonWrap"
 								style="display: inline-block; margin-right: 15px;height: 180px; width: 180px;"> <input
-								type="file" class="fileData" name="3" style="height: 180px; width: 180px;"/>
+								type="file" class="fileData2" name="7" style="height: 180px; width: 180px;"/>
 								<input type="text" name="user_id" value="@user.id"
 								style="display: none;" /> <input type="text" name="num"
 								value="3" style="display: none;" /> <img class="preview"
-								src="../assets/Img/profile_img.png" id="3" style="height: 180px; width: 180px;"/>
+								src="../assets/Img/profile_img.png" id="7" style="height: 180px; width: 180px;"/>
 							</span> <span class="buttonWrap"
 								style="display: inline-block; margin-right: 15px;height: 180px; width: 180px;"> <input
-								type="file" class="fileData" name="4" style="height: 180px; width: 180px;"/>
+								type="file" class="fileData2" name="8" style="height: 180px; width: 180px;"/>
 								<input type="text" name="user_id" value="@user.id"
 								style="display: none;" /> <input type="text" name="num"
 								value="4" style="display: none;" /> <img class="preview"
-								src="../assets/Img/profile_img.png" id="4" style="height: 180px; width: 180px;"/>
+								src="../assets/Img/profile_img.png" id="8" style="height: 180px; width: 180px;"/>
 							</span> <span style="float: right; margin-right: 10px;"> <input type="image"
 								style="width: 70px; margin-top: 110px;" src="../assets/Img/profile_img_end_btn.png"/>
 							</span>

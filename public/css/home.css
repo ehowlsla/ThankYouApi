@@ -17,7 +17,7 @@ body {
 
 .top_menu{
 	position: relative;
-	min-width: 980px;
+	min-width: 1100px;
 	list-style:none; margin: 0; padding: 0;
 	padding: 30px;
 }
@@ -179,7 +179,7 @@ body {
 
 }
 .line-back {
-	position: fixed;
+	position: absolute;
 	z-index: 0;
 	left: 0px;
 	top: 0px;
@@ -193,7 +193,6 @@ body {
 
 .content {
 	position: relative;
-	top: 100px;
 	margin: 0 auto;
 	min-width: 500px;
 	width: 500px;
@@ -215,6 +214,7 @@ body {
 	position: relative;
 	display: block;
 	min-height: 35px;
+	margin-top: 20px;
 	height: 100%;
 	border: 2px solid #DBDDE0;
 	border-radius: 10px;
@@ -226,6 +226,7 @@ body {
 	display: block;
 	padding: 10px;
 	min-height: 35px;
+	margin-top: 20px;
 	height: 100%;
 	border: 4px solid rgb(79, 189, 158);
 	border-radius: 10px;
@@ -498,6 +499,11 @@ body {
 }
 
 .fileData {
+	position: relative;
+	z-index: 100;
+}
+
+.fileData2 {
 	position: relative;
 	z-index: 100;
 }

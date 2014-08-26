@@ -14,11 +14,25 @@
 <link href="../assets/css/bootstrap.css" rel="stylesheet">
 <link href="../assets/css/font-awesome.css" rel="stylesheet">
 <link href="../assets/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css">
+
 
 <script src="../assets/js/jquery.js"></script>
 <script src="../assets/js/jquery.form.js"></script>
 <script src="../assets/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
 <script src="@routes.Assets.at("javascripts/join_info.js")"></script>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144"
+	href="../assets/ico/apple-touch-icon-144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114"
+	href="../assets/ico/apple-touch-icon-114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72"
+	href="../assets/ico/apple-touch-icon-72-precomposed.png">
+<link rel="apple-touch-icon-precomposed"
+	href="../assets/ico/apple-touch-icon-57-precomposed.png">
+<link rel="shortcut icon" href="../assets/ico/thankdiary.png">
 
 <script type="text/javascript">
 $(function() {
@@ -34,7 +48,7 @@ $(function() {
 			$.ajax({
 				url: "/user/userUpdate",
 				type: "POST",
-				data: {user_id : @user.id , memo : $("#memo").val(), job : $("#job").val(), nickname : $("#nickname").val(), gender : getRadioValue($("[name=chk_info]")), city : $("#city").val(), birth : $("#birth").val()},
+				data: {user_id : @user.id , memo : $("#memo").val(), job : $("#job").val(), nickname : $("#nickname").val(), gender : getRadioValue($("[name=chk_info]")), city : $("#city").val(), birth : $("#datepicker").val()},
 				dataType: "json",
 				error :function(data){
 					alert("회원정보등록에 실패하였습니다.");
@@ -50,9 +64,26 @@ $(function() {
 		}
 		
 	});
+	
+	$( "#datepicker" ).datepicker({
+        changeYear: true,
+        showButtonPanel: true,
+        dateFormat : "yy-mm-dd",
+        yearRange:"-100:+0"
+  });
 });
 
 function scroll_resize(){
+	if($(window).height() <= 748) {
+		$("footer").fadeOut(0);
+	}else{
+		$("footer").fadeIn(0);
+	}
+	
+	if($("footer").offset().top < ($(".border_box").offset().top + 500)){
+		$("footer").fadeOut(0);
+	}
+	
 	$(window).resize(function() {
 		if($(window).height() <= 748) {
 			$("footer").fadeOut(0);
@@ -98,11 +129,11 @@ body {
 	margin: 20px 0 0 20px;
 }
 
-tr {
+#information tr {
 	height: 60px;
-}
+} 
 
-tr td {
+#information tr td {
 	color: rgb(79, 189, 158);
 	font-size: 25px;
 }
@@ -116,9 +147,17 @@ tr td {
 	height: 30px;
 }
 
-footer img {
+.container{
+	padding: 20px;
+}
+
+footer{
+	display: block;
+}
+footer img{
 	width: 940px;
 }
+
 
 #toast {
 	position: fixed;
@@ -168,14 +207,15 @@ footer img {
 								placeholder="닉네임" value="@user.nickname"/></TD>
 							<TD>생일</TD>
 
-							<TD><input id="birth" type="date" min="1900-01-01"
-								name="date" value="@user.birth" placeholder="1987-04-22"/></TD>
+							<TD><input type="text" min="1900-01-01" id="datepicker"
+								name="date" value="@user.birth" placeholder="1987-04-22"/>
+							</TD>
 						</TR>
 
 						<TR>
 							<TD>소속</TD>
 							<TD><input id="job" class="span2" type="text"
-								placeholder="OO교회" value="@user.job"/></TD>
+								placeholder="OO교회" value="@user.job" /></TD>
 							<TD>성별</TD>
 
 							<TD style="color: rgb(97,117,107); font-size: 15px;">@if(user.gender > 0){ 남 <input type="radio"
@@ -205,17 +245,14 @@ footer img {
 					<input type="image" id="information_update"
 						src="/assets/Img/join_next.png"
 						style="width: 60px; position: relative; top: 90px;" />
-						<p style="position: relative; top: 90px;">다음단계</p>
 				</div>
 			</div>
 		</div>
-
 		<footer>
-			<img src="../assets/Img/footer.jpg"/>
+		<img src="../assets/Img/footer.jpg"/>
 		</footer>
-
 	</div>
-
+	
 
 </body>
 </html>

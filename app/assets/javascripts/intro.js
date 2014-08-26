@@ -1,5 +1,10 @@
 $(function() {
 	scroll_resize();
+	
+	$("[name=password]").keypress(function(e) {
+		if(e.which == 13) 
+			$(this).parent().find("#login-btn").click()			
+	});
 
     $('#join-btn').click(function(){
         // 정규식 - 이메일 유효성 검사
@@ -72,6 +77,15 @@ $(function() {
 
 
 function scroll_resize(){
+	if($(window).height() <= 748) {
+		$("footer").fadeOut(0);
+	}else{
+		$("footer").fadeIn(0);
+	}
+	
+	if($("footer").offset().top < ($(".intro_join").offset().top + 500)){
+		$("footer").fadeOut(0);
+	}
 	$(window).resize(function() {
 		if($(window).height() <= 748) {
 			$("footer").fadeOut(0);
