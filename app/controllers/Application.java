@@ -531,7 +531,6 @@ public class Application extends Controller {
 		return ok(views.html.profile_image.render(user));	 
 	}
 
-
 	public static Result logout() {
 		session().clear();
 		//	       flash("success", "You've been logged out");
