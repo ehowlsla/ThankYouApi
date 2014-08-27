@@ -12,6 +12,7 @@
 
 <!-- Le styles -->
 <link href="../assets/css/bootstrap.css" rel="stylesheet">
+<link href="../assets/css/intro.css" rel="stylesheet">
 <!-- Fav and touch icons -->
 <link rel="apple-touch-icon-precomposed" sizes="144x144"
 	href="../assets/ico/apple-touch-icon-144-precomposed.png">
@@ -38,8 +39,10 @@
 </script>
 
 <style type="text/css">
+
 body {
 	color: rgb(97, 117, 107);
+	font-family: 'NanumGothic';
 }
 
 .intro_head {
@@ -112,7 +115,7 @@ footer img{
 <body>
 	<div class="intro_head">
 		<div class="container">
-			<a href="/"><img src="/assets/Img/intro_logo.png"></a>
+			<a href="/"><img src="/assets/Img/thanks_logo.png"></a>
 		</div>
 	</div>
 
@@ -127,9 +130,15 @@ footer img{
 				<div>
 					<input class="span2" type="text" name="email" placeholder="email">
 					<input class="span2" type="password" name="password"
-						placeholder="password"> <input type="image" id="login-btn"
+						placeholder="password">
+						
+						 <button type="submit" id="login-btn"
+									style="margin-top: 10px; border : 0; background-color: #FF4447; border-radius: 10px; width: 215px; height: 50px; padding: 0;">
+									<span style="color: white; font-size: 24px; font-family: 'NanumGothic';">로그인</span>
+						</button>
+						<!--  <input type="image" id="login-btn"
 						src="/assets/Img/login_btn.png"
-						style="margin-top: 15px; width: 215px; height: 50px;">
+						style="margin-top: 15px; width: 215px; height: 50px;"> -->
 				</div>
 			</div>
 
@@ -137,7 +146,7 @@ footer img{
 				<img src="/assets/Img/intro_join.png">
 				<div class="join_border">
 					<div style="margin: 60px;">
-						<h2>크리스천 회원가입하기</h2>
+						<h2>감사일기 회원가입하기</h2>
 						<p>크리스천 메시지, 감사일기, 크리스천 SNS를 시작해보세요.</p>
 					</div>
 					<div class="intro_join_in">
@@ -149,8 +158,10 @@ footer img{
 								placeholder="password">
 						</div>
 						<div style="float: right;">
-							<input type="image" id="join-btn" src="/assets/Img/join_btn.png"
-								style="width: 215px; height: 50px; position: relative; top: 90px;">
+							<button type="submit" id="join-btn"
+									style="margin-top: 10px; border : 0; background-color: #4BBEA0; border-radius: 10px; width: 215px; height: 50px; position: relative; top: 86px; padding: 0;">
+									<span style="color: white; font-size: 24px; font-family: 'NanumGothic';">회원가입하기</span>
+							</button>
 						</div>
 					</div>
 				</div>

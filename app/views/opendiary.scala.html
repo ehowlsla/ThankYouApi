@@ -78,6 +78,44 @@ var scroll_load = {
 		$("[name=replying]").unbind();
 		$("[name=repple]").unbind();
 		$(".gallery").unbind();
+		$(".like_text").unbind();
+		
+		
+		$(".like_text").click(function() {
+			$.ajax({
+				url: "/like",
+				type: "POST",
+				data: {content_id: $(this).attr("like_id")},
+				dataType: "html",
+				error: function() {
+				},
+				success: function(data) {
+					$(document).on('click.control',function(e) {
+						if ($(e.target).parents('.gallery-tool').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index("gallery-tool") < 0)) {
+							$(".gallery-tool").remove();
+							$(document).unbind('click.control');}
+					});
+			 		
+					$("body").append("<div class='gallery-tool hidden' style='position:fixed;'></div>");
+					$(".gallery-tool").append(data);	 
+					
+					$(".gallery-tool").css({
+			       		width: $(window).width() + "px",
+			       		height: $(window).height()+ "px"
+					});
+					
+					$("#like_get").css({
+				  		left: (($(window).width() - 300) / 2) + "px",
+			       		top: (($(window).height() - 600) / 2) + "px"
+					});
+					
+	  
+					$(".gallery-tool").removeClass("hidden");
+					$(".gallery-tool").show();
+					return false;
+				}				
+			});	
+		});
 		
 		$(".gallery").click(function() {
 	 		$(document).on('click.control',
@@ -264,8 +302,6 @@ var scroll_load = {
 			return false;
 		});
 
-
-
 		$("[name=like]").click(function() {
 			$.ajax({
 				url: "/content/like",
@@ -290,18 +326,27 @@ var scroll_load = {
 		});
 
 		$("[name=repple]").click(function() {
-			$.ajax({
-				url: "/reply/upload",
-				type: "POST",
-				data: {user_id : $(this).attr("user_id"), content_id: $(this).attr("content_id"), contents: $(this).parent().find("[name=replying]").val()},
-				dataType: "json",
-				error: function() {
+			if($("[name=replying]").val().length == 0){
+				$("body").append("<div id='toast'><b>댓글 내용을 채워주세요.</b></div>");
+				var timer = setInterval(function () {
+					$("#toast").remove();
+					clearInterval(timer);
+				}, 2000);
+				return false;
+			}else{
+				$.ajax({
+					url: "/reply/upload",
+					type: "POST",
+					data: {user_id : $(this).attr("user_id"), content_id: $(this).attr("content_id"), contents: $(this).parent().find("[name=replying]").val()},
+					dataType: "json",
+					error: function() {
 
-				},
-				success: function(data) {
+					},
+					success: function(data) {
 					location.reload();
-				}				
-			}); 			
+					}				
+				}); 
+			}	
 		});
 		
 	}
@@ -345,9 +390,22 @@ var scroll_load = {
 			image.attr('src', $(this).children("img").attr("src")); 
 		});
 		
-		 $('#myForm').ajaxForm(function() { 
+		$("#myForm").ajaxForm({
+			beforeSubmit: function() {
+			    if($("[name=contents]").val().length == 0) {
+			    	$("body").append("<div id='toast'><b>본문을 채워주세요.</b></div>");
+					var timer = setInterval(function () {
+						$("#toast").remove();
+						clearInterval(timer);
+					}, 2000);
+					$("[name=contents]").focus();
+					return false;
+				}
+		    },
+		    success: function(){
 		    	location.reload();
-		    }); 
+		    }
+	});
 		 
 		$("#diary-write").click(function(e) {
 			e.preventDefault();
@@ -392,38 +450,72 @@ var scroll_load = {
 				});
 			}
 		});
+		
+		$(".like_text").click(function() {
+			$.ajax({
+				url: "/like",
+				type: "POST",
+				data: {content_id: $(this).attr("like_id")},
+				dataType: "html",
+				error: function() {
+				},
+				success: function(data) {
+					$(document).on('click.control',function(e) {
+						if ($(e.target).parents('.gallery-tool').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index("gallery-tool") < 0)) {
+							$(".gallery-tool").remove();
+							$(document).unbind('click.control');}
+					});
+			 		
+					$("body").append("<div class='gallery-tool hidden' style='position:fixed;'></div>");
+					$(".gallery-tool").append(data);	 
+					
+					$(".gallery-tool").css({
+			       		width: $(window).width() + "px",
+			       		height: $(window).height()+ "px"
+					});
+					
+					$("#like_get").css({
+				  		left: (($(window).width() - 300) / 2) + "px",
+			       		top: (($(window).height() - 600) / 2) + "px"
+					});
+					
+	  
+					$(".gallery-tool").removeClass("hidden");
+					$(".gallery-tool").show();
+					return false;
+				}				
+			});	
+		});
 
-		$("#control-box")
-				.click(
-						function(e) {
-							e.preventDefault();
-							$(document).on(
-											'click.control',
-											function(e) {												
-												if ($(e.target).parents('.control-box').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index("control-box") < 0 )) {
-													$(".control-box").remove();
-													$(document).unbind(
-															'click.control');
-												}
-											});
-							$(".top").append("<div class='control-box hidden'><ul class='list'><li><a id='logout'>로그아웃</a></li></ul></div>");
-							$("#logout").click(function(){
-								$.ajax({
-									url: "/logout",
-									type: "POST",
-									success: function(data) {
-										location.href = '/';
-									}
-								});
+		$("#control-box").click(
+				function(e) {
+					e.preventDefault();
+					
+					$(document).on('click.control',
+							function(e) {												
+								if ($(e.target).parents('.control-box').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index("control-box") < 0 )) {
+									$(".control-box").remove();
+									$(document).unbind(
+									'click.control');
+								}
 							});
-							$(".control-box").css({
-								top : "80px",
-								right : "10px"
-							});
-							$(".control-box").removeClass("hidden");
-							$(".control-box").fadeIn(300);
-							return false;
+					$(".top").append("<div class='control-box hidden'><ul class='list'><li><a id='logout'>로그아웃</a></li></ul></div>");
+					$("#logout").click(function(){
+						$.ajax({
+							url: "/logout",
+							type: "POST",
+							success: function(data) {
+								location.href = '/';
+							}
 						});
+					});
+					$(".control-box").css({
+						top : "65px",
+					});
+					$(".control-box").removeClass("hidden");
+					$(".control-box").fadeIn(300);
+					return false; 
+				});
 
 		$("#content-box_in > a").click(
 				function(e) {
@@ -600,23 +692,42 @@ var scroll_load = {
 		});
 		
 		$("#text-area").click(function() {
-			$(this).delay("slow").attr("rows", 10);
-				
+			$("#text-area").attr("rows", 10);
+			$("#write_cancel").removeClass("hidden");	
+			
+		});
+		
+		$("#write_cancel").click(function(){
+			$("#text-area").attr("rows", 3);
+			$("#text-area").val("");
+			$(this).addClass("hidden");
+			$("#plus").css({
+				display : "none"
+			});
 		});
 		
 		$("[name=repple]").click(function() {
-			$.ajax({
-				url: "/reply/upload",
-				type: "POST",
-				data: {user_id : $(this).attr("user_id"), content_id: $(this).attr("content_id"), contents: $(this).parent().find("[name=replying]").val()},
-				dataType: "json",
-				error: function() {
-				
-				},
-				success: function(data) {
+			if($("[name=replying]").val().length == 0){
+				$("body").append("<div id='toast'><b>댓글 내용을 채워주세요.</b></div>");
+				var timer = setInterval(function () {
+					$("#toast").remove();
+					clearInterval(timer);
+				}, 2000);
+				return false;
+			}else{
+				$.ajax({
+					url: "/reply/upload",
+					type: "POST",
+					data: {user_id : $(this).attr("user_id"), content_id: $(this).attr("content_id"), contents: $(this).parent().find("[name=replying]").val()},
+					dataType: "json",
+					error: function() {
+
+					},
+					success: function(data) {
 					location.reload();
-				}				
-			}); 			
+					}				
+				}); 
+			}	
 		});
 		
 		$(".fileData").change(function(){
@@ -664,13 +775,11 @@ var scroll_load = {
 	<div class="top">
 		<ul class="top_menu">
 			<li style="margin-top: -10px; margin-right: 40px; margin-left: 60px;">
-				<a href="/christian"><img src="../assets/Img/logo_white.png"
+				<a href="/home"><img src="../assets/Img/thanks_logo_white.png"
 					width="120px;" style="cursor: pointer;"></a>
 			</li>
 			<li><a href="/home">나의일기</a></li>
 			<li><a href="/opendiary" style="color: white;">공개일기</a></li>
-			<li><a href="/christian">크리스천</a></li>
-			<li><a href="/today_qt">오늘QT</a></li>
 			<li><a href="#">자유나눔</a></li>
 			<li
 				style="position: absolute; padding: 0; margin-top: -30px; right: 0; margin-right: 20px;">
@@ -682,7 +791,7 @@ var scroll_load = {
 				style="color: rgb(18, 138, 120); margin-right: 15px;"> <a
 					href="/home">@user.nickname</a></span> <a id="control-box" href="#"
 				style="text-decoration: none;"> <img
-					src="../assets/Img/logout.png" style="width: 50px;">
+					src="../assets/Img/logout.png" style="width: 30px;">
 			</a>
 			</li>
 		</ul>
@@ -697,12 +806,17 @@ var scroll_load = {
 					style="cursor: pointer;" />
 				</a>  -->
 				<div id="textbox">
+					<button type="button" id ="write_cancel" class="hidden"
+							style="position: absolute; background-color: r #CDCCCB; border: 0; margin-right: 10px; border-radius: 5px; right: 0; margin-top: 10px;">
+							<span style="color: white;"><i class="fa fa-times"></i></span>
+						</button>
 					<form id="myForm" action="/content/upload" method="post"
 						name="form" style="margin: 0; padding: 0;">
 						<div class="write-box">
-							<textarea id ="text-area" class="form-control" placeholder="오늘 감사했던 이야기를 들려주세요"
-								name="contents" rows="3" cols="50"
-								style="width: 484px;  border: 0; border-radius: 8px 8px 0 0;"></textarea>
+							<textarea id="text-area" class="form-control"
+									placeholder="오늘 감사했던 이야기를 들려주세요" name="contents" rows="3"
+									cols="50"
+									style="width: 453px; border: 0; border-radius: 8px 8px 0 0; padding-right: 37px; padding-top: 10px;"></textarea>
 							<input type="text" name="user_id" value="@user.id"
 								style="display: none;" /> <input type="text" name="openLevel"
 								value="2" style="display: none;" />
@@ -749,11 +863,10 @@ var scroll_load = {
 			<input type="hidden" name="content_id" value="@content.body.get(i).id" />
 				<div id="content-box" class="content-box">
 					<div id = "content-box_in" style="padding: 1em; padding-bottom: 10px;">
-						<h4
-							style="display: inline; font-weight: bold; color: rgb(79, 189, 158);">@content.body.get(i).user.nickname
-						</h4>
-						<h6 style="display: inline; color: gray;">@content.body.get(i).createDate
-						</h6>
+						<div style="display: inline-block; ">
+							<h4 style="padding:0; font-weight: bold; color: rgb(79, 189, 158);">@content.body.get(i).user.nickname</h4>
+							<h6 style=" color: gray;">@content.body.get(i).createDate</h6>
+						</div>
 						<a class="fa fa-caret-square-o-down"
 							style="float: right; text-decoration: none; color: rgb(79, 189, 158);"
 							href="#" user_id="@content.body.get(i).user.id"
@@ -785,7 +898,7 @@ var scroll_load = {
 						<div>
 							<img id="image" img_content_id="@content.body.get(i).id" class="gallery" num = "@i" src="/image/@content.body.get(i).imageURL1" />
 						</div>
-
+						@if(!content.body.get(i).imageURL2.isEmpty()){
 						<div id="thumbnail">
 							<div class="container">
 								<ul name="@content.body.get(i).id">
@@ -808,8 +921,8 @@ var scroll_load = {
 
 								</ul>
 							</div>
-
 						</div>
+						}
 						} <span class="like-box "> @if(content.body.get(i).isLike >
 							0){
 							<button type="button" name="like"
@@ -826,9 +939,9 @@ var scroll_load = {
 									</span>
 									}
 								</button>
-								<b style="float: right; color: rgb(255, 99, 100);"> 좋아요
-									@content.body.get(i).likeCount 댓글
-									@content.body.get(i).replyCount </b>
+								<div style="float: right; color: rgb(255, 99, 100);"> <b class="like_text" like_id="@content.body.get(i).id" style="cursor: pointer;"> 좋아요 </b>
+								  	<b style="color: gray;">	@content.body.get(i).likeCount </b> <b style="color: rgb(255, 99, 100);">댓글</b>
+									<b style="color: gray;">@content.body.get(i).replyCount</b></div>
 						</span>
 					</div>
 					<div class="reply ">
@@ -851,14 +964,14 @@ var scroll_load = {
 					@if(content.body.get(i).replyCount > 0){ @for(j <-0 until
 					content.replies.size()){ @if(content.replies.get(j).content_id ==
 					content.body.get(i).id){
-					<div style="padding: 10px;">
+					<div style="padding: 0 10px 10px 10px; border-bottom: 1px solid #e2e2e2;">
 						<TABLE>
 							<TR>
-								<TD style="width: 60px;"><a
+								<TD style="width: 60px; vertical-align: top;"><a
 									href="/neighbordiary/@content.replies.get(j).user.id"><img
 										src="/image/@content.replies.get(j).user.image_url1"
 										class="ripple" /> </a></TD>
-								<TD id="reply_td" style="padding: 10px; width: 87%"><b
+								<TD id="reply_td" style="padding: 10px; width: 87%; vertical-align: top;"><b
 									style="font-weight: bold; color: black; font-size: 13px; color: rgb(79, 189, 158)">@content.replies.get(j).user.nickname
 								</b> <b style="color: gray; font-size: 11px;">
 										@content.replies.get(j).createDate </b>
@@ -870,7 +983,6 @@ var scroll_load = {
 										@content.replies.get(j).contents </b></TD>
 							</TR>
 						</TABLE>
-
 					</div>
 					} } }
 					<div class="profile">
@@ -881,39 +993,6 @@ var scroll_load = {
 
 				</div>
 				}
-		</div>
-	</div>
-		<div class='modal fade' id='modal_profile_image' style="z-index: -1;">
-		<div class='modal-dialog'>
-			<div class='modal-header'>@user.nickname 프로필 사진</div>
-			<div class='modal-body'>
-				<TABLE id="information" style="width: 100%">
-					<TR>
-						<TD style="width: 320px;"><img src="/image/@user.image_url1"
-							style="width: 300px;" class="img-rounded" id="image_profile" /></TD>
-
-						<TD>
-							<h4>소속 : @user.job</h4>
-							<h4>사는곳 : @user.city</h4>
-							<h4>생일 : @user.birth</h4>
-							<h4>한마디 : @user.memo</h4>
-						</TD>
-					</TR>
-				</TABLE>
-
-			</div>
-			<form id="image_form" action="/user/userImageUpdate" method="post"
-				name="form">
-				<div class='model-footer' style="text-align: center;">
-					<input type="file" id="input_image_profile" name="1"> <input
-						type="text" name="user_id" value="@user.id" style="display: none;" />
-					<input type="text" name="num" value="1" style="display: none;" />
-				</div>
-				<div class='model-footer' style="text-align: center;">
-					<button id="profile_image_update" class='btn btn-default'
-						style="margin: 10px;" type="submit">확인</button>
-				</div>
-			</form>
 		</div>
 	</div>
 </body>

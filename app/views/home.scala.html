@@ -66,6 +66,44 @@ var scroll_load = {
 			$("[name=replying]").unbind();
 			$("[name=repple]").unbind();
 			$(".gallery").unbind();
+			$(".like_text").unbind();
+			
+			
+			$(".like_text").click(function() {
+				$.ajax({
+					url: "/like",
+					type: "POST",
+					data: {content_id: $(this).attr("like_id")},
+					dataType: "html",
+					error: function() {
+					},
+					success: function(data) {
+						$(document).on('click.control',function(e) {
+							if ($(e.target).parents('.gallery-tool').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index("gallery-tool") < 0)) {
+								$(".gallery-tool").remove();
+								$(document).unbind('click.control');}
+						});
+				 		
+						$("body").append("<div class='gallery-tool hidden' style='position:fixed;'></div>");
+						$(".gallery-tool").append(data);	 
+						
+						$(".gallery-tool").css({
+				       		width: $(window).width() + "px",
+				       		height: $(window).height()+ "px"
+						});
+						
+						$("#like_get").css({
+					  		left: (($(window).width() - 300) / 2) + "px",
+				       		top: (($(window).height() - 600) / 2) + "px"
+						});
+						
+		  
+						$(".gallery-tool").removeClass("hidden");
+						$(".gallery-tool").show();
+						return false;
+					}				
+				});	
+			});
 			
 			$(".gallery").click(function() {
 		 		$(document).on('click.control',
@@ -276,18 +314,27 @@ var scroll_load = {
 			});
 
 			$("[name=repple]").click(function() {
-				$.ajax({
-					url: "/reply/upload",
-					type: "POST",
-					data: {user_id : $(this).attr("user_id"), content_id: $(this).attr("content_id"), contents: $(this).parent().find("[name=replying]").val()},
-					dataType: "json",
-					error: function() {
+				if($("[name=replying]").val().length == 0){
+					$("body").append("<div id='toast'><b>댓글 내용을 채워주세요.</b></div>");
+					var timer = setInterval(function () {
+						$("#toast").remove();
+						clearInterval(timer);
+					}, 2000);
+					return false;
+				}else{
+					$.ajax({
+						url: "/reply/upload",
+						type: "POST",
+						data: {user_id : $(this).attr("user_id"), content_id: $(this).attr("content_id"), contents: $(this).parent().find("[name=replying]").val()},
+						dataType: "json",
+						error: function() {
 
-					},
-					success: function(data) {
+						},
+						success: function(data) {
 						location.reload();
-					}				
-				}); 			
+						}				
+					}); 
+				}	
 			});
 			
 		}
@@ -302,9 +349,7 @@ $(function() {
 		image.attr('src', $(this).children("img").attr("src")); 
 	});
 	
-	$('#myForm').ajaxForm(function() { 
-		location.reload();
-	}); 
+	
 	
 	var options = { 
 			dataType: "json",
@@ -372,17 +417,25 @@ $(function() {
 	});
 	
 	$("#text-area").click(function() {
-		$(this).delay("slow").attr("rows", 10);
-			
+		$("#text-area").attr("rows", 10);
+		$("#write_cancel").removeClass("hidden");	
+		
+	});
+	
+	$("#write_cancel").click(function(){
+		$("#text-area").attr("rows", 3);
+		$("#text-area").val("");
+		$(this).addClass("hidden");
+		$("#plus").css({
+			display : "none"
+		});
 	});
 
-	$("#control-box")
-	.click(
+	$("#control-box").click(
 			function(e) {
 				e.preventDefault();
-				$(document)
-				.on(
-						'click.control',
+				
+				$(document).on('click.control',
 						function(e) {												
 							if ($(e.target).parents('.control-box').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index("control-box") < 0 )) {
 								$(".control-box").remove();
@@ -401,12 +454,11 @@ $(function() {
 					});
 				});
 				$(".control-box").css({
-					top : "80px",
-					right : "10px"
+					top : "65px",
 				});
 				$(".control-box").removeClass("hidden");
 				$(".control-box").fadeIn(300);
-				return false;
+				return false; 
 			});
 
 	$("#content-box_in > a").click(
@@ -585,20 +637,66 @@ $(function() {
 	});
 
 	$("[name=repple]").click(function() {
-		$.ajax({
-			url: "/reply/upload",
-			type: "POST",
-			data: {user_id : $(this).attr("user_id"), content_id: $(this).attr("content_id"), contents: $(this).parent().find("[name=replying]").val()},
-			dataType: "json",
-			error: function() {
+		if($("[name=replying]").val().length == 0){
+			$("body").append("<div id='toast'><b>댓글 내용을 채워주세요.</b></div>");
+			var timer = setInterval(function () {
+				$("#toast").remove();
+				clearInterval(timer);
+			}, 2000);
+			return false;
+		}else{
+			$.ajax({
+				url: "/reply/upload",
+				type: "POST",
+				data: {user_id : $(this).attr("user_id"), content_id: $(this).attr("content_id"), contents: $(this).parent().find("[name=replying]").val()},
+				dataType: "json",
+				error: function() {
 
+				},
+				success: function(data) {
+				location.reload();
+				}				
+			}); 
+		}	
+	});
+	
+	$(".like_text").click(function() {
+		
+		$.ajax({
+			url: "/like",
+			type: "POST",
+			data: {content_id: $(this).attr("like_id")},
+			dataType: "html",
+			error: function() {
 			},
 			success: function(data) {
-				location.reload();
+				$(document).on('click.control',function(e) {
+					if ($(e.target).parents('.gallery-tool').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index("gallery-tool") < 0)) {
+						$(".gallery-tool").remove();
+						$(document).unbind('click.control');}
+				});
+		 		
+				$("body").append("<div class='gallery-tool hidden' style='position:fixed;'></div>");
+				$(".gallery-tool").append(data);	 
+				
+				$(".gallery-tool").css({
+		       		width: $(window).width() + "px",
+		       		height: $(window).height()+ "px"
+				});
+				
+				$("#like_get").css({
+			  		left: (($(window).width() - 300) / 2) + "px",
+		       		top: (($(window).height() - 600) / 2) + "px"
+				});
+				
+  
+				$(".gallery-tool").removeClass("hidden");
+				$(".gallery-tool").show();
+				return false;
 			}				
-		}); 			
+		});	
 	});
-
+	
 	$("#input_image_profile").change(function(){
 		profile_preview(this);
 
@@ -615,9 +713,44 @@ $(function() {
 	});
 
 
-	$("[name = user_profile]").click(function(){
+	$("[name=user_profile], #camera-background").click(function(){
 		open_profile_image();
 	});
+	
+	
+	$(".modal-cancel").click(function(){
+		$("#modal_profile_image").modal('hide')
+		$("#modal_profile_image").on("hidden.bs.modal", function() {
+			$(this).css({
+				"z-index": -1
+			});
+		});
+
+			$("#modal").modal('hide')
+			$("#modal").on("hidden.bs.modal", function() {
+				$(this).css({
+					"z-index": -1
+				});
+			});
+
+	});
+	
+	
+	$("#my_inform").mouseover(function(){
+		$("#my_modify").removeClass("hidden");
+		$("#my_inform").css("background-color", "#F9FAFB");
+	}).mouseout(function(){
+		$("#my_modify").addClass("hidden");
+		$("#my_inform").css("background-color", "#ffffff");
+		
+	});
+	
+	$("#camera-modify").mouseover(function(){
+		$("#camera-background").removeClass("hidden");
+	}).mouseout(function(){	
+		$("#camera-background").addClass("hidden");
+	});
+	
 	
 	
 	$(".gallery").click(function() {
@@ -646,6 +779,23 @@ $(function() {
 			$(".gallery-tool").removeClass("hidden");
 			$(".gallery-tool").show();
 		return false;
+	});
+	
+	$("#myForm").ajaxForm({
+			beforeSubmit: function() {
+			    if($("[name=contents]").val().length == 0) {
+			    	$("body").append("<div id='toast'><b>본문을 채워주세요.</b></div>");
+					var timer = setInterval(function () {
+						$("#toast").remove();
+						clearInterval(timer);
+					}, 2000);
+					$("[name=contents]").focus();
+					return false;
+				}
+		    },
+		    success: function(){
+		    	location.reload();
+		    }
 	});
 });
 
@@ -766,7 +916,8 @@ function getRadioValue(obj) {
 }
 
 .border_box_in {
-	border: 2px solid rgb(79, 189, 158);
+	border: 5px solid rgb(79, 189, 158);
+	background-color : white;
 	width: 100%;
 	height: 400px;
 	border-radius: 15px;
@@ -808,13 +959,11 @@ function getRadioValue(obj) {
 	<div class="top">
 		<ul class="top_menu">
 			<li style="margin-top: -10px; margin-right: 40px; margin-left: 60px;">
-				<a href="/christian"><img src="../assets/Img/logo_white.png"
+				<a href="/home"><img src="../assets/Img/thanks_logo_white.png"
 					width="120px;" style="cursor: pointer;"></a>
 			</li>
 			<li><a href="/home" style="color: white;">나의일기</a></li>
 			<li><a href="/opendiary">공개일기</a></li>
-			<li><a href="/christian">크리스천</a></li>
-			<li><a href="/today_qt">오늘QT</a></li>
 			<li><a href="#">자유나눔</a></li>
 			<li
 				style="position: absolute; padding: 0; margin-top: -30px; right: 0; margin-right: 20px;">
@@ -827,7 +976,7 @@ function getRadioValue(obj) {
 				style="color: rgb(18, 138, 120); margin-right: 15px;"> <a
 					href="/home">@user.nickname</a></span> <a id="control-box" href="#"
 				style="text-decoration: none;"> <img
-					src="../assets/Img/logout.png" style="width: 50px;">
+					src="../assets/Img/logout.png" style="width: 30px;">
 			</a>
 			</li>
 		</ul>
@@ -835,37 +984,41 @@ function getRadioValue(obj) {
 	<div class="container" style="width: 1500px; position: relative; top: 80px;">
 	<div class="line-back"></div>
 	<div style="padding-left: 30px;">
-	<div style="float: left; position: relative; top: 20px; border: 2px solid rgb(79, 189, 158); border-radius: 15px; background-color: white;">
+	<div id="my_inform" style="float: left; position: relative; top: 20px; border: 2px solid rgb(79, 189, 158); border-radius: 15px; background-color: white;">
+		<a id="my_modify" class="hidden" style="position:absolute; right :10px; top:10px; color: #4EBD9E;" href ="javascript:open_win();"><i class="fa fa-pencil"></i></a>
 		<ul style="list-style:none; margin: 20px; color: rgb(97,117,107);">
 			<li style="margin-bottom: 50px;">
-				<div style="float: left;">
+				<div id="camera-modify" style="position:relative; float: left; width: 100px; height:100px;">
 					<img class="img-rounded" name="user_profile" src="/image/@user.image_url1" style="width: 100px; height:100px; cursor: pointer;">
+					<i style="position: absolute; bottom: 4px; left: 5px;" class="fa fa-camera"></i>
+					<div id="camera-background" class="hidden" style="position : absolute; cursor: pointer; bottom :0; width: 100%; height: 30px; background-color: rgba(0,0,0,0.4); border-radius: 0 0 8px 8px;">
+						<b style="color: white; font-size: 10px; padding-left: 30px;">업데이트</b>
+					</div>
 				</div>
 				<div style="width: 100%; text-align: center;">
-					<b style="display: inline-block; font-size: 25px; margin-top: 20px; margin-bottom: 20px;">@user.nickname</b>
-					<a style="display: inline-block;"  href ="javascript:open_win();">정보수정하기</a>
+					<b style="display: inline-block; font-size: 25px; margin-top: 35px; margin-bottom: 20px;">@user.nickname</b>
 				</div>
 			</li>
 			<li style="position: relative;"><img src="../assets/Img/today_word.png" style="width: 300px;" /> <div style="color:white; margin-left:35px; width:245px; position: absolute; top: 100px;">
-					<h4 style="margin-bottom: 30px;">하나님이 세상을 이처럼 사랑하사, 독생자를 주셨으니, 이는 그를 믿는 자마다 멸망하지 않고 영생을 얻게 하려 하심이라.</h4>
+					<h4 style="margin-bottom: 30px; line-height: 30px;">하나님이 세상을 이처럼 사랑하사, 독생자를 주셨으니, 이는 그를 믿는 자마다 멸망하지 않고 영생을 얻게 하려 하심이라.</h4>
 					<h4>요한복음 3장 16절</h4>
 			</div> </li>
 			<li style="margin-top: 20px; margin-left: 20px;">
 				<TABLE>
 					<TR height="40px;">
-						<TD style="width: 70px; font-size: 20px;">소속</TD>
+						<TD style="width: 70px; font-size: 20px; font-weight: bold;">소속</TD>
 						<TD>@user.job</TD>
 					</TR>
 					<TR height="40px;">
-						<TD style="width: 70px; font-size: 20px;">사는곳</TD>
+						<TD style="width: 70px; font-size: 20px; font-weight: bold;">사는곳</TD>
 						<TD>@user.city</TD>
 					</TR>
 					<TR height="40px;">
-						<TD style="width: 70px; font-size: 20px;">생일</TD>
+						<TD style="width: 70px; font-size: 20px; font-weight: bold;">생일</TD>
 						<TD>@user.birth</TD>
 					</TR>
 					<TR height="40px;">
-						<TD style="width: 70px; font-size: 20px;">한마디</TD>
+						<TD style="width: 70px; font-size: 20px; font-weight: bold;">한마디</TD>
 						<TD>@user.memo</TD>
 					</TR>
 				</TABLE>
@@ -881,64 +1034,73 @@ function getRadioValue(obj) {
 					href="#" id="diary-write"> <img src="/assets/Img/write_btn.png"
 					style="cursor: pointer;" />
 				</a>  -->
-				<div id="textbox">
-					<form id="myForm" action="/content/upload" method="post"
-						name="form" style="margin: 0; padding: 0;">
-						<div class="write-box">
-							<textarea id ="text-area" class="form-control" placeholder="오늘 감사했던 이야기를 들려주세요"
-								name="contents" rows="3" cols="50"
-								style="width: 484px;  border: 0; border-radius: 8px 8px 0 0;"></textarea>
-							<input type="text" name="user_id" value="@user.id"
-								style="display: none;" /> <input type="text" name="openLevel"
-								value="1" style="display: none;" />
-						</div>
-						<div id="plus" class="hidden" style="margin-top: 10px; margin-bottom: 10px;">
-							<div class="container">
-								<ul>
-									<li class="thumb"><span class="buttonWrap"> <input
-											type="file" class="fileData" name="1" /> <img class="preview"
-											src="../assets/Img/profile_img.png" id="1" />
-									</span></li>
-									<li class="thumb"><span class="buttonWrap"> <input
-											type="file" class="fileData" name="2" /> <img class="preview"
-											src="../assets/Img/profile_img.png" id="2" />
-									</span></li>
-									<li class="thumb"><span class="buttonWrap"> <input
-											type="file" class="fileData" name="3" /> <img class="preview"
-											src="../assets/Img/profile_img.png" id="3" />
-									</span></li>
-									<li class="thumb"><span class="buttonWrap"> <input
-											type="file" class="fileData" name="4" /> <img class="preview"
-											src="../assets/Img/profile_img.png" id="4" />
-									</span></li>
-								</ul>
+					<div id="textbox">
+						<button type="button" id ="write_cancel" class="hidden"
+							style="position: absolute; background-color: r #CDCCCB; border: 0; margin-right: 10px; border-radius: 5px; right: 0; margin-top: 10px;">
+							<span style="color: white;"><i class="fa fa-times"></i></span>
+						</button>
+						<form id="myForm" action="/content/upload" method="post"
+							name="form" style="margin: 0; padding: 0;">
+							<div class="write-box">
+								<textarea id="text-area" class="form-control"
+									placeholder="오늘 감사했던 이야기를 들려주세요" name="contents" rows="3"
+									cols="50"
+									style="width: 453px; border: 0; border-radius: 8px 8px 0 0; padding-right: 37px; padding-top: 10px;"></textarea>
+								<input type="text" name="user_id" value="@user.id"
+									style="display: none;" /> <input type="text" name="openLevel"
+									value="1" style="display: none;" />
 							</div>
-						</div>
+							<div id="plus" class="hidden"
+								style="margin-top: 10px; margin-bottom: 10px;">
+								<div class="container">
+									<ul>
+										<li class="thumb"><span class="buttonWrap"> <input
+												type="file" class="fileData" name="1" /> <img
+												class="preview" src="../assets/Img/profile_img.png" id="1" />
+										</span></li>
+										<li class="thumb"><span class="buttonWrap"> <input
+												type="file" class="fileData" name="2" /> <img
+												class="preview" src="../assets/Img/profile_img.png" id="2" />
+										</span></li>
+										<li class="thumb"><span class="buttonWrap"> <input
+												type="file" class="fileData" name="3" /> <img
+												class="preview" src="../assets/Img/profile_img.png" id="3" />
+										</span></li>
+										<li class="thumb"><span class="buttonWrap"> <input
+												type="file" class="fileData" name="4" /> <img
+												class="preview" src="../assets/Img/profile_img.png" id="4" />
+										</span></li>
+									</ul>
+								</div>
+							</div>
 							<div class="button-box">
-								<a style="display: inline-block; width: 30px; margin-left: 10px; text-decoration: none"
-									id="diary-img" href="#"> <img
-									src="/assets/Img/camera.png" style="cursor: pointer;" />
+								<a
+									style="display: inline-block; width: 30px; margin-left: 10px; text-decoration: none"
+									id="diary-img" href="#"> <img src="/assets/Img/camera.png"
+									style="cursor: pointer;" />
 								</a>
-								<button type="submit" name="commit"
-									style="float:right; display: inline-block; text-decoration: none; background-color: rgb(79, 189, 158); border: 0; margin-right: 5px; border-radius: 5px; height: 30px; width: 80px;">
-									<span style="color: white;"> <i
-										class="fa fa-paper-plane" style="display: inline;"> </i> 글쓰기
-									</span>
-								</button>
+								<div style="float: right;">
+									<button type="submit" name="commit"
+										style="display: inline-block; text-decoration: none; background-color: rgb(79, 189, 158); border: 0; margin-right: 5px; border-radius: 5px; height: 30px; width: 80px;">
+										<span style="color: white;"> <i
+											class="fa fa-paper-plane" style="display: inline;"> </i> 글쓰기
+										</span>
+									</button>
+
+								</div>
 							</div>
 						</form>
-				</div>
+					</div>
 
-			</div>
+				</div>
 			@for(i <-0 until content.body.size()){
 			<input type="hidden" name="content_id" value="@content.body.get(i).id" />
 				<div id="content-box" class="content-box">
 					<div id = "content-box_in" style="padding: 1em; padding-bottom: 10px;">
-						<h4
-							style="display: inline; font-weight: bold; color: rgb(79, 189, 158);">@content.body.get(i).user.nickname
-						</h4>
-						<h6 style="display: inline; color: gray;">@content.body.get(i).createDate
-						</h6>
+						<div style="display: inline-block; ">
+							<h4 style="padding:0; font-weight: bold; color: rgb(79, 189, 158);">@content.body.get(i).user.nickname</h4>
+							<h6 style=" color: gray;">@content.body.get(i).createDate</h6>
+						</div>
 						<a class="fa fa-caret-square-o-down"
 							style="float: right; text-decoration: none; color: rgb(79, 189, 158);"
 							href="#" user_id="@content.body.get(i).user.id"
@@ -959,7 +1121,7 @@ function getRadioValue(obj) {
 									<span style="color: white;">수정</span>
 								</button>
 								<button type="button"
-									name="modifycancelbutton" style="display: inline-block; background-color: r#CDCCCB; border: 0; margin-right: 5px; border-radius: 5px; height: 30px; width: 60px;">
+									name="modifycancelbutton" style="display: inline-block; background-color: #CDCCCB; border: 0; margin-right: 5px; border-radius: 5px; height: 30px; width: 60px;">
 									<span style="color: white;">취소</span>
 								</button>
 							</div>
@@ -970,7 +1132,7 @@ function getRadioValue(obj) {
 						<div>
 							<img id="image" img_content_id="@content.body.get(i).id" class="gallery" num = "@i" src="/image/@content.body.get(i).imageURL1" />
 						</div>
-
+						@if(!content.body.get(i).imageURL2.isEmpty()){
 						<div id="thumbnail">
 							<div class="container">
 								<ul name="@content.body.get(i).id">
@@ -993,8 +1155,8 @@ function getRadioValue(obj) {
 
 								</ul>
 							</div>
-
 						</div>
+						}
 						} <span class="like-box "> @if(content.body.get(i).isLike >
 							0){
 							<button type="button" name="like"
@@ -1011,9 +1173,9 @@ function getRadioValue(obj) {
 									</span>
 									}
 								</button>
-								<b style="float: right; color: rgb(255, 99, 100);"> 좋아요
-									@content.body.get(i).likeCount 댓글
-									@content.body.get(i).replyCount </b>
+								<div style="float: right; color: rgb(255, 99, 100);"> <b class="like_text" like_id="@content.body.get(i).id" style="cursor: pointer;"> 좋아요 </b>
+								  	<b style="color: gray;">	@content.body.get(i).likeCount </b> <b style="color: rgb(255, 99, 100);">댓글</b>
+									<b style="color: gray;">@content.body.get(i).replyCount</b></div>
 						</span>
 					</div>
 					<div class="reply ">
@@ -1036,14 +1198,14 @@ function getRadioValue(obj) {
 					@if(content.body.get(i).replyCount > 0){ @for(j <-0 until
 					content.replies.size()){ @if(content.replies.get(j).content_id ==
 					content.body.get(i).id){
-					<div style="padding: 10px;">
+					<div style="padding: 0 10px 10px 10px; border-bottom: 1px solid #e2e2e2;">
 						<TABLE>
 							<TR>
-								<TD style="width: 60px;"><a
+								<TD style="width: 60px; vertical-align: top;"><a
 									href="/neighbordiary/@content.replies.get(j).user.id"><img
 										src="/image/@content.replies.get(j).user.image_url1"
 										class="ripple" /> </a></TD>
-								<TD id="reply_td" style="padding: 10px; width: 87%"><b
+								<TD id="reply_td" style="padding: 10px; width: 87%; vertical-align: top;"><b
 									style="font-weight: bold; color: black; font-size: 13px; color: rgb(79, 189, 158)">@content.replies.get(j).user.nickname
 								</b> <b style="color: gray; font-size: 11px;">
 										@content.replies.get(j).createDate </b>
@@ -1055,7 +1217,6 @@ function getRadioValue(obj) {
 										@content.replies.get(j).contents </b></TD>
 							</TR>
 						</TABLE>
-
 					</div>
 					} } }
 					<div class="profile">
@@ -1072,11 +1233,15 @@ function getRadioValue(obj) {
 
 
 	<!--/span-->
-	<div class='modal fade' id='modal' style=" display: none; z-index: -1; top: 20%; left: 35%; width: 1040px; padding: 30px 30px 50px 0;">
+	<div class='modal fade' id='modal' style=" display: none; z-index: -1; top: 20%; left: 35%; width: 1040px; padding: 30px 30px 50px 0; background-color: transparent; border: 0; webkit-box-shadow: 0; box-shadow: none;">
 			<div class="container">
 				<div class="border_box">
 					<img src="/assets/Img/intro_join.png" />
 					<div class="border_box_in">
+					<button type="button" class="modal-cancel"
+						style="position: absolute; background-color: r #CDCCCB; border: 0; margin-right: 10px; border-radius: 5px; right: 55px; margin-top: 10px;">
+						<span style="color: white;"><i class="fa fa-times"></i></span>
+					</button>
 						<div style="margin: 60px;">
 							<h2>회원가입정보</h2>
 						</div>
@@ -1134,59 +1299,68 @@ function getRadioValue(obj) {
 
 
 
-	<div class='modal fade' id='modal_profile_image' style="z-index: -1; top: 20%; left: 35%; width: 1040px; padding: 30px 30px 50px 0; display: none;">
+	<div class='modal fade' id='modal_profile_image' style="z-index: -1; top: 20%; left: 35%; width: 1040px; padding: 30px 30px 50px 0; display: none; background-color: transparent; border: 0; webkit-box-shadow: 0; box-shadow: none;">
 		<div class="container">
 		<div class="border_box">
 			<img src="/assets/Img/intro_join.png"
 				style="width: 80px; position: absolute;" />
-			<div class="border_box_in">
-				<div style="margin: 60px 0 0 60px;">
-					<div style="color: rgb(97, 117, 107);">
-						<h2>프로필 사진 등록정보</h2>
-						<h5>프로필 사진은 최대 4장까지 등록할 수 있습니다.</h5>
-					</div>
-					<div style="margin-top: 40px;">
-						<form id="image_form" action="/user/userImageUpdate" method="post"
-							name="form">
-							<span class="buttonWrap "
-								style="display: inline-block; margin-right: 15px; height: 180px; width: 180px;"> <input
-								type="file" class="fileData2" name="5" style="height: 180px; width: 180px;"/>
-								<input type="text" name="user_id" value="@user.id"
-								style="display: none;" /> <input type="text" name="num"
-								value="1" style="display: none;" />
-								@if(!user.image_url1.equals("")){
-								 	<img class="preview" src="/image/@user.image_url1" id="5" style="height: 180px; width: 180px;"/>}else{
-								 	<img class="preview" src="../assets/Img/profile_img.png" id="5" style="height: 180px; width: 180px;"/>
-								 	}
-							</span> <span class="buttonWrap"
-								style="display: inline-block; margin-right: 15px;height: 180px; width: 180px;"> <input
-								type="file" class="fileData2" name="6" style="height: 180px; width: 180px;"/>
-								<input type="text" name="user_id" value="@user.id"
-								style="display: none;" /> <input type="text" name="num"
-								value="2" style="display: none;" /> <img class="preview"
-								src="../assets/Img/profile_img.png" id="6" style="height: 180px; width: 180px;"/>
-							</span> <span class="buttonWrap"
-								style="display: inline-block; margin-right: 15px;height: 180px; width: 180px;"> <input
-								type="file" class="fileData2" name="7" style="height: 180px; width: 180px;"/>
-								<input type="text" name="user_id" value="@user.id"
-								style="display: none;" /> <input type="text" name="num"
-								value="3" style="display: none;" /> <img class="preview"
-								src="../assets/Img/profile_img.png" id="7" style="height: 180px; width: 180px;"/>
-							</span> <span class="buttonWrap"
-								style="display: inline-block; margin-right: 15px;height: 180px; width: 180px;"> <input
-								type="file" class="fileData2" name="8" style="height: 180px; width: 180px;"/>
-								<input type="text" name="user_id" value="@user.id"
-								style="display: none;" /> <input type="text" name="num"
-								value="4" style="display: none;" /> <img class="preview"
-								src="../assets/Img/profile_img.png" id="8" style="height: 180px; width: 180px;"/>
-							</span> <span style="float: right; margin-right: 10px;"> <input type="image"
-								style="width: 70px; margin-top: 110px;" src="../assets/Img/profile_img_end_btn.png"/>
-							</span>
-						</form>
+				<div class="border_box_in">
+					<button type="button" class="modal-cancel"
+						style="position: absolute; background-color: r #CDCCCB; border: 0; margin-right: 10px; border-radius: 5px; right: 55px; margin-top: 10px;">
+						<span style="color: white;"><i class="fa fa-times"></i></span>
+					</button>
+					<div style="margin: 60px 0 0 60px;">
+						<div style="color: rgb(97, 117, 107);">
+							<h2>프로필 사진 등록정보</h2>
+							<h5>프로필 사진은 최대 4장까지 등록할 수 있습니다.</h5>
+						</div>
+						<div style="margin-top: 40px;">
+							<form id="image_form" action="/user/userImageUpdate"
+								method="post" name="form">
+								<span class="buttonWrap "
+									style="display: inline-block; margin-right: 15px; height: 180px; width: 180px;">
+									<input type="file" class="fileData2" name="5"
+									style="height: 180px; width: 180px;" /> <input type="text"
+									name="user_id" value="@user.id" style="display: none;" /> <input
+									type="text" name="num" value="1" style="display: none;" />
+									@if(!user.image_url1.equals("")){ <img class="preview"
+									src="/image/@user.image_url1" id="5"
+									style="height: 180px; width: 180px;" />}else{ <img
+									class="preview" src="../assets/Img/profile_img.png" id="5"
+									style="height: 180px; width: 180px;" /> }
+								</span> <span class="buttonWrap"
+									style="display: inline-block; margin-right: 15px; height: 180px; width: 180px;">
+									<input type="file" class="fileData2" name="6"
+									style="height: 180px; width: 180px;" /> <input type="text"
+									name="user_id" value="@user.id" style="display: none;" /> <input
+									type="text" name="num" value="2" style="display: none;" /> <img
+									class="preview" src="../assets/Img/profile_img.png" id="6"
+									style="height: 180px; width: 180px;" />
+								</span> <span class="buttonWrap"
+									style="display: inline-block; margin-right: 15px; height: 180px; width: 180px;">
+									<input type="file" class="fileData2" name="7"
+									style="height: 180px; width: 180px;" /> <input type="text"
+									name="user_id" value="@user.id" style="display: none;" /> <input
+									type="text" name="num" value="3" style="display: none;" /> <img
+									class="preview" src="../assets/Img/profile_img.png" id="7"
+									style="height: 180px; width: 180px;" />
+								</span> <span class="buttonWrap"
+									style="display: inline-block; margin-right: 15px; height: 180px; width: 180px;">
+									<input type="file" class="fileData2" name="8"
+									style="height: 180px; width: 180px;" /> <input type="text"
+									name="user_id" value="@user.id" style="display: none;" /> <input
+									type="text" name="num" value="4" style="display: none;" /> <img
+									class="preview" src="../assets/Img/profile_img.png" id="8"
+									style="height: 180px; width: 180px;" />
+								</span> <span style="float: right; margin-right: 10px;"> <input
+									type="image" style="width: 70px; margin-top: 110px;"
+									src="../assets/Img/profile_img_end_btn.png" />
+								</span>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 	</div>
 	</div>
 </body>

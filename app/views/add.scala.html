@@ -8,11 +8,10 @@
 			<input type="hidden" name="content_id" value="@content.body.get(i).id" />
 				<div id="content-box" class="content-box">
 					<div id = "content-box_in" style="padding: 1em; padding-bottom: 10px;">
-						<h4
-							style="display: inline; font-weight: bold; color: rgb(79, 189, 158);">@content.body.get(i).user.nickname
-						</h4>
-						<h6 style="display: inline; color: gray;">@content.body.get(i).createDate
-						</h6>
+						<div style="display: inline-block; ">
+							<h4 style="padding:0; font-weight: bold; color: rgb(79, 189, 158);">@content.body.get(i).user.nickname</h4>
+							<h6 style=" color: gray;">@content.body.get(i).createDate</h6>
+						</div>
 						<a class="fa fa-caret-square-o-down"
 							style="float: right; text-decoration: none; color: rgb(79, 189, 158);"
 							href="#" user_id="@content.body.get(i).user.id"
@@ -33,7 +32,7 @@
 									<span style="color: white;">수정</span>
 								</button>
 								<button type="button"
-									name="modifycancelbutton" style="display: inline-block; background-color: r#CDCCCB; border: 0; margin-right: 5px; border-radius: 5px; height: 30px; width: 60px;">
+									name="modifycancelbutton" style="display: inline-block; background-color: #CDCCCB; border: 0; margin-right: 5px; border-radius: 5px; height: 30px; width: 60px;">
 									<span style="color: white;">취소</span>
 								</button>
 							</div>
@@ -44,7 +43,7 @@
 						<div>
 							<img id="image" img_content_id="@content.body.get(i).id" class="gallery" num = "@i" src="/image/@content.body.get(i).imageURL1" />
 						</div>
-
+						@if(!content.body.get(i).imageURL2.isEmpty()){
 						<div id="thumbnail">
 							<div class="container">
 								<ul name="@content.body.get(i).id">
@@ -67,8 +66,8 @@
 
 								</ul>
 							</div>
-
 						</div>
+						}
 						} <span class="like-box "> @if(content.body.get(i).isLike >
 							0){
 							<button type="button" name="like"
@@ -85,9 +84,9 @@
 									</span>
 									}
 								</button>
-								<b style="float: right; color: rgb(255, 99, 100);"> 좋아요
-									@content.body.get(i).likeCount 댓글
-									@content.body.get(i).replyCount </b>
+								<div style="float: right; color: rgb(255, 99, 100);"> <b class="like_text" like_id="@content.body.get(i).id" style="cursor: pointer;"> 좋아요 </b>
+								  	<b style="color: gray;">	@content.body.get(i).likeCount </b> <b style="color: rgb(255, 99, 100);">댓글</b>
+									<b style="color: gray;">@content.body.get(i).replyCount</b></div>
 						</span>
 					</div>
 					<div class="reply ">
@@ -110,14 +109,14 @@
 					@if(content.body.get(i).replyCount > 0){ @for(j <-0 until
 					content.replies.size()){ @if(content.replies.get(j).content_id ==
 					content.body.get(i).id){
-					<div style="padding: 10px;">
+					<div style="padding: 0 10px 10px 10px; border-bottom: 1px solid #e2e2e2;">
 						<TABLE>
 							<TR>
-								<TD style="width: 60px;"><a
+								<TD style="width: 60px; vertical-align: top;"><a
 									href="/neighbordiary/@content.replies.get(j).user.id"><img
 										src="/image/@content.replies.get(j).user.image_url1"
 										class="ripple" /> </a></TD>
-								<TD id="reply_td" style="padding: 10px; width: 87%"><b
+								<TD id="reply_td" style="padding: 10px; width: 87%; vertical-align: top;"><b
 									style="font-weight: bold; color: black; font-size: 13px; color: rgb(79, 189, 158)">@content.replies.get(j).user.nickname
 								</b> <b style="color: gray; font-size: 11px;">
 										@content.replies.get(j).createDate </b>
@@ -129,7 +128,6 @@
 										@content.replies.get(j).contents </b></TD>
 							</TR>
 						</TABLE>
-
 					</div>
 					} } }
 					<div class="profile">

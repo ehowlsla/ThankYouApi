@@ -8,6 +8,7 @@ import models.Content;
 import models.ContentLike;
 import models.Notice;
 import models.Reply;
+import models.ReplyLike;
 import models.User;
 import Contants.HttpContants;
 import akka.util.ReentrantGuard;
@@ -17,6 +18,7 @@ import com.google.gson.Gson;
 import play.mvc.Controller;
 import play.mvc.Result;
 import resModles.ResContent;
+import resModles.ResContentLike;
 import resModles.ResNotice;
 import resModles.ResReply;
 import resModles.ResUser;
@@ -102,6 +104,14 @@ public class Application extends Controller {
 									result2.replies.add(reply);
 								}
 							}
+							
+//							List<ContentLike> likes = ContentLike.getLikes(obj.id);
+//							if(likes != null){
+//								for (ContentLike o : likes) {
+//									ResContentLike value = new ResContentLike(o);
+//									result2.likes.add(value);
+//								}
+//							}
 						}
 					} else {
 						result.code = HttpContants.FORBIDDEN_403;
@@ -116,6 +126,34 @@ public class Application extends Controller {
 //		return ok(new Gson().toJson(result2));
 		return ok(views.html.home.render(user, result2));
 	}
+	
+	
+	public static Result like() {
+		ContentResult result = new ContentResult();
+		Map<String, String[]> params = request().body().asFormUrlEncoded();
+		String content_id = params.get("content_id")[0];
+		Content content = Content.getContentDetail(Long.parseLong(content_id));
+		if (content != null) {
+
+			List<ContentLike> likes = ContentLike.getLikes(Long
+					.parseLong(content_id));
+			for (ContentLike obj : likes) {
+				ResContentLike value = new ResContentLike(obj);
+				result.likes.add(value);
+			}
+
+			result.code = HttpContants.OK_200;
+			result.msg = "성공적으로 일기 정보를 가져왔습니다.";
+			result.body.add(new ResContent(content));
+		} else {
+			result.code = HttpContants.FORBIDDEN_403;
+			result.msg = "해당 일기가 존재하지 않습니다.";
+		}
+
+//			return ok(new Gson().toJson(result));
+
+			return ok(views.html.like.render(result));
+		}
 	
 	
 	public static Result more() {
