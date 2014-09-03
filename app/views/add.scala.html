@@ -6,11 +6,11 @@
 		<div class="content">
 			@for(i <-0 until content.body.size()){
 			<input type="hidden" name="content_id" value="@content.body.get(i).id" />
-				<div id="content-box" class="content-box">
+				<div id="content-box" class="content-box" contentbox = "@content.body.get(i).id">
 					<div id = "content-box_in" style="padding: 1em; padding-bottom: 10px;">
 						<div style="display: inline-block; ">
-							<h4 style="padding:0; font-weight: bold; color: rgb(79, 189, 158);">@content.body.get(i).user.nickname</h4>
-							<h6 style=" color: gray;">@content.body.get(i).createDate</h6>
+							<h4 style="padding:0; font-weight: bold; color: rgb(79, 189, 158); margin: 0;">@content.body.get(i).user.nickname</h4>
+							<h6 style=" color: gray; margin: 0;">@content.body.get(i).createDate</h6>
 						</div>
 						<a class="fa fa-caret-square-o-down"
 							style="float: right; text-decoration: none; color: rgb(79, 189, 158);"
@@ -68,68 +68,83 @@
 							</div>
 						</div>
 						}
-						} <span class="like-box "> @if(content.body.get(i).isLike >
-							0){
+						} <div class="like-box "> @if(content.body.get(i).isLike >0){
 							<button type="button" name="like"
-								style="display: inline-block; text-decoration: none; background-color: rgb(255, 99, 100); border: 0; border-radius: 5px; height: 30px;"
-								user_id="@user.id" content_id="@content.body.get(i).id">
-								<span style="color: white;"> 좋아요 취소
-									</span>
+								style="color: white; display: inline-block; text-decoration: none; background-color: #FF8742; border: 0; border-radius: 5px; height: 30px;" like_content_id="@content.body.get(i).id">좋아요 취소</button>
+
 								}else{
 								<button type="button" name="like"
-									style="display: inline-block; text-decoration: none; background-color: rgb(255, 99, 100); border: 0; border-radius: 5px; height: 30px;"
-									user_id="@user.id" content_id="@content.body.get(i).id">
-									<span style="color: white;"> <i
-										class="fa fa-thumbs-o-up" style="display: inline;"></i> 좋아요
-									</span>
+									style="color: white; display: inline-block; text-decoration: none; background-color: #FF8742; border: 0; border-radius: 5px; height: 30px;" like_content_id="@content.body.get(i).id"><i class="fa fa-thumbs-o-up" style="display: inline;"></i> 좋아요
+									</button>
 									}
-								</button>
 								<div style="float: right; color: rgb(255, 99, 100);"> <b class="like_text" like_id="@content.body.get(i).id" style="cursor: pointer;"> 좋아요 </b>
-								  	<b style="color: gray;">	@content.body.get(i).likeCount </b> <b style="color: rgb(255, 99, 100);">댓글</b>
-									<b style="color: gray;">@content.body.get(i).replyCount</b></div>
-						</span>
+								  	<b likecount = "@content.body.get(i).id" style="color: gray;">	@content.body.get(i).likeCount </b> <b style="color: #128A78;">,</b> <b style="color: rgb(255, 99, 100);">댓글</b>
+									<b replycounted = "@content.body.get(i).id" style="color: gray;">@content.body.get(i).replyCount</b></div>
+						</div>
 					</div>
-					<div class="reply ">
+					
+					
+					<div reply_content_id = "@content.body.get(i).id" style="background-color: #F3F3F3; border-radius: 0 0 8px 8px;">
+					@if(content.body.get(i).replyCount > 0){
+						<div replybox = "@content.body.get(i).id" class="reply" style="border-radius:0;">
 						<p>
-							<input class="span2" type="text" name="replying"
+							<input class="span2" type="text" name="replying" replying = "@content.body.get(i).id"
 								placeholder="댓글을 입력하세요.."
 								style="width: 77%; display: inline-block; margin-left: 10px; margin-top: 10px; margin-right: 5px;">
 
 							<button type="button" name="repple"
-								style="display: inline-block; text-decoration: none; background-color: #CDCCCB; border: 0; border-radius: 5px; height: 30px; width: 70px;"
-								user_id="@user.id" content_id="@content.body.get(i).id">
+								style="display: inline-block; text-decoration: none; background-color: #4EBD9E; border: 0; border-radius: 5px; height: 30px; width: 70px;" content_id="@content.body.get(i).id">
 								<span style="color: white;"> <i class="fa fa-paper-plane"
 									style="display: inline;"> </i> 댓글
 								</span>
 							</button>
 						</p>
 					</div>
-
-
-					@if(content.body.get(i).replyCount > 0){ @for(j <-0 until
-					content.replies.size()){ @if(content.replies.get(j).content_id ==
-					content.body.get(i).id){
-					<div style="padding: 0 10px 10px 10px; border-bottom: 1px solid #e2e2e2;">
+					
+						@for(j <- content.replies.size()-1 to 0 by -1){ 
+							@if(content.replies.get(j).content_id == content.body.get(i).id){
+						<div replies_content_id = "@content.replies.get(j).id" style="padding: 0 10px 10px 10px; border-bottom: 1px solid #e2e2e2;">
 						<TABLE>
 							<TR>
 								<TD style="width: 60px; vertical-align: top;"><a
 									href="/neighbordiary/@content.replies.get(j).user.id"><img
 										src="/image/@content.replies.get(j).user.image_url1"
 										class="ripple" /> </a></TD>
-								<TD id="reply_td" style="padding: 10px; width: 87%; vertical-align: top;"><b
+								<TD id="reply_td" class ="reply_td"
+									style="padding: 10px; width: 87%; vertical-align: top;"><b
 									style="font-weight: bold; color: black; font-size: 13px; color: rgb(79, 189, 158)">@content.replies.get(j).user.nickname
 								</b> <b style="color: gray; font-size: 11px;">
 										@content.replies.get(j).createDate </b>
 									@if(content.replies.get(j).user.id == user.id){ <a
-									style="font-size: 13px; float: right; color: rgb(79, 189, 158)" href="#"
-									name="@content.replies.get(j).id"> <i
+									style="font-size: 13px; float: right; color: rgb(79, 189, 158)"
+									href="#" name="@content.replies.get(j).id" reply_get_contents_id = "@content.body.get(i).id"> <i
 										class="fa fa-minus-square"></i> }
 								</a> <b style="display: block; font-size: 12px;">
 										@content.replies.get(j).contents </b></TD>
 							</TR>
 						</TABLE>
 					</div>
-					} } }
+					
+					} } }else{
+					<div replybox = "@content.body.get(i).id" class="reply ">
+						<p>
+							<input class="span2" type="text" name="replying" replying = "@content.body.get(i).id"
+								placeholder="댓글을 입력하세요.."
+								style="width: 77%; display: inline-block; margin-left: 10px; margin-top: 10px; margin-right: 5px;">
+
+							<button type="button" name="repple"
+								style="display: inline-block; text-decoration: none; background-color: #4EBD9E; border: 0; border-radius: 5px; height: 30px; width: 70px;" content_id="@content.body.get(i).id">
+								<span style="color: white;"> <i class="fa fa-paper-plane"
+									style="display: inline;"> </i> 댓글
+								</span>
+							</button>
+						</p>
+					</div>
+					}</div>
+					<div class="emoticon">
+						<i class="fa fa-heart"></i>
+					</div>
+					
 					<div class="profile">
 						<a href="/neighbordiary/@content.body.get(i).user.id"><img
 							src="/image/@content.body.get(i).user.image_url1"

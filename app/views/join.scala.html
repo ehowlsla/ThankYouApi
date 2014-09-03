@@ -58,6 +58,8 @@ $(function() {
 						location.href = '/profile_image';
 					}else if(data.code == 403){
 						alert("중복된 닉네임이 있습니다.");
+						$("#nickname").val("");
+						$("#nickname").focus();
 					}
 				}
 			});

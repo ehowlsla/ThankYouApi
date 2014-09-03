@@ -73,6 +73,17 @@ body {
 	border-radius: 10px;
 }
 
+.notice-tool {
+	position: fixed;
+	z-index: 1000;
+	width: 1000px;
+	height: 1000px;
+	left: 0px;
+	top: 0px;
+	border: 1px solid #e2e2e2;
+
+}
+
 .gallery-tool {
 	position: fixed;
 	z-index: 1000;
@@ -81,7 +92,7 @@ body {
 	left: 0px;
 	top: 0px;
 	border: 1px solid #e2e2e2;
-	background-color: rgba(0,0,0,0.8);
+	 background-color: rgba(0,0,0,0.8); 
 
 }
 
@@ -295,6 +306,14 @@ body {
 	background-color: #fff;
 }
 
+.content .content-box .emoticon {
+	left: -24px;
+	top: -25px;
+	color: #ff7b7b;
+	font-size: 13px;
+	position: absolute;
+}
+
 
 .content .content-box .profile {
 	left: -70px;
@@ -347,8 +366,8 @@ body {
 	display: block;
 	width: 100%;
 	min-height: 10px;
-	background-color: #F3F3F3;
-	border-radius: 0 0 8px 8px;
+	background-color: #DBDDE0;
+ 	border-radius: 0 0 8px 8px; 
 }
 
 .reply .reply_button {

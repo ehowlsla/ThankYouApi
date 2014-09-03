@@ -175,9 +175,9 @@ public class ReplyController extends Controller{
     				if(replyCount > 0) {
     					content.replyCount = replyCount - 1;
     					content.update();
+    					result.web_reply_count = content.replyCount;
     				}
     			}
-    			
     			result.code = HttpContants.OK_200;
                 result.msg = "성공적으로 삭제되었습니다.";	
     		} else {

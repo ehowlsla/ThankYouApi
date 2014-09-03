@@ -2,8 +2,9 @@
 @import java.util._ 
 @import java.text.SimpleDateFormat._
 
-	<div id="like_get" style="position : absolute; background-color: white; border: 2px solid #e2e2e2; width: 300px; height: 400px; overflow: scroll; padding: 10px; border-radius: 10px;">
+	<div id="like_get" style="position : absolute; background-color: white; border: 2px solid #e2e2e2; width: 300px; height: 400px;  padding: 30px; border-radius: 10px;">
 	<div style="width:100%; height: 30px; color:rgb(79, 189, 158); ">이 게시물을 좋아하는 사람들</div>
+	<div style="overflow: scroll;">
 	@if(content.likes.size() > 0){
 		 @for(i <-0 until content.likes.size()){
 		<TABLE>
@@ -21,7 +22,8 @@
 		</TABLE>
 		}}else{
 		<div style="position: relative; width: 100%; height: 100%;">
-			<h5 style="position:absolute; top: 35%; left :8%;">아직 아무도 '좋아요'를 누리지 않았습니다.</h5> 
+			<h5 style="position:absolute; top: 35%; left :8%;">아직 아무도 '좋아요'를 누르지 않았습니다.</h5> 
 		</div>
 		}
+		</div>
 	</div>

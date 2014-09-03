@@ -1,0 +1,28 @@
+@(content: resResults.NoticeResult)
+@import java.util._ 
+@import java.text.SimpleDateFormat._
+
+
+	<div id="notice_get" style="position : absolute; background-color: white; border: 2px solid #e2e2e2; width: 400px; height: 600px; padding: 30px; border-radius: 10px;">
+	<div style="width:100%; height: 40px; color:rgb(79, 189, 158); margin-right: 10px;">알림</div>
+	<div style="width : 100%; height:95%; overflow: scroll;">
+	@if(content.body.size() > 0){
+		 @for(i <-0 until content.body.size()){
+		<TABLE style="width: 100%;">
+			<TR>
+				<TD style="width: 60px; vertical-align: top;"><img src="/image/@content.body.get(i).imageURL"
+						class="ripple" /></TD>
+				<TD id="reply_td"
+					style="padding: 20px; width: 240px;"><a style="text-decoration: none;"
+									href="/notice_target/@content.body.get(i).redirect_id"> <b
+					style="font-weight: bold; color: black; font-size: 15px; color: rgb(79, 189, 158);">@content.body.get(i).message</b> </a>
+				</TD>
+			</TR>
+		</TABLE>
+		}}else{
+		<div style="position: relative; width: 100%; height: 100%;">
+			<h5 style="position:absolute; top: 35%; left :8%;">공지사항이 없습니다.</h5> 
+		</div>
+		}
+		</div>
+	</div>

@@ -1,4 +1,4 @@
-@(user: models.User, content: resResults.ContentResult, target_user: models.User)
+@(user: models.User, content: resResults.ContentResult)
 @import java.util._ 
 @import java.text.SimpleDateFormat._
 <!DOCTYPE html>
@@ -22,405 +22,7 @@
 <script src="../assets/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
-
-var scroll_load = {
-		locked: false,
-		event: function() {
-			thisObject = this;
-			$(window).scroll(function () {
-				if(($(window).scrollTop() > $(document).height() * 0.8) && !thisObject.locked) {
-					thisObject.locked = true;
-	        		$.ajax({
-	        			url: "/more",
-	        			type: "POST",
-	        			data: {target_id : @target_user.id, target_content_id :$("[name=content_id]:last").val(), openLevel : 2},
-	        			dataType: "html",
-	        			error: function() {
-	        				thisObject.locked = false;
-	        			},
-	        			success: function(data) {
-	        				if(data.length > 68){
-	        					thisObject.locked = false;
-	        					$("#mother").append(data);
-	        					thisObject.reload();
-	        				}
-	        			}
-	        		});
-	        	}
-			});
-		},
-		
-		reload: function() {
-			$('#thumbnail .container .thumb').unbind();
-			$("##content-box_in > a").unbind();
-			$("#modify").unbind();
-			$("[name=modifybutton]").unbind();
-			$("[name=modifycancelbutton]").unbind();
-			$("#content_delete").unbind();
-			$("#ban").unbind();
-			$(".reply_td a").unbind();
-			$("#reply_delete_confirm").unbind();
-			$("[name=like]").unbind();
-			$("[name=replying]").unbind();
-			$("[name=repple]").unbind();
-			$(".gallery").unbind();
-			$(".like_text").unbind();
-			
-			
-			$(".like_text").click(function() {
-				$.ajax({
-					url: "/like",
-					type: "POST",
-					data: {content_id: $(this).attr("like_id")},
-					dataType: "html",
-					error: function() {
-					},
-					success: function(data) {
-						$(document).on('click.control',function(e) {
-							if ($(e.target).parents('.gallery-tool').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index("gallery-tool") < 0)) {
-								$(".gallery-tool").remove();
-								$(document).unbind('click.control');}
-						});
-				 		
-						$("body").append("<div class='gallery-tool hidden' style='position:fixed;'></div>");
-						$(".gallery-tool").append(data);	 
-						
-						$(".gallery-tool").css({
-				       		width: $(window).width() + "px",
-				       		height: $(window).height()+ "px"
-						});
-						
-						$("#like_get").css({
-					  		left: (($(window).width() - 300) / 2) + "px",
-				       		top: (($(window).height() - 600) / 2) + "px"
-						});
-						
-		  
-						$(".gallery-tool").removeClass("hidden");
-						$(".gallery-tool").show();
-						return false;
-					}				
-				});	
-			});
-			
-			$(".gallery").click(function() {
-		 		$(document).on('click.control',
-						function(e) {
-					if ($(e.target).parents('.gallery-tool').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index("gallery-tool") < 0)) {
-						$(".gallery-tool").remove();
-						$(document).unbind('click.control');}
-				});
-		 		
-		 		
-				
-				$("body").append("<div class='gallery-tool hidden' style='position:fixed;'><div><div class='gallery-box'><img id='gallery-in' style='opacity:1;' src=''></div></div></div>");
-				
-				$(".gallery-tool").css({
-		       		width: $(window).width() + "px",
-		       		height: $(window).height()+ "px"
-				});
-				
-			 	 $("#gallery-in").attr("src", $(this).attr("src").replace("thumbnail_", "")).load(function(){
-					$(".gallery-box").css({
-			       		left: (( $(window).width() - $("#gallery-in").width() ) / 2) + "px",
-			       		top: (( $(window).height() - $("#gallery-in").height() ) / 2) + "px"
-					});
-				});  
-					$(".gallery-tool").removeClass("hidden");
-					$(".gallery-tool").show();
-				return false;
-			});
-
-			
-			
-			$('#thumbnail .container .thumb').on('click', function(){
-				var id = $(this).parents("ul").attr("name");
-		 		var image = $('[img_content_id=' + id + ']');
-				image.attr('src', $(this).children("img").attr("src")); 
-			});
-			
-			$("#content-box_in > a").click(
-					function(e) {
-						var content_id = $(this).attr("content_id");
-						var modifybox = $("[modify_content_id=" + content_id + "]");
-						var modifycontens = $("[contens_content_id=" + content_id + "]");
-						e.preventDefault();
-						$(document).on('click.control',
-								function(e) {
-							if ($(e.target).parents('.edit-box').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index("edit-box") < 0)) {
-								$(".edit-box").remove();
-								$(document).unbind('click.control');}
-						});
-						if($(this).attr("user_id") == @user.id){
-							$("body").append("<div class='edit-box hidden'><ul class='list'><li><a id ='modify'>수정하기</a></li><li><a id='content_delete'>삭제하기</a></li></ul></div>");
-							$(".edit-box").css({
-								top : $(this).offset().top + 18,
-								left : $(this).offset().left - 40
-							});
-							$(".edit-box").removeClass("hidden");
-							$(".edit-box").fadeIn(300);
-
-							$("#modify").click(function() {
-								if ($(modifybox).is(":hidden")) {
-									$(modifybox).css({
-										display : "none"
-									});
-									$(modifybox).removeClass("hidden");
-									$(modifybox).show(300);
-									$(modifycontens).addClass("hidden");
-									$(".edit-box").remove();
-									$(document).unbind('click.control');
-
-								} else {
-									$(modifybox).hide(300, function() {
-										$(modifycontens).css({
-											display : "none"
-										});
-										$(modifycontens).removeClass("hidden");
-										$(modifycontens).show(300);
-										$(modifybox).addClass("hidden");
-										$(".edit-box").remove();
-										$(document).unbind('click.control');
-									});
-								}
-
-								$("[name=modifybutton]").click(function(){
-									$.ajax({
-										url: "/content/modify",
-										type: "POST",
-										data: {user_id : @user.id, content_id : content_id, openLevel : 2, contents : $("[textarea_in=" + content_id + "]").val()},
-										dataType: "json",
-										success: function(data) {
-											$("body").append("<div id='toast'><b>수정되었습니다.</b></div>");
-											var timer = setInterval(function () {
-												$("#toast").remove();
-												clearInterval(timer);
-											}, 1000);
-											
-											$(modifycontens).css({
-												display : "none"
-											});
-											$(modifycontens).removeClass("hidden");
-											$(modifycontens).show(300);
-											$(modifybox).addClass("hidden");
-											modifycontens.html("<h5 id='contents' contens_content_id='" + content_id + "'>" + data.body[0].contents +"</h5>");
-										}
-									});
-								});
-
-								$("[name=modifycancelbutton]").click(function(){
-									$(modifycontens).css({
-										display : "none"
-									});
-									$(modifycontens).removeClass("hidden");
-									$(modifycontens).show(300);
-									$(modifybox).addClass("hidden");
-								});
-							});
-
-							$("#content_delete").click(function(){
-								$.ajax({
-									url: "/content/delete",
-									type: "POST",
-									data: {content_id : content_id},
-									dataType: "json",
-									success: function(data) {
-										$("body").append("<div id='toast'><b>삭제되었습니다.</b></div>");
-										var timer = setInterval(function () {
-											$("#toast").remove();
-											clearInterval(timer);
-										}, 1000);
-										$("[contentbox = " + content_id +"]").remove();
-										$(".reply-delete-box").remove();
-										$(document).unbind('click.control');
-										$(".edit-box").remove();
-										$(document).unbind('click.control');
-									}
-								});
-							});
-							return false;
-						}else{
-							$("body").append("<div class='edit-box hidden'><ul class='list'><li><a id='ban'>신고하기</a></li></ul></div>");
-							$(".edit-box").css({
-								top : $(this).offset().top + 18,
-								left : $(this).offset().left - 40
-							});
-							$(".edit-box").removeClass("hidden");
-							$(".edit-box").fadeIn(300);
-							$("#ban").click(function(){
-								$.ajax({
-									url: "/content/ban",
-									type: "POST",
-									data: {user_id : @user.id, content_id : content_id},
-									dataType: "json",
-									success: function(data) {
-										$("body").append("<div id='toast'><b>신고되었습니다.</b></div>");
-										var timer = setInterval(function () {
-											$("#toast").remove();
-											clearInterval(timer);
-										}, 1000);
-										$(".edit-box").remove();
-										$(document).unbind('click.control');
-									}
-								});
-							});
-							return false;
-						}
-					});
-
-			$(".reply_td a").click( function(e) {
-				e.preventDefault();
-				var reply_id = $(this).attr("name");
-				var reply_get_contents_id = $(this).attr("reply_get_contents_id");
-				$(document).on('click.control',
-						function(e) {
-					if ($(e.target).parents('.reply-delete-box').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index("reply-delete-box") < 0)) {
-						$(".reply-delete-box").remove();
-						$(document).unbind('click.control');}
-				});
-
-				$("body").append("<div class='reply-delete-box hidden'><ul class='list'><li><a id = 'reply_delete_confirm'>댓글삭제</a></li></ul></div>");
-				$(".reply-delete-box").css({
-					top : $(this).offset().top + 18,
-					left : $(this).offset().left - 40
-				});
-				$(".reply-delete-box").removeClass("hidden");
-				$(".reply-delete-box").fadeIn(300);
-
-				$("#reply_delete_confirm").click(function(){
-					$.ajax({
-						url: "/reply/delete",
-						type: "POST",
-						data: {user_id : @user.id, reply_id : reply_id},
-						dataType: "json",
-						success: function(data) {
-							$("body").append("<div id='toast'><b>댓글이 삭제되었습니다.</b></div>");
-							var timer = setInterval(function () {
-								$("#toast").remove();
-								clearInterval(timer);
-							}, 1000);
-							$("[replies_content_id =" +reply_id+"]").remove();
-							$("[replycounted=" + reply_get_contents_id +"]").html("<b replycounted = '" + reply_get_contents_id +"' style='color: gray;'>" + data.web_reply_count +"</b>");
-							$(".reply-delete-box").remove();
-							$(document).unbind('click.control');
-						}
-					});
-				});
-				return false;
-			});
-
-
-
-			$("[name=like]").click(function() {
-				$.ajax({
-					url: "/content/like",
-					type: "POST",
-					data: { content_id: $(this).attr("like_content_id"), user_id : @user.id },
-					dataType: "json",
-					error: function() {
-
-					},
-					success: function(data) {
-						if(data.msg == "추천을 취소하였습니다."){
-							$("[like_content_id=" + data.body[0].id +"]").html("<button type='button' name='like' style='color: white; display: inline-block; text-decoration: none; background-color: #FF8742; border: 0; border-radius: 5px; height: 30px; padding: 0;' like_content_id=" + data.body[0].id + "><i class='fa fa-thumbs-o-up' style='display: inline;'></i> 좋아요 </button>");
-							$("[likecount=" + data.body[0].id +"]").html("<b likecount = " + data.body[0].id + "style='color: gray;'>" + data.body[0].likeCount + "</b>");
-						}else{
-							$("[like_content_id=" + data.body[0].id +"]").text("좋아요 취소").css("color","white");
-							$("[likecount=" + data.body[0].id +"]").html("<b likecount = " + data.body[0].id + "style='color: gray;'>" + data.body[0].likeCount + "</b>");
-						} 
-					}				
-				}); 			
-			});
-
-			$("[name=replying]").keypress(function(e) {
-				if(e.which == 13) 
-					$(this).parent().find("[name=repple]").click()			
-
-
-			});
-
-			$("[name=repple]").click(function() {
-				if($(this).parent().find("[name=replying]").val().length == 0){
-					$("body").append("<div id='toast'><b>댓글 내용을 채워주세요.</b></div>");
-					var timer = setInterval(function () {
-						$("#toast").remove();
-						clearInterval(timer);
-					}, 2000);
-					return false;
-				}else{
-					$.ajax({
-						url: "/reply/upload",
-						type: "POST",
-						data: {user_id : @user.id, content_id: $(this).attr("content_id"), contents: $(this).parent().find("[name=replying]").val()},
-						dataType: "json",
-						error: function() {
-							
-						},
-						success: function(data) {
-							if(data.body[0].replyCount ==1){
-								$("[replybox =" + data.body[0].id + "]").css("border-radius", "0");
-							}
-							$("[replying =" + data.body[0].id + "]").val("");
-							$("[reply_content_id =" + data.body[0].id + "]").css("border-radius", "0");
-							$("[reply_content_id =" + data.body[0].id + "]").append("<div replies_content_id = '" + data.replies[0].id + "' style='padding: 0 10px 10px 10px; border-bottom: 1px solid #e2e2e2;'><TABLE><TR><TD style='width: 60px; vertical-align: top;'><a href='/neighbordiary/" + data.replies[0].user.id + "'><img class='ripple' src='/image/" + data.replies[0].user.image_url1 + "'/> </a></TD> <TD id='reply_td' class = 'reply_td' style='padding: 10px; width: 87%; vertical-align: top;'><b style='font-weight: bold; color: black; font-size: 13px; color: rgb(79, 189, 158)'>" + data.replies[0].user.nickname + "</b> <b style='color: gray; font-size: 11px;'>"+ data.replies[data.body[0].replyCount - 1].createDate +"</b> <a style='font-size: 13px; float: right; color: rgb(79, 189, 158)' href='#' name='" + data.replies[0].id +"'reply_get_contents_id = '" + data.body[0].id  + "'> <i class='fa fa-minus-square'></i> </a> <b style='display: block; font-size: 12px;'>" + data.replies[0].contents +"</b></TD></TR></TABLE></div>");
-							$("[replycounted=" + data.body[0].id +"]").html("<b replycounted = '" + data.body[0].id +"' style='color: gray;'>" + data.body[0].replyCount +"</b>");
-							$("[replying =" + data.body[0].id + "]").focus();
-							$("[reply_content_id =" + data.body[0].id + "]").css("border-radius", "0 0 8px 8px");
-							
-							$(".reply_td a").unbind();
-							
-							$(".reply_td a").click( function(e) {
-								e.preventDefault();
-								var reply_id = $(this).attr("name");
-								var reply_get_contents_id = $(this).attr("reply_get_contents_id");
-								$(document).on('click.control',
-										function(e) {
-									if ($(e.target).parents('.reply-delete-box').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index("reply-delete-box") < 0)) {
-										$(".reply-delete-box").remove();
-										$(document).unbind('click.control');}
-								});
-
-								$("body").append("<div class='reply-delete-box hidden'><ul class='list'><li><a id = 'reply_delete_confirm'>댓글삭제</a></li></ul></div>");
-								$(".reply-delete-box").css({
-									top : $(this).offset().top + 18,
-									left : $(this).offset().left - 40
-								});
-								$(".reply-delete-box").removeClass("hidden");
-								$(".reply-delete-box").fadeIn(300);
-
-								$("#reply_delete_confirm").click(function(){
-									$.ajax({
-										url: "/reply/delete",
-										type: "POST",
-										data: {user_id : @user.id, reply_id : reply_id},
-										dataType: "json",
-										success: function(data) {
-											$("body").append("<div id='toast'><b>댓글이 삭제되었습니다.</b></div>");
-											var timer = setInterval(function () {
-												$("#toast").remove();
-												clearInterval(timer);
-											}, 1000);
-											$("[replies_content_id =" +reply_id+"]").remove();
-											$("[replycounted=" + reply_get_contents_id +"]").html("<b replycounted = '" + reply_get_contents_id +"' style='color: gray;'>" + data.web_reply_count +"</b>");
-											$(".reply-delete-box").remove();
-											$(document).unbind('click.control');
-										}
-									});
-								});
-								return false;
-							});
-						}				
-					}); 
-				}
-			});
-			
-		}
-	} 
-
-
 $(function() {
-	scroll_load.event();
-	
 	$(".like_text").click(function() {
 		$.ajax({
 			url: "/like",
@@ -911,6 +513,7 @@ $(function() {
 <link rel="shortcut icon" href="../assets/ico/thankdiary.png">
 </head>
 
+
 <body>
 
 	<div class="top">
@@ -944,11 +547,11 @@ $(function() {
 			<div class="menu-box-neighbor">
 				<div class="profile-panel">
 					<div class="profile-image">
-							<img src="/image/@target_user.image_url1" />
+							<img src="/image/@user.image_url1" />
 					</div>
 					<div class="profile-nickname">
-						<h3>@target_user.nickname</h3>
-						<h4>@target_user.memo</h4>
+						<h3>@user.nickname</h3>
+						<h4>@user.memo</h4>
 					</div>
 					
 				</div>
@@ -956,15 +559,15 @@ $(function() {
 					<TABLE>
 						<TR height="25px;">
 							<TD style="width: 70px; font-size: 18px; font-weight: bold;">소   속</TD>
-							<TD>@target_user.job</TD>
+							<TD>@user.job</TD>
 						</TR>
 						<TR height="25px;">
 							<TD style="width: 70px; font-size: 18px; font-weight: bold;">사는곳</TD>
-							<TD>@target_user.city</TD>
+							<TD>@user.city</TD>
 						</TR>
 						<TR height="25px;">
 							<TD style="width: 70px; font-size: 18px; font-weight: bold;">생   일</TD>
-							<TD>@target_user.birth</TD>
+							<TD>@user.birth</TD>
 						</TR>
 
 					</TABLE>

@@ -24,6 +24,7 @@ import resModles.ResReply;
 import resModles.ResUser;
 import resResults.ContentResult;
 import resResults.LoginResult;
+import resResults.NoticeResult;
 import views.html.*;
 import views.html.helper.form;
 
@@ -150,9 +151,33 @@ public class Application extends Controller {
 			result.msg = "해당 일기가 존재하지 않습니다.";
 		}
 
-//			return ok(new Gson().toJson(result));
-
 			return ok(views.html.like.render(result));
+		}
+	
+	
+	
+	public static Result notice() {
+			NoticeResult result = new NoticeResult(); 
+			Map<String, String[]> params = request().body().asFormUrlEncoded();
+			String user_id = params.get("user_id")[0];
+	    	
+	    	List<Notice> notices = Notice.getNotices(Long.parseLong(user_id), Long.parseLong("0"));
+	     	if(notices != null) {
+	    		result.code = HttpContants.OK_200;
+	    		result.msg = "알림 정보를 가져왔습니다.";
+	    		 
+	    		for(Notice obj : notices) {
+	    			ResNotice value = new ResNotice(obj);
+	    			result.body.add(value);
+	    		} 
+	    	} else {
+	    		result.code = HttpContants.FORBIDDEN_403;
+				result.msg = "타임라인 정보가 더이상 존재하지 않습니다."; 
+	    	}
+	     	Notice.updateRead(Long.parseLong(user_id), Long.parseLong("0"));
+
+//			return ok(new Gson().toJson(result));
+			return ok(views.html.notice.render(result));
 		}
 	
 	
@@ -474,6 +499,56 @@ public class Application extends Controller {
 		}
 
 		return ok(new Gson().toJson(result));	 
+	}
+	
+	
+	
+	public static Result getContentDetail(String content_id) {
+		String email = session("connected");
+		ContentResult result = new ContentResult();
+		Content content = Content.getContentDetail(Long.parseLong(content_id));
+		User user = null;
+		if(email != null){
+			user = User.getUserEmail(email);
+			if(user == null) {
+				result.code = HttpContants.CONTINUE_100;
+				result.msg = "없는 이메일 주소입니다.";
+			}else{
+
+				if(user.status == 0){
+					result.code = HttpContants.CONTINUE_100;
+				}else{
+					if (content != null) {
+						List<Reply> replies = Reply.getContentReplies(
+								Long.parseLong(content_id), Long.parseLong("0"));
+
+						for (Reply obj : replies) {
+							ResReply value = new ResReply(obj);
+							value.likes = ReplyLike.getLikes(value.id);
+							result.replies.add(value);
+						}
+
+						List<ContentLike> likes = ContentLike.getLikes(Long
+								.parseLong(content_id));
+						for (ContentLike obj : likes) {
+							ResContentLike value = new ResContentLike(obj);
+							result.likes.add(value);
+						}
+
+						result.code = HttpContants.OK_200;
+						result.msg = "성공적으로 일기 정보를 가져왔습니다.";
+						result.body.add(new ResContent(content));
+					} else {
+						result.code = HttpContants.FORBIDDEN_403;
+						result.msg = "해당 일기가 존재하지 않습니다.";
+					}
+				}
+			}
+		}else{
+			return redirect(routes.Application.index());
+		}
+//		return ok(new Gson().toJson(result));
+		return ok(views.html.notice_target.render(user, result));
 	}
 	
 	
