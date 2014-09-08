@@ -432,6 +432,64 @@ var scroll_load = {
 	$(function() {
 		scroll_load.event();
 		
+		var options_content = { 
+				dataType: "json",
+				success: function(data) {
+					if(data.code == 1){
+						$("#preview_content1").attr("src", "/image/" + data.url);
+						$("[name = image_content_1]").val(data.url);
+					}else if(data.code == 2){
+						$("#preview_content2").attr("src", "/image/" + data.url);
+						$("[name = image_content_2]").val(data.url);
+					}else if(data.code == 3){
+						$("#preview_content3").attr("src", "/image/" + data.url);
+						$("[name = image_content_3]").val(data.url);
+					}else if(data.code == 4){
+						$("#preview_content4").attr("src", "/image/" + data.url);
+						$("[name = image_content_4]").val(data.url);
+					}
+				}
+		}
+		
+		var options_contens_upload = { 
+				dataType: "json",
+				success: function(data) {
+					if(data.code == 200){
+						location.reload();
+					}
+				}
+		}
+		
+		$("#content_image_form_1").ajaxForm(options_content);
+		$("#content_image_form_2").ajaxForm(options_content);
+		$("#content_image_form_3").ajaxForm(options_content);
+		$("#content_image_form_4").ajaxForm(options_content);
+
+		$("#contents_form").submit(function(){
+			if($("[name=contents]").val().length == 0) {
+		    	$("body").append("<div id='toast'><b>본문을 채워주세요.</b></div>");
+				var timer = setInterval(function () {
+					$("#toast").remove();
+					clearInterval(timer);
+				}, 2000);
+				$("[name=contents]").focus();
+				return false;
+			}else{
+			 	$(this).ajaxSubmit(options_contens_upload);
+			}
+			 return false;
+		});
+
+		$("#content_commit").click(function() {
+			$("#contents_form").submit();
+		});
+		
+		
+		$(".fileData").change(function(){
+			$(this).parent().parent("form").submit();
+
+		});
+		
 		
 		$(".gallery").click(function() {
 	 		$(document).on('click.control',
@@ -467,23 +525,7 @@ var scroll_load = {
 	 		var image = $('[img_content_id=' + id + ']');
 			image.attr('src', $(this).children("img").attr("src")); 
 		});
-		
-		$("#myForm").ajaxForm({
-			beforeSubmit: function() {
-			    if($("[name=contents]").val().length == 0) {
-			    	$("body").append("<div id='toast'><b>본문을 채워주세요.</b></div>");
-					var timer = setInterval(function () {
-						$("#toast").remove();
-						clearInterval(timer);
-					}, 2000);
-					$("[name=contents]").focus();
-					return false;
-				}
-		    },
-		    success: function(){
-		    	location.reload();
-		    }
-	});
+
 		 
 		$("#diary-write").click(function(e) {
 			e.preventDefault();
@@ -886,17 +928,8 @@ var scroll_load = {
 			}
 		});
 		
-		$(".fileData").change(function(){
-	        readURL(this, $(this).attr('name'));
-	        
-	    });
-		
-		$("[name = user_profile]").click(function(){
-			open_profile_image();
-		});
 		
 		$(".user_notice").click(function() {
-			
 			$.ajax({
 				url: "/notification",
 				type: "POST",
@@ -931,11 +964,9 @@ var scroll_load = {
 				}				
 			});	
 		});
-		
-		
 	});
     
-    function readURL(input, img_num) {
+/*     function readURL(input, img_num) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 			
@@ -945,22 +976,7 @@ var scroll_load = {
 
             reader.readAsDataURL(input.files[0]);
         }
-    }
-    
-    
-    function open_profile_image() {
-    	$(".modal").css({
-    		"z-index": 10000
-    	});
-    	
-    	$("#modal_profile_image").on("hidden.bs.modal", function() {
-    		$(".modal").css({
-    			"z-index": -1
-    		});
-    	});
-    	$("#modal_profile_image").modal('show');
-    }
-
+    } */
 	
 </script>
 
@@ -999,57 +1015,79 @@ var scroll_load = {
 							style="position: absolute; background-color: r #CDCCCB; border: 0; margin-right: 10px; border-radius: 5px; right: 0; margin-top: 10px;">
 							<span style="color: white;"><i class="fa fa-times"></i></span>
 						</button>
-						<form id="myForm" action="/content/upload" method="post"
-							name="form" style="margin: 0; padding: 0;">
 							<div class="write-box">
-								<textarea id="text-area" class="form-control"
-									placeholder="오늘 감사했던 이야기를 들려주세요" name="contents" rows="3"
-									cols="50"
-									style="width: 453px; border: 0; border-radius: 8px 8px 0 0; padding-right: 37px; padding-top: 10px;"></textarea>
-								<input type="text" name="user_id" value="@user.id"
-									style="display: none;" /> <input type="text" name="openLevel"
-									value="2" style="display: none;" />
+								<form id="contents_form" action="/contentimageupload" method="post" name="form">
+									<textarea id="text-area" class="form-control" placeholder="오늘 감사했던 이야기를 들려주세요" name="contents" rows="3" cols="50"
+										style="width: 453px; border: 0; border-radius: 8px 8px 0 0; padding-right: 37px; padding-top: 10px;"></textarea>
+									<input type="text" name="user_id" value="@user.id" style="display: none;" />
+									<input type="text" name="openLevel" value="2" style="display: none;" />
+									<input type="text" name="image_content_1" value="" style="display: none;" />
+									<input type="text" name="image_content_2" value="" style="display: none;" />
+									<input type="text" name="image_content_3" value="" style="display: none;" />
+									<input type="text" name="image_content_4" value="" style="display: none;" />
+								</form>
 							</div>
 							<div id="plus" class="hidden"
 								style="margin-top: 10px; margin-bottom: 10px;">
 								<div class="container">
 									<ul>
-										<li class="thumb"><span class="buttonWrap"> <input
-												type="file" class="fileData" name="1" /> <img
-												class="preview" src="../assets/Img/profile_img.png" id="1" />
-										</span></li>
-										<li class="thumb"><span class="buttonWrap"> <input
-												type="file" class="fileData" name="2" /> <img
-												class="preview" src="../assets/Img/profile_img.png" id="2" />
-										</span></li>
-										<li class="thumb"><span class="buttonWrap"> <input
-												type="file" class="fileData" name="3" /> <img
-												class="preview" src="../assets/Img/profile_img.png" id="3" />
-										</span></li>
-										<li class="thumb"><span class="buttonWrap"> <input
-												type="file" class="fileData" name="4" /> <img
-												class="preview" src="../assets/Img/profile_img.png" id="4" />
-										</span></li>
+										<li class="thumb">
+											<form id="content_image_form_1" action="/tempimagecontentupload" method="post" name="form">
+												<span class="buttonWrap"> 
+													<input type="file" class="fileData" name="1" />
+													<input type="text" name="user_id" value="@user.id" style="display: none;" />
+													<input type="text" name="num" value="1" style="display: none;" />
+													<img id="preview_content1" class="preview" src="../assets/Img/profile_img.png"/>
+												</span>
+											</form>
+										</li>
+										
+										<li class="thumb">
+											<form id="content_image_form_2" action="/tempimagecontentupload" method="post" name="form">
+												<span class="buttonWrap"> 
+													<input type="file" class="fileData" name="2" />
+													<input type="text" name="user_id" value="@user.id" style="display: none;" />
+													<input type="text" name="num" value="2" style="display: none;" /> 
+													<img id="preview_content2" class="preview" src="../assets/Img/profile_img.png"/>
+												</span>
+											</form>
+										</li>
+										<li class="thumb">
+											<form id="content_image_form_3" action="/tempimagecontentupload" method="post" name="form">
+												<span class="buttonWrap"> 
+													<input type="file" class="fileData" name="3" />
+													<input type="text" name="user_id" value="@user.id" style="display: none;" />
+													<input type="text" name="num" value="3" style="display: none;" /> 
+													<img id="preview_content3" class="preview" src="../assets/Img/profile_img.png"/>
+												</span>
+											</form>
+										</li>
+										<li class="thumb">
+											<form id="content_image_form_4" action="/tempimagecontentupload" method="post" name="form">
+												<span class="buttonWrap"> 
+												<input type="file" class="fileData" name="4" />
+												<input type="text" name="user_id" value="@user.id" style="display: none;" />
+												<input type="text" name="num" value="4" style="display: none;" />
+												<img id="preview_content4" class="preview" src="../assets/Img/profile_img.png"/>
+												</span>
+											</form>		
+										</li>
 									</ul>
 								</div>
 							</div>
 							<div class="button-box">
-								<a
-									style="display: inline-block; width: 30px; margin-left: 10px; text-decoration: none"
-									id="diary-img" href="#"> <img src="/assets/Img/camera.png"
-									style="cursor: pointer;" />
+								<a style="display: inline-block; width: 30px; margin-left: 10px; text-decoration: none" id="diary-img" href="#"> 
+									<img src="/assets/Img/camera.png" style="cursor: pointer;" />
 								</a>
 								<div style="float: right;">
-									<button type="submit" name="commit"
+									<button id="content_commit"
 										style="display: inline-block; text-decoration: none; background-color: rgb(79, 189, 158); border: 0; margin-right: 5px; border-radius: 5px; height: 30px; width: 80px;">
-										<span style="color: white;"> <i
-											class="fa fa-paper-plane" style="display: inline;"> </i> 글쓰기
+										<span style="color: white;"> <i class="fa fa-paper-plane" style="display: inline;"> </i> 글쓰기
 										</span>
 									</button>
 
 								</div>
 							</div>
-						</form>
 					</div>
 
 				</div>

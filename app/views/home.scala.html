@@ -428,7 +428,7 @@ $(function() {
 	
 	
 	
-	var options = { 
+	var options2 = { 
 			dataType: "json",
 			success: function(data) {
 				if(data.code == 200){
@@ -445,9 +445,115 @@ $(function() {
 					}
 				}
 			}
+	} 
+	
+	
+	var options = { 
+			dataType: "json",
+			success: function(data) {
+				if(data.code == 1){
+					$("#preview_1").attr("src", "/image/" + data.url);
+					$("[name = image_1]").val(data.url);
+				}else if(data.code == 2){
+					$("#preview_2").attr("src", "/image/" + data.url);
+					$("[name = image_2]").val(data.url);
+				}else if(data.code == 3){
+					$("#preview_3").attr("src", "/image/" + data.url);
+					$("[name = image_3]").val(data.url);
+				}else if(data.code == 4){
+					$("#preview_4").attr("src", "/image/" + data.url);
+					$("[name = image_4]").val(data.url);
+				}
+			}
 	}
+	
+	var options_content = { 
+			dataType: "json",
+			success: function(data) {
+				if(data.code == 1){
+					$("#preview_content1").attr("src", "/image/" + data.url);
+					$("[name = image_content_1]").val(data.url);
+				}else if(data.code == 2){
+					$("#preview_content2").attr("src", "/image/" + data.url);
+					$("[name = image_content_2]").val(data.url);
+				}else if(data.code == 3){
+					$("#preview_content3").attr("src", "/image/" + data.url);
+					$("[name = image_content_3]").val(data.url);
+				}else if(data.code == 4){
+					$("#preview_content4").attr("src", "/image/" + data.url);
+					$("[name = image_content_4]").val(data.url);
+				}
+			}
+	}
+	
+	var options_contens_upload = { 
+			dataType: "json",
+			success: function(data) {
+				if(data.code == 200){
+					location.reload();
+				}
+			}
+	}
+	
+	$('#image_form_1').ajaxForm(options);
+	$('#image_form_2').ajaxForm(options); 
+	$('#image_form_3').ajaxForm(options); 
+	$('#image_form_4').ajaxForm(options);
+	$("#content_image_form_1").ajaxForm(options_content);
+	$("#content_image_form_2").ajaxForm(options_content);
+	$("#content_image_form_3").ajaxForm(options_content);
+	$("#content_image_form_4").ajaxForm(options_content);
 
-	$('#image_form').ajaxForm(options); 
+	$("#contents_form").submit(function(){
+		if($("[name=contents]").val().length == 0) {
+	    	$("body").append("<div id='toast'><b>본문을 채워주세요.</b></div>");
+			var timer = setInterval(function () {
+				$("#toast").remove();
+				clearInterval(timer);
+			}, 2000);
+			$("[name=contents]").focus();
+			return false;
+		}else{
+		 	$(this).ajaxSubmit(options_contens_upload);
+		}
+		 return false;
+	});
+
+	$("#content_commit").click(function() {
+		$("#contents_form").submit();
+	});
+	
+	$("#imageupload").submit(function(){
+		 $(this).ajaxSubmit(options2);
+		 return false;
+	});
+	
+	$(".fileData2").change(function(){
+		$(this).parent().parent("form").submit();
+	});
+	
+	$(".fileData").change(function(){
+		$(this).parent().parent("form").submit();
+
+	});
+	
+	
+	/* $("#myForm").ajaxForm({
+	beforeSubmit: function() {
+	    if($("[name=contents]").val().length == 0) {
+	    	$("body").append("<div id='toast'><b>본문을 채워주세요.</b></div>");
+			var timer = setInterval(function () {
+				$("#toast").remove();
+				clearInterval(timer);
+			}, 2000);
+			$("[name=contents]").focus();
+			return false;
+		}
+    },
+    success: function(){
+    	location.reload();
+    }
+}); */
 
 	$("#diary-write").click(function(e) {
 		e.preventDefault();
@@ -709,7 +815,6 @@ $(function() {
 	});
 
 
-
 	$("[name=like]").click(function() {
 		$.ajax({
 			url: "/content/like",
@@ -851,21 +956,6 @@ $(function() {
 			}				
 		});	
 	});
-	
-	$("#input_image_profile").change(function(){
-		profile_preview(this);
-
-	});
-
-	$(".fileData").change(function(){
-		readURL(this, $(this).attr('name'));
-
-	});
-	
-	$(".fileData2").change(function(){
-		readURL2(this, $(this).attr('name'));
-
-	});
 
 
 	$("[name=user_profile], #camera-background").click(function(){
@@ -936,23 +1026,6 @@ $(function() {
 		return false;
 	});
 	
-	$("#myForm").ajaxForm({
-			beforeSubmit: function() {
-			    if($("[name=contents]").val().length == 0) {
-			    	$("body").append("<div id='toast'><b>본문을 채워주세요.</b></div>");
-					var timer = setInterval(function () {
-						$("#toast").remove();
-						clearInterval(timer);
-					}, 2000);
-					$("[name=contents]").focus();
-					return false;
-				}
-		    },
-		    success: function(){
-		    	location.reload();
-		    }
-	});
-	
 	
 	$(".user_notice").click(function() {
 		
@@ -992,41 +1065,6 @@ $(function() {
 	});
 });
 
-function profile_preview(input) {
-	if (input.files && input.files[0]) {
-		var reader = new FileReader();
-
-		reader.onload = function (e) {
-			$("#image_profile").attr('src', e.target.result);
-		}
-
-		reader.readAsDataURL(input.files[0]);
-	}
-}
-
-function readURL(input, img_num) {
-	if (input.files && input.files[0]) {
-		var reader = new FileReader();
-
-		reader.onload = function (e) {
-			$("#" + img_num).attr('src', e.target.result);
-		}
-
-		reader.readAsDataURL(input.files[0]);
-	}
-}
-
-function readURL2(input, img_num) {
-	if (input.files && input.files[0]) {
-		var reader = new FileReader();
-
-		reader.onload = function (e) {
-			$("#" + img_num).attr('src', e.target.result);
-		}
-
-		reader.readAsDataURL(input.files[0]);
-	}
-}
 
 function open_win() { 
 	$("#modal").css({
@@ -1229,66 +1267,84 @@ function getRadioValue(obj) {
 	<div id ="mother">
 		<div class="content">
 			<div class="menu-box">
-				<!-- <a style="display: inline-block; width: 48%; text-decoration: none"
-					href="#" id="diary-write"> <img src="/assets/Img/write_btn.png"
-					style="cursor: pointer;" />
-				</a>  -->
 					<div id="textbox">
 						<button type="button" id ="write_cancel" class="hidden"
 							style="position: absolute; background-color: r #CDCCCB; border: 0; margin-right: 10px; border-radius: 5px; right: 0; margin-top: 10px;">
 							<span style="color: white;"><i class="fa fa-times"></i></span>
 						</button>
-						<form id="myForm" action="/content/upload" method="post"
-							name="form" style="margin: 0; padding: 0;">
 							<div class="write-box">
-								<textarea id="text-area" class="form-control"
-									placeholder="오늘 감사했던 이야기를 들려주세요" name="contents" rows="3"
-									cols="50"
-									style="width: 453px; border: 0; border-radius: 8px 8px 0 0; padding-right: 37px; padding-top: 10px;"></textarea>
-								<input type="text" name="user_id" value="@user.id"
-									style="display: none;" /> <input type="text" name="openLevel"
-									value="1" style="display: none;" />
+								<form id="contents_form" action="/contentimageupload" method="post" name="form">
+									<textarea id="text-area" class="form-control" placeholder="오늘 감사했던 이야기를 들려주세요" name="contents" rows="3" cols="50"
+										style="width: 453px; border: 0; border-radius: 8px 8px 0 0; padding-right: 37px; padding-top: 10px;"></textarea>
+									<input type="text" name="user_id" value="@user.id" style="display: none;" />
+									<input type="text" name="openLevel" value="1" style="display: none;" />
+									<input type="text" name="image_content_1" value="" style="display: none;" />
+									<input type="text" name="image_content_2" value="" style="display: none;" />
+									<input type="text" name="image_content_3" value="" style="display: none;" />
+									<input type="text" name="image_content_4" value="" style="display: none;" />
+								</form>
 							</div>
 							<div id="plus" class="hidden"
 								style="margin-top: 10px; margin-bottom: 10px;">
 								<div class="container">
 									<ul>
-										<li class="thumb"><span class="buttonWrap"> <input
-												type="file" class="fileData" name="1" /> <img
-												class="preview" src="../assets/Img/profile_img.png" id="1" />
-										</span></li>
-										<li class="thumb"><span class="buttonWrap"> <input
-												type="file" class="fileData" name="2" /> <img
-												class="preview" src="../assets/Img/profile_img.png" id="2" />
-										</span></li>
-										<li class="thumb"><span class="buttonWrap"> <input
-												type="file" class="fileData" name="3" /> <img
-												class="preview" src="../assets/Img/profile_img.png" id="3" />
-										</span></li>
-										<li class="thumb"><span class="buttonWrap"> <input
-												type="file" class="fileData" name="4" /> <img
-												class="preview" src="../assets/Img/profile_img.png" id="4" />
-										</span></li>
+										<li class="thumb">
+											<form id="content_image_form_1" action="/tempimagecontentupload" method="post" name="form">
+												<span class="buttonWrap"> 
+													<input type="file" class="fileData" name="1" />
+													<input type="text" name="user_id" value="@user.id" style="display: none;" />
+													<input type="text" name="num" value="1" style="display: none;" />
+													<img id="preview_content1" class="preview" src="../assets/Img/profile_img.png"/>
+												</span>
+											</form>
+										</li>
+										
+										<li class="thumb">
+											<form id="content_image_form_2" action="/tempimagecontentupload" method="post" name="form">
+												<span class="buttonWrap"> 
+													<input type="file" class="fileData" name="2" />
+													<input type="text" name="user_id" value="@user.id" style="display: none;" />
+													<input type="text" name="num" value="2" style="display: none;" /> 
+													<img id="preview_content2" class="preview" src="../assets/Img/profile_img.png"/>
+												</span>
+											</form>
+										</li>
+										<li class="thumb">
+											<form id="content_image_form_3" action="/tempimagecontentupload" method="post" name="form">
+												<span class="buttonWrap"> 
+													<input type="file" class="fileData" name="3" />
+													<input type="text" name="user_id" value="@user.id" style="display: none;" />
+													<input type="text" name="num" value="3" style="display: none;" /> 
+													<img id="preview_content3" class="preview" src="../assets/Img/profile_img.png"/>
+												</span>
+											</form>
+										</li>
+										<li class="thumb">
+											<form id="content_image_form_4" action="/tempimagecontentupload" method="post" name="form">
+												<span class="buttonWrap"> 
+												<input type="file" class="fileData" name="4" />
+												<input type="text" name="user_id" value="@user.id" style="display: none;" />
+												<input type="text" name="num" value="4" style="display: none;" />
+												<img id="preview_content4" class="preview" src="../assets/Img/profile_img.png"/>
+												</span>
+											</form>		
+										</li>
 									</ul>
 								</div>
 							</div>
 							<div class="button-box">
-								<a
-									style="display: inline-block; width: 30px; margin-left: 10px; text-decoration: none"
-									id="diary-img" href="#"> <img src="/assets/Img/camera.png"
-									style="cursor: pointer;" />
+								<a style="display: inline-block; width: 30px; margin-left: 10px; text-decoration: none" id="diary-img" href="#"> 
+									<img src="/assets/Img/camera.png" style="cursor: pointer;" />
 								</a>
 								<div style="float: right;">
-									<button type="submit" name="commit"
+									<button id="content_commit"
 										style="display: inline-block; text-decoration: none; background-color: rgb(79, 189, 158); border: 0; margin-right: 5px; border-radius: 5px; height: 30px; width: 80px;">
-										<span style="color: white;"> <i
-											class="fa fa-paper-plane" style="display: inline;"> </i> 글쓰기
+										<span style="color: white;"> <i class="fa fa-paper-plane" style="display: inline;"> </i> 글쓰기
 										</span>
 									</button>
 
 								</div>
 							</div>
-						</form>
 					</div>
 
 				</div>
@@ -1528,48 +1584,67 @@ function getRadioValue(obj) {
 							<h5>프로필 사진은 최대 4장까지 등록할 수 있습니다.</h5>
 						</div>
 						<div style="margin-top: 40px;">
-							<form id="image_form" action="/user/userImageUpdate"
-								method="post" name="form">
-								<span class="buttonWrap "
-									style="display: inline-block; margin-right: 15px; height: 180px; width: 180px;">
-									<input type="file" class="fileData2" name="5"
-									style="height: 180px; width: 180px;" /> <input type="text"
-									name="user_id" value="@user.id" style="display: none;" /> <input
-									type="text" name="num" value="1" style="display: none;" />
-									@if(!user.image_url1.equals("")){ <img class="preview"
-									src="/image/@user.image_url1" id="5"
-									style="height: 180px; width: 180px;" />}else{ <img
-									class="preview" src="../assets/Img/profile_img.png" id="5"
-									style="height: 180px; width: 180px;" /> }
-								</span> <span class="buttonWrap"
-									style="display: inline-block; margin-right: 15px; height: 180px; width: 180px;">
-									<input type="file" class="fileData2" name="6"
-									style="height: 180px; width: 180px;" /> <input type="text"
-									name="user_id" value="@user.id" style="display: none;" /> <input
-									type="text" name="num" value="2" style="display: none;" /> <img
-									class="preview" src="../assets/Img/profile_img.png" id="6"
-									style="height: 180px; width: 180px;" />
-								</span> <span class="buttonWrap"
-									style="display: inline-block; margin-right: 15px; height: 180px; width: 180px;">
-									<input type="file" class="fileData2" name="7"
-									style="height: 180px; width: 180px;" /> <input type="text"
-									name="user_id" value="@user.id" style="display: none;" /> <input
-									type="text" name="num" value="3" style="display: none;" /> <img
-									class="preview" src="../assets/Img/profile_img.png" id="7"
-									style="height: 180px; width: 180px;" />
-								</span> <span class="buttonWrap"
-									style="display: inline-block; margin-right: 15px; height: 180px; width: 180px;">
-									<input type="file" class="fileData2" name="8"
-									style="height: 180px; width: 180px;" /> <input type="text"
-									name="user_id" value="@user.id" style="display: none;" /> <input
-									type="text" name="num" value="4" style="display: none;" /> <img
-									class="preview" src="../assets/Img/profile_img.png" id="8"
-									style="height: 180px; width: 180px;" />
-								</span> <span style="float: right; margin-right: 10px;"> <input
-									type="image" style="width: 70px; margin-top: 110px;"
-									src="../assets/Img/profile_img_end_btn.png" />
-								</span>
-							</form>
+						<form id="image_form_1" action="/tempimage" method="post" name="form" style="display: inline;">
+							<span class="buttonWrap" style="display: inline-block; margin-right: 15px; height: 180px; width: 180px;"> 
+								<input type="file" class="fileData2" name="1" style="height: 180px; width: 180px;"/>
+								<input type="text" name="user_id" value="@user.id" style="display: none;" />
+								<input type="text" name="num" value="1" style="display: none;" />
+								@if(!user.image_url1.equals("")){
+									<img id= "preview_1" class="preview" src="/image/@user.image_url1" style="height: 180px; width: 180px;"/>
+								}else{
+									<img id= "preview_1" class="preview" src="../assets/Img/profile_img.png" style="height: 180px; width: 180px;"/>
+								}
+								
+							</span>
+						</form>
+						<form id="image_form_2" action="/tempimage" method="post" name="form" style="display: inline;"> 
+							<span class="buttonWrap"
+								style="display: inline-block; margin-right: 15px; height: 180px; width: 180px;"> <input
+								type="file" class="fileData2" name="2" style="height: 180px; width: 180px;"/>
+								<input type="text" name="user_id" value="@user.id"
+								style="display: none;" /> <input type="text" name="num"
+								value="2" style="display: none;" /> 
+								@if(!user.image_url2.equals("")){
+									<img id= "preview_2" class="preview" src="/image/@user.image_url2" style="height: 180px; width: 180px;"/>
+								}else{
+									<img id= "preview_2" class="preview" src="../assets/Img/profile_img.png" style="height: 180px; width: 180px;"/>
+								}
+							</span>
+						</form>
+						<form id="image_form_3" action="/tempimage" method="post" name="form" style="display: inline;">
+							 <span class="buttonWrap"
+								style="display: inline-block; margin-right: 15px; height: 180px; width: 180px;"> <input
+								type="file" class="fileData2" name="3" style="height: 180px; width: 180px;" />
+								<input type="text" name="user_id" value="@user.id"
+								style="display: none;" /> <input type="text" name="num"
+								value="3" style="display: none;" /> 
+								@if(!user.image_url3.equals("")){
+									<img id= "preview_3" class="preview" src="/image/@user.image_url3" style="height: 180px; width: 180px;"/>
+								}else{
+									<img id= "preview_3" class="preview" src="../assets/Img/profile_img.png" style="height: 180px; width: 180px;"/>
+								}
+							</span>
+						</form>
+						<form id="image_form_4" action="/tempimage" method="post" name="form" style="display: inline;">
+						 <span class="buttonWrap"
+								style="display: inline-block; margin-right: 15px; height: 180px; width: 180px;"> <input type="file" class="fileData2" name="4" style="height: 180px; width: 180px;"/>
+								<input type="text" name="user_id" value="@user.id" style="display: none;" /> 
+								<input type="text" name="num" value="4" style="display: none;" /> 
+								@if(!user.image_url4.equals("")){
+									<img id= "preview_4" class="preview" src="/image/@user.image_url4" style="height: 180px; width: 180px;"/>
+								}else{
+									<img id= "preview_4" class="preview" src="../assets/Img/profile_img.png" style="height: 180px; width: 180px;"/>
+								}
+							</span>
+						</form>
+						<form id="imageupload" method="post" action="/userimageupload" style="float: right; margin-right: 10px;">
+							<input type="text" name="user_id" value="@user.id" style="display: none;" /> 
+							<input type="text" name="image_1" value="" style="display: none;" />
+							<input type="text" name="image_2" value="" style="display: none;" />
+							<input type="text" name="image_3" value="" style="display: none;" />
+							<input type="text" name="image_4" value="" style="display: none;" /> 
+							<input type="image" style="width: 70px; margin-top: 110px;" src="../assets/Img/profile_img_end_btn.png"/>
+						</form>
 						</div>
 					</div>
 				</div>

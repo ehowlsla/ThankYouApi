@@ -1,8 +1,18 @@
 package controllers;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.text.Normalizer.Form;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import org.h2.util.IOUtils;
 
 import models.Content;
 import models.ContentLike;
@@ -17,6 +27,7 @@ import com.google.gson.Gson;
 
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Http.MultipartFormData.FilePart;
 import resModles.ResContent;
 import resModles.ResContentLike;
 import resModles.ResNotice;
@@ -25,6 +36,9 @@ import resModles.ResUser;
 import resResults.ContentResult;
 import resResults.LoginResult;
 import resResults.NoticeResult;
+import resResults.TempImageResult;
+import resResults.UserResult;
+import utils.ThumbnailGenerator;
 import views.html.*;
 import views.html.helper.form;
 
@@ -612,6 +626,201 @@ public class Application extends Controller {
 		return redirect(
 				routes.Application.index()
 				);
+	}
+	
+	
+	public static Result TempImage() {
+		TempImageResult result = new TempImageResult();
+
+		if (request().body().asMultipartFormData() != null) {
+			Map<String, String[]> params = request().body().asMultipartFormData().asFormUrlEncoded();
+			
+			long user_id = Long.parseLong(params.get("user_id")[0]);
+			int num = Integer.parseInt(params.get("num")[0]);
+			
+			User user = User.getUserInfo(user_id);
+			if(user != null) {
+				List<FilePart> uploadFiles = request().body().asMultipartFormData().getFiles();
+				
+
+				for (FilePart part : uploadFiles) {
+					if (part != null) {
+						File file = part.getFile();
+						Date date = new Date();
+						SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss");
+						String imageURL = "Images/Users/" + user_id + "_" + format.format(date) + "_" + String.valueOf(num) + ".JPG"; 
+						String s_imageURL = "Images/Users/thumbnail_" + user_id + "_" + format.format(date) + "_" + String.valueOf(num) + ".JPG"; 
+
+						File saveFile = new File(imageURL);
+						FileInputStream is;
+						try {
+							is = new FileInputStream(file);
+							IOUtils.copy(is, new FileOutputStream(saveFile));
+							ThumbnailGenerator generator = new ThumbnailGenerator();
+							generator.transform(imageURL, s_imageURL, 480, 480);  
+							
+							result.url = s_imageURL;
+							result.code = num;
+
+						} catch (FileNotFoundException e) {
+							// TODO Auto-generated catch block
+							result.msg = "에러가 발생했습니다.\n" + e.getMessage();
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							result.msg = "에러가 발생했습니다.\n" + e.getMessage(); 
+							e.printStackTrace();
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							result.msg = "에러가 발생했습니다.\n" + e.getMessage();                                     
+							e.printStackTrace();
+						} 
+					}
+				}                
+			} else {
+				result.code = HttpContants.FORBIDDEN_403;
+				result.msg = "해당 유저가 없습니다.";
+			}            	
+		} else {
+			result.code = HttpContants.FORBIDDEN_403;
+			result.msg = "첨부된 파일이 없습니다.";
+		}
+
+		return ok(new Gson().toJson(result));
+	}
+	
+	
+	public static Result TempContentImage() {
+		TempImageResult result = new TempImageResult();
+
+		if (request().body().asMultipartFormData() != null) {
+			Map<String, String[]> params = request().body().asMultipartFormData().asFormUrlEncoded();
+			
+			long user_id = Long.parseLong(params.get("user_id")[0]);
+			int num = Integer.parseInt(params.get("num")[0]);
+			
+			User user = User.getUserInfo(user_id);
+			if(user != null) {
+				List<FilePart> uploadFiles = request().body().asMultipartFormData().getFiles();
+				
+
+				for (FilePart part : uploadFiles) {
+					if (part != null) {
+						File file = part.getFile();
+						Date date = new Date();
+						SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss");
+						String imageURL = "Images/Contents/" + user_id + "_" + format.format(date) + "_" + String.valueOf(num) + ".JPG"; 
+						String s_imageURL = "Images/Contents/thumbnail_" + user_id + "_" + format.format(date) + "_" + String.valueOf(num) + ".JPG"; 
+
+						File saveFile = new File(imageURL);
+						FileInputStream is;
+						try {
+							is = new FileInputStream(file);
+							IOUtils.copy(is, new FileOutputStream(saveFile));
+							ThumbnailGenerator generator = new ThumbnailGenerator();
+							generator.transform(imageURL, s_imageURL, 480, 480);  
+							
+							result.url = s_imageURL;
+							result.code = num;
+
+						} catch (FileNotFoundException e) {
+							// TODO Auto-generated catch block
+							result.msg = "에러가 발생했습니다.\n" + e.getMessage();
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							result.msg = "에러가 발생했습니다.\n" + e.getMessage(); 
+							e.printStackTrace();
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							result.msg = "에러가 발생했습니다.\n" + e.getMessage();                                     
+							e.printStackTrace();
+						} 
+					}
+				}                
+			} else {
+				result.code = HttpContants.FORBIDDEN_403;
+				result.msg = "해당 유저가 없습니다.";
+			}            	
+		} else {
+			result.code = HttpContants.FORBIDDEN_403;
+			result.msg = "첨부된 파일이 없습니다.";
+		}
+
+		return ok(new Gson().toJson(result));
+	}
+	
+	
+	
+	public static Result ContentImageUpdate() {
+		UserResult result = new UserResult();
+		Map<String, String[]> params = request().body().asFormUrlEncoded();
+
+
+		long user_id = Long.parseLong(params.get("user_id")[0]);
+		String contents = params.get("contents")[0];
+		int openLevel = Integer.parseInt(params.get("openLevel")[0]);
+		String image_url1 = params.get("image_content_1")[0];
+		String image_url2 = params.get("image_content_2")[0];
+		String image_url3 = params.get("image_content_3")[0];
+		String image_url4 = params.get("image_content_4")[0];
+
+
+		User user = User.getUserInfo(user_id);
+		if(user != null) {
+			Content content = new Content(user, contents, image_url1,
+					image_url2, image_url3, image_url4, openLevel);
+			content.save();
+			
+			result.code = HttpContants.OK_200;
+			result.msg = "성공적으로 이미지가 업로드 되었습니다.";
+
+		} else {
+			result.code = HttpContants.FORBIDDEN_403;
+			result.msg = "해당 유저가 없습니다.";
+		}            	
+
+		return ok(new Gson().toJson(result));
+	}
+	
+	public static Result userImageUpdate() {
+		UserResult result = new UserResult();
+		Map<String, String[]> params = request().body().asFormUrlEncoded();
+
+
+		long user_id = Long.parseLong(params.get("user_id")[0]);
+		String image_url1 = params.get("image_1")[0];
+		String image_url2 = params.get("image_2")[0];
+		String image_url3 = params.get("image_3")[0];
+		String image_url4 = params.get("image_4")[0];
+
+
+		User user = User.getUserInfo(user_id);
+		if(user != null) {
+			if(!image_url1.equals("")) {
+				user.image_url1 = image_url1;
+			}
+			if(!image_url2.equals("")) {
+				user.image_url2 = image_url2;
+			}
+			if(!image_url3.equals("")) {
+				user.image_url3 = image_url3;
+			}
+			if(!image_url4.equals("")) {
+				user.image_url4 = image_url4;
+			}
+			
+			user.update();
+			
+			result.code = HttpContants.OK_200;
+			result.msg = "성공적으로 이미지가 업로드 되었습니다.";
+
+		} else {
+			result.code = HttpContants.FORBIDDEN_403;
+			result.msg = "해당 유저가 없습니다.";
+		}            	
+
+		return ok(new Gson().toJson(result));
 	}
 
 }

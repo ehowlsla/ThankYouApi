@@ -421,6 +421,35 @@ var scroll_load = {
 $(function() {
 	scroll_load.event();
 	
+	
+	$("#target_profile_image").click(function() {
+ 		$(document).on('click.control',
+				function(e) {
+			if ($(e.target).parents('.gallery-tool').length == 0 || ( $(e.target).attr("class") != undefined && $(e.target).attr("class").index("gallery-tool") < 0)) {
+				$(".gallery-tool").remove();
+				$(document).unbind('click.control');}
+		});
+ 		
+ 		
+		
+		$("body").append("<div class='gallery-tool hidden' style='position:fixed;'><div><div class='gallery-box'><img id='gallery-in' style='opacity:1;' src=''></div></div></div>");
+		
+		$(".gallery-tool").css({
+       		width: $(window).width() + "px",
+       		height: $(window).height()+ "px"
+		});
+		
+	 	 $("#gallery-in").attr("src", $(this).attr("src").replace("thumbnail_", "")).load(function(){
+			$(".gallery-box").css({
+	       		left: (( $(window).width() - $("#gallery-in").width() ) / 2) + "px",
+	       		top: (( $(window).height() - $("#gallery-in").height() ) / 2) + "px"
+			});
+		});  
+			$(".gallery-tool").removeClass("hidden");
+			$(".gallery-tool").show();
+		return false;
+	});
+	
 	$(".like_text").click(function() {
 		$.ajax({
 			url: "/like",
@@ -944,7 +973,7 @@ $(function() {
 			<div class="menu-box-neighbor">
 				<div class="profile-panel">
 					<div class="profile-image">
-							<img src="/image/@target_user.image_url1" />
+						<img id = "target_profile_image" src="/image/@target_user.image_url1" style="cursor: pointer;"/>
 					</div>
 					<div class="profile-nickname">
 						<h3>@target_user.nickname</h3>

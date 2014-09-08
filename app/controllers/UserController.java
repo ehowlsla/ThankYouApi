@@ -434,8 +434,6 @@ public class UserController extends Controller{
 	public static Result userImageUpdate() {
 		UserResult result = new UserResult();
 
-
-
 		if (request().body().asMultipartFormData() != null) {
 			Map<String, String[]> params = request().body().asMultipartFormData().asFormUrlEncoded();
 			

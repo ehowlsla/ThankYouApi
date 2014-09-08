@@ -218,7 +218,6 @@ public class ContentController extends Controller {
 		} else if(request().body().asFormUrlEncoded() != null){
 			Map<String, String[]> params = request().body().asFormUrlEncoded();
 			Long user_id = Long.parseLong(params.get("user_id")[0]);
-			System.out.println(user_id);
 			String contents = params.get("contents")[0];
 			int openLevel = Integer.parseInt(params.get("openLevel")[0]);
 

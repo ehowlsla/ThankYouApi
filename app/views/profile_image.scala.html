@@ -31,10 +31,8 @@
 
 <script type="text/javascript">
 $(function() {
-	
 	scroll_resize();
-	
-	var options = { 
+ 	var options2 = { 
 			dataType: "json",
 			success: function(data) {
 				if(data.code == 200){
@@ -51,17 +49,51 @@ $(function() {
 					}
 				}
 			}
+	} 
+	
+	
+	var options = { 
+			dataType: "json",
+			success: function(data) {
+				if(data.code == 1){
+					$("#preview_1").attr("src", "/image/" + data.url);
+					$("[name = image_1]").val(data.url);
+				}else if(data.code == 2){
+					$("#preview_2").attr("src", "/image/" + data.url);
+					$("[name = image_2]").val(data.url);
+				}else if(data.code == 3){
+					$("#preview_3").attr("src", "/image/" + data.url);
+					$("[name = image_3]").val(data.url);
+				}else if(data.code == 4){
+					$("#preview_4").attr("src", "/image/" + data.url);
+					$("[name = image_4]").val(data.url);
+				}
+			}
 	}
 	
-	$('#image_form').ajaxForm(options); 
+	$('#image_form_1').ajaxForm(options);
+	$('#image_form_2').ajaxForm(options); 
+	$('#image_form_3').ajaxForm(options); 
+	$('#image_form_4').ajaxForm(options);
+	
+	 $("#imageupload").submit(function(){
+		 $(this).ajaxSubmit(options2);
+		 return false;
+	 });
 	
 	$(".fileData").change(function(){
-		readURL(this, $(this).attr('name'));
-
+		$(this).parent().parent("form").submit();
 	});
+	
+	/* $(".fileData").change(function(){
+	readURL(this, $(this).attr('name'));
+
+}); */
+	
+	
 });
 
-function profile_preview(input) {
+/* function profile_preview(input) {
 	if (input.files && input.files[0]) {
 		var reader = new FileReader();
 
@@ -83,7 +115,7 @@ function readURL(input, img_num) {
 
 		reader.readAsDataURL(input.files[0]);
 	}
-}
+} */
 
 function scroll_resize(){
 	if($(window).height() <= 748) {
@@ -182,7 +214,10 @@ body {
 	padding: 20px;
 }
 
-footer img {
+footer{
+	display: block;
+}
+footer img{
 	width: 940px;
 }
 
@@ -219,7 +254,7 @@ footer img {
 			<img src="/assets/Img/thanks_logo.png">
 		</div>
 	</div>
-	<div class="container" style="margin-top: 70px; position: relative;">
+	<div class="container" style="margin-top: 70px;">
 		<div class="border_box">
 			<img src="/assets/Img/intro_join.png"
 				style="width: 80px; position: absolute;" />
@@ -230,46 +265,73 @@ footer img {
 						<h5>프로필 사진은 최대 4장까지 등록할 수 있습니다.</h5>
 					</div>
 					<div style="margin-top: 40px;">
-						<form id="image_form" action="/user/userImageUpdate" method="post"
-							name="form">
+						<form id="image_form_1" action="/tempimage" method="post" name="form" style="display: inline;">
+							<span class="buttonWrap" style="display: inline-block; margin-right: 15px;"> 
+								<input type="file" class="fileData" name="1"/>
+								<input type="text" name="user_id" value="@user.id" style="display: none;" />
+								<input type="text" name="num" value="1" style="display: none;" />
+								@if(!user.image_url1.equals("")){
+									<img id= "preview_1" class="preview" src="/image/@user.image_url1"/>
+								}else{
+									<img id= "preview_1" class="preview" src="../assets/Img/profile_img.png"/>
+								}
+								
+							</span>
+						</form>
+						<form id="image_form_2" action="/tempimage" method="post" name="form" style="display: inline;"> 
 							<span class="buttonWrap"
-								style="display: inline-block; margin-right: 15px;"> <input
-								type="file" class="fileData" name="1"/>
-								<input type="text" name="user_id" value="@user.id"
-								style="display: none;" /> <input type="text" name="num"
-								value="1" style="display: none;" /> <img class="preview"
-								src="../assets/Img/profile_img.png" id="1" />
-							</span> <span class="buttonWrap"
 								style="display: inline-block; margin-right: 15px;"> <input
 								type="file" class="fileData" name="2" />
 								<input type="text" name="user_id" value="@user.id"
 								style="display: none;" /> <input type="text" name="num"
-								value="2" style="display: none;" /> <img class="preview"
-								src="../assets/Img/profile_img.png" id="2" />
-							</span> <span class="buttonWrap"
+								value="2" style="display: none;" /> 
+								@if(!user.image_url2.equals("")){
+									<img id= "preview_2" class="preview" src="/image/@user.image_url2"/>
+								}else{
+									<img id= "preview_2" class="preview" src="../assets/Img/profile_img.png"/>
+								}
+							</span>
+						</form>
+						<form id="image_form_3" action="/tempimage" method="post" name="form" style="display: inline;">
+							 <span class="buttonWrap"
 								style="display: inline-block; margin-right: 15px;"> <input
 								type="file" class="fileData" name="3" />
 								<input type="text" name="user_id" value="@user.id"
 								style="display: none;" /> <input type="text" name="num"
-								value="3" style="display: none;" /> <img class="preview"
-								src="../assets/Img/profile_img.png" id="3" />
-							</span> <span class="buttonWrap"
-								style="display: inline-block; margin-right: 15px;"> <input
-								type="file" class="fileData" name="4" />
-								<input type="text" name="user_id" value="@user.id"
-								style="display: none;" /> <input type="text" name="num"
-								value="4" style="display: none;" /> <img class="preview"
-								src="../assets/Img/profile_img.png" id="4" />
-							</span> <span style="float: right; margin-right: 10px;"> <input type="image"
-								style="width: 70px; margin-top: 110px;" src="../assets/Img/profile_img_end_btn.png"/>
+								value="3" style="display: none;" /> 
+								@if(!user.image_url3.equals("")){
+									<img id= "preview_3" class="preview" src="/image/@user.image_url3"/>
+								}else{
+									<img id= "preview_3" class="preview" src="../assets/Img/profile_img.png"/>
+								}
 							</span>
 						</form>
+						<form id="image_form_4" action="/tempimage" method="post" name="form" style="display: inline;">
+						 <span class="buttonWrap"
+								style="display: inline-block; margin-right: 15px;"> <input type="file" class="fileData" name="4"/>
+								<input type="text" name="user_id" value="@user.id" style="display: none;" /> 
+								<input type="text" name="num" value="4" style="display: none;" /> 
+								@if(!user.image_url4.equals("")){
+									<img id= "preview_4" class="preview" src="/image/@user.image_url4"/>
+								}else{
+									<img id= "preview_4" class="preview" src="../assets/Img/profile_img.png"/>
+								}
+							</span>
+						</form>
+						<form id="imageupload" method="post" action="/userimageupload" style="float: right; margin-right: 10px;">
+							<input type="text" name="user_id" value="@user.id" style="display: none;" /> 
+							<input type="text" name="image_1" value="" style="display: none;" />
+							<input type="text" name="image_2" value="" style="display: none;" />
+							<input type="text" name="image_3" value="" style="display: none;" />
+							<input type="text" name="image_4" value="" style="display: none;" /> 
+							<input type="image" style="width: 70px; margin-top: 110px;" src="../assets/Img/profile_img_end_btn.png"/>
+						</form>	
 					</div>
 				</div>
 			</div>
 		</div>
 		<footer>
-		<img src="../assets/Img/footer.jpg"/>
+			<img src="../assets/Img/footer.jpg"/>
 		</footer>
 	</div>
 </body>
