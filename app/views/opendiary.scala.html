@@ -1109,7 +1109,7 @@ var scroll_load = {
 							<div class="write-box">
 								<textarea class="form-control" placeholder="이야기를 들려주세요"
 									textarea_in="@content.body.get(i).id" rows="10" cols="50"
-									style="width: 97%; margin-top: 15px;">@content.body.get(i).contents </textarea>
+									style="width: 97%; margin-top: 15px;">@content.body.get(i).contents.toString() </textarea>
 							</div>
 							<div class="button-box" style="background-color: white; text-align: right;">
 								<button type="button"
@@ -1124,7 +1124,7 @@ var scroll_load = {
 								</button>
 							</div>
 						</div>
-						<h5 id="contents" contens_content_id="@content.body.get(i).id">@content.body.get(i).contents</h5>
+						<h5 id="contents" contens_content_id="@content.body.get(i).id"><span style="white-space: pre-line">@content.body.get(i).contents.toString()</span></h5>
 						@if(!content.body.get(i).imageURL1.isEmpty()){
 
 						<div>
