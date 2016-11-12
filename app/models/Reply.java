@@ -25,7 +25,7 @@ public class Reply extends Model{
 	@Id
 	public long id;
 
-	@ManyToOne
+	//@ManyToOne
 	public User user;
 
 	public long content_id;
@@ -41,6 +41,8 @@ public class Reply extends Model{
 	private static final int rSize = 30;
 	
 	public int likeCount;
+	
+	public int user_id;
 
 	public static Finder<Long,Reply> find = new Finder<Long,Reply>(Long.class, Reply.class); 
 
