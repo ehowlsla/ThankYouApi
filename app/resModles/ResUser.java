@@ -32,21 +32,21 @@ public class ResUser {
 	public ResUser(User obj) {
 		// TODO Auto-generated constructor stub
 		if(obj != null) {
-			this.id = obj.id;
-			this.nickname = obj.nickname;
-			this.udid = obj.udid;
+			//this.id = obj.id;
+			//this.nickname = obj.nickname;
+			//this.udid = obj.udid;
 			this.image_url1 = obj.image_url1;
-			this.image_url2 = obj.image_url2;
-			this.image_url3 = obj.image_url3;
-			this.image_url4 = obj.image_url4;
-			this.birth = obj.birth;
-			this.city = obj.city;
-			this.memo = obj.memo;
-			this.job = obj.job;
-			this.status = obj.status;
-			this.gender = obj.gender;
-			this.create_date = obj.create_date;
-			this.token_key = "";
+			//this.image_url2 = obj.image_url2;
+			//this.image_url3 = obj.image_url3;
+			//this.image_url4 = obj.image_url4;
+			//this.birth = obj.birth;
+			//this.city = obj.city;
+			//this.memo = obj.memo;
+			//this.job = obj.job;
+			//this.status = obj.status;
+			//this.gender = obj.gender;
+			//this.create_date = obj.create_date;
+			//this.token_key = "";
 			this.app_version = "";
 			this.os_version = "";
 			this.phone = "";
