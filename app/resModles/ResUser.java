@@ -31,6 +31,12 @@ public class ResUser {
 
 	public ResUser(User obj) {
 		// TODO Auto-generated constructor stub
+		
+		
+		if(obj.image_url1 == null){
+			this.id = obj.id;
+		}
+			/*
 		if(obj != null) {
 			this.id = obj.id;
 			this.nickname = obj.nickname;
@@ -53,6 +59,6 @@ public class ResUser {
 			this.device_id = "";
 			this.email = "";
 			this.password = "";
-		}
+		}*/
 	}
 }
