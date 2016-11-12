@@ -6,8 +6,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import utils.TimeConvert;
-
 import models.Content;
+import models.User;
 
 public class ResContent {
 	
@@ -22,6 +22,7 @@ public class ResContent {
 	public String imageURL4;
 	public int status;	
 	public int open_level;
+	//public User user;
 	public ResContentUser user;
 	public int isLike;
 
@@ -39,7 +40,9 @@ public class ResContent {
 			this.imageURL4 = obj.imageURL4;
 			this.status = obj.status;
 			this.open_level = obj.open_level;
-			this.user = new ResContentUser(obj.user);
+			this.user = new ResContentUser(User.find.where().eq("id", obj.user_id).findUnique());
+			
+			//this.user = new ResContentUser(obj.user);
 			this.isLike = 0;
 		}
 	}

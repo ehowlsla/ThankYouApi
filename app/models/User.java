@@ -13,9 +13,6 @@ import play.db.ebean.Model;
 @Entity
 public class User extends Model{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -284,7 +281,7 @@ public class User extends Model{
 		return find.where().eq("id", user_id).findUnique(); 
 	}
 	
-	public static int getNickname(long user_id, String nickname) {
+	public static int getNicknameSize(long user_id, String nickname) {
 		return find.where().ne("id", user_id).eq("nickname", nickname).findList().size();
 	}
 	  

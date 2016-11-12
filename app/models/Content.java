@@ -33,8 +33,6 @@ public class Content extends Model{
 
 	@Formats.DateTime(pattern="yyyy-MM-dd HH:mm:ss")
 	public Date createDate;
-
- 
 	
 	public int likeCount;
 
@@ -61,9 +59,10 @@ public class Content extends Model{
 	
 	public static Finder<Long,Content> find = new Finder<Long,Content>(Long.class, Content.class); 
 
-	@ManyToOne(optional = true)
-	@JoinColumn(name = "user_id")
+	//@ManyToOne(optional = true)
 	public User user;
+	
+	public int user_id;
 	
 	private static final int pSize = 30;
 
