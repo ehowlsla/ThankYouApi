@@ -61,7 +61,7 @@ public class Content extends Model{
 	
 	public static Finder<Long,Content> find = new Finder<Long,Content>(Long.class, Content.class); 
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true, fetch=FetchType.EAGER)
 	public User user;
 	
 	private static final int pSize = 30;
