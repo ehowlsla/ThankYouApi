@@ -46,13 +46,13 @@ public class ResUser {
 			this.status = obj.status;
 			this.gender = obj.gender;
 			this.create_date = obj.create_date;
-			this.token_key = obj.token_key;
-			this.app_version = obj.app_version;
-			this.os_version = obj.os_version;
-			this.phone = obj.phone;
-			this.device_id = obj.device_id;
-			this.email = obj.email;
-			this.password = obj.password;
+			this.token_key = "";
+			this.app_version = "";
+			this.os_version = "";
+			this.phone = "";
+			this.device_id = "";
+			this.email = "";
+			this.password = "";
 		}
 	}
 }
