@@ -59,10 +59,10 @@ public class Content extends Model{
 	
 	public static Finder<Long,Content> find = new Finder<Long,Content>(Long.class, Content.class); 
 
-	//@ManyToOne(optional = true)
+	@ManyToOne
 	public User user;
 	
-	public int user_id;
+	//public long user_id;
 	
 	private static final int pSize = 30;
 

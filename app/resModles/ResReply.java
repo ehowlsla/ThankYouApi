@@ -22,7 +22,7 @@ public class ResReply {
 		// TODO Auto-generated constructor stub
 		if(obj != null) {
 			this.id = obj.id;
-			this.user = new ResUser(User.find.where().eq("id", obj.user_id).findUnique());
+			this.user = new ResUser(User.find.where().eq("id", obj.user.id).findUnique());
 			this.content_id = obj.content_id;
 			this.contents = obj.contents;
 			this.createDate = TimeConvert.getDate(obj.createDate);

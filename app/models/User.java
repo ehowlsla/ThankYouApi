@@ -152,8 +152,8 @@ public class User extends Model{
 		this.app_version = app_version;
 		this.os_version = os_version;
 		this.token_key = "";
-		this.email = email;
-		this.password = passowrd;
+		this.email = null;
+		this.password = null;
 	}
 	
 	public User(String email, String passowrd) {

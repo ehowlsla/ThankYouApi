@@ -40,7 +40,7 @@ public class ResContent {
 			this.imageURL4 = obj.imageURL4;
 			this.status = obj.status;
 			this.open_level = obj.open_level;
-			this.user = new ResContentUser(User.find.where().eq("id", obj.user_id).findUnique());
+			this.user = new ResContentUser(User.find.where().eq("id", obj.user.id).findUnique());
 			
 			//this.user = new ResContentUser(obj.user);
 			this.isLike = 0;
