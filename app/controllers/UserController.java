@@ -198,7 +198,8 @@ public class UserController extends Controller{
 			}else{
 				tmp.email = email;
 				tmp.password = password;
-				tmp.update();
+				//tmp.update();
+				tmp.save();
 
 				result.code = HttpContants.OK_200;
 				result.msg = "새로운 이메일 계정이 생성되었습니다.";
@@ -249,7 +250,8 @@ public class UserController extends Controller{
 			if(user.app_version != app_version || user.os_version != os_version) {
 				user.app_version = app_version;
 				user.os_version = os_version;
-				user.update();
+				//user.update();
+				user.save();
 			}
 
 			List<Notice> notices = Notice.getNotices(user.id, (long) 0);
@@ -290,7 +292,8 @@ public class UserController extends Controller{
 					user.app_version = app_version;
 					user.os_version = os_version;
 				}
-				user.update();
+				//user.update();
+				user.save();
 				user = User.getUserInfoPhoneDeviceID(phone, device_id);
 				List<Notice> notices = Notice.getNotices(user.id, (long) 0);
 				for(Notice obj : notices) {
@@ -347,7 +350,8 @@ public class UserController extends Controller{
 				user.nickname = nickname;
 				user.city = city;
 				user.gender = Integer.parseInt(gender);
-				user.update(); 
+				//user.update(); 
+				user.save();
 
 				result.code = HttpContants.OK_200;
 				result.msg = "성공적으로 변경되었습니다.";
@@ -422,7 +426,8 @@ public class UserController extends Controller{
 			result.msg = "없는 이메일 주소입니다.";
 		}else{
 			user.status =0;
-			user.update();
+			//user.update();
+			user.save();
 			result.code = HttpContants.OK_200;
 			result.msg = "탈퇴처리가 완료되었습니다.";
 			result.body.add(new ResUser(user));
@@ -479,7 +484,8 @@ public class UserController extends Controller{
 								user.image_url4 = s_imageURL;
 							}
 
-							user.update();
+							//user.update();
+							user.save();
 
 							result.code = HttpContants.OK_200;
 							result.msg = num + "번째 사진이 업로드 되었습니다.";
@@ -554,7 +560,8 @@ public class UserController extends Controller{
 				else if(num == 3) user.image_url3 = "";
 				else if(num == 4) user.image_url4 = "";
 
-				user.update();
+				//user.update();
+				user.save();
 
 				result.code = HttpContants.OK_200;
 				result.msg = num + "번째 사진이 삭제되었습니다.";

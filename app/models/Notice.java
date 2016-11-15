@@ -54,12 +54,14 @@ public class Notice extends Model{
 		if(last_id > 0) {
 			for(Notice obj : find.where().eq("user_id", user_id).lt("last_id", last_id).eq("status", 1).findList()) {
 				obj.status = 0;
-				obj.update();
+				//obj.update();
+				obj.save();
 			}
 		} else {
 			for(Notice obj : find.where().eq("user_id", user_id).eq("status", 1).findList()) {
 				obj.status = 0;
-				obj.update();
+				//obj.update();
+				obj.save();
 			}
 		}
 		

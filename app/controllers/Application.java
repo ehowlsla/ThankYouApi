@@ -810,7 +810,8 @@ public class Application extends Controller {
 				user.image_url4 = image_url4;
 			}
 			
-			user.update();
+			//user.update();
+			user.save();
 			
 			result.code = HttpContants.OK_200;
 			result.msg = "성공적으로 이미지가 업로드 되었습니다.";

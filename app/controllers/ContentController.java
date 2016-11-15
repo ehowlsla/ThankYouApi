@@ -73,7 +73,8 @@ public class ContentController extends Controller {
 					like.delete();
 					int likeCount = content.likeCount;
 					content.likeCount = likeCount - 1;
-					content.update();
+					//content.update();
+					content.save();
 
 					result.msg = "추천을 취소하였습니다.";
 				} else {
@@ -82,7 +83,8 @@ public class ContentController extends Controller {
 
 					int likeCount = content.likeCount;
 					content.likeCount = likeCount + 1;
-					content.update();
+					//content.update();
+					content.save();
 
 					String nickname = user.nickname;
 					if (nickname.length() == 0)
@@ -253,7 +255,8 @@ public class ContentController extends Controller {
 				result.msg = "이미 삭제된 컨텐츠입니다.";
 			} else {
 				content.status = 0;
-				content.update();
+				//content.update();
+				content.save();
 				result.code = HttpContants.OK_200;
 				result.msg = "성공적으로 삭제되었습니다.";
 			}
@@ -280,7 +283,8 @@ public class ContentController extends Controller {
 				content.status = 0;
 			}
 
-			content.update();
+			//content.update();
+			content.save();
 
 			result.code = HttpContants.OK_200;
 			result.msg = "성공적으로 신고되었습니다.";
@@ -392,7 +396,9 @@ public class ContentController extends Controller {
 				if (content != null) {
 					content.contents = contents;
 					content.open_level = openLevel;
-					content.update();
+					//content.update();
+					
+					content.save();
 					result.code = HttpContants.OK_200;
 					result.msg = "성공적으로 수정되었습니다.";
 					result.body.add(new ResContent(content));
@@ -419,7 +425,8 @@ public class ContentController extends Controller {
 					content.contents = contents;
 					content.open_level = openLevel;
 
-					content.update();
+					//content.update();
+					content.save();
 
 					result.code = HttpContants.OK_200;
 					result.msg = "성공적으로 수정되었습니다.";

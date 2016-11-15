@@ -64,15 +64,16 @@ public class ReplyController extends Controller{
         			replyLike.delete();
         			int likeCount = reply.likeCount;
         			reply.likeCount = likeCount - 1;
-        			reply.update();
-        			
+        			//reply.update();
+        			reply.save();
         			
                     result.msg = "추천을 취소하였습니다.";
         		} else {
         			replyLike = new ReplyLike(user, reply_id);
         			int likeCount = reply.likeCount;
         			reply.likeCount = likeCount + 1;
-        			reply.update();
+        			//reply.update();
+        			reply.save();
         			
         			String nickname = user.nickname;
         			if(nickname.length() == 0) nickname = "익명";
@@ -119,7 +120,8 @@ public class ReplyController extends Controller{
 			if(content != null) {
 				int replyCount = content.replyCount;
 				content.replyCount = replyCount + 1;
-				content.update();
+				//content.update();
+				content.save();
 				
 				Reply reply = new Reply(user, content_id, contents);
 				reply.save();				
@@ -167,14 +169,16 @@ public class ReplyController extends Controller{
     	if(reply != null) {
     		if(reply.user.id == user_id) {
     			reply.status = 0;
-    			reply.update();
+    			//reply.update();
+    			reply.save();
     			
         		Content content = Content.getContentDetail(reply.content_id);
     			if(content != null) {
     				int replyCount = content.replyCount;
     				if(replyCount > 0) {
     					content.replyCount = replyCount - 1;
-    					content.update();
+    					//content.update();
+    					content.save();
     					result.web_reply_count = content.replyCount;
     				}
     			}
